@@ -1,0 +1,1053 @@
+{
+  "schema_version": "1",
+  "task": {
+    "schema_version": "1",
+    "task_id": "sample-tool-selection",
+    "tenant_id": "sample-tenant",
+    "workflow_id": "sample-support-tool-selection",
+    "steps": [
+      {
+        "step_id": "choose_knowledge_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Please find the troubleshooting instructions for export error EX-104.",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7001"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_incident_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Is the reports service currently experiencing a widespread incident?",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7002"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_ticket_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Please check the latest status of my existing support ticket T-7003.",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7003"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "sample-tool-selection-policy",
+        "tenant_id": "sample-tenant",
+        "source": "sample://advisor-live/tool-selection-policy",
+        "version": "1",
+        "observed_at": "2026-10-17T18:56:57.488890Z",
+        "expires_at": "2026-10-17T22:56:57.488890Z",
+        "half_life_seconds": null,
+        "quality": 1.0,
+        "data": {
+          "sample_data": true,
+          "policy": "Choose the one read-only tool matching the customer's explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name."
+        }
+      }
+    ],
+    "metadata": {
+      "sample_data": true,
+      "fixture_suite": "advisor-live-selectors-v1",
+      "description": "Invented support selector cases for actual provider recordings.",
+      "limitations": [
+        "Invented, deliberately simple support cases; not a representative quality benchmark.",
+        "Expected choices are authored independently of provider responses, not OpenJEV results.",
+        "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+        "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+        "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+        "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+      ],
+      "advisor": {
+        "steps": {
+          "choose_knowledge_tool": {
+            "argument_source": "existing"
+          },
+          "choose_incident_tool": {
+            "argument_source": "existing"
+          },
+          "choose_ticket_tool": {
+            "argument_source": "existing"
+          }
+        }
+      }
+    }
+  },
+  "sample_data": true,
+  "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+  "execution_order": [
+    "baseline_first",
+    "baseline_repeat",
+    "governed_cold",
+    "governed_warm"
+  ],
+  "configuration": {
+    "baseline": {
+      "mode": "baseline",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+      "prompt_version": "1",
+      "cache_enabled": false,
+      "replay_run_id": null
+    },
+    "governed": {
+      "mode": "governed",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+      "prompt_version": "1",
+      "cache_enabled": true,
+      "replay_run_id": null
+    }
+  },
+  "summary": {
+    "baseline_first": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1307,
+      "output_tokens": 63,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 3092.807699998957,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "baseline_repeat": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1307,
+      "output_tokens": 63,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2593.569699998625,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_cold": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1307,
+      "output_tokens": 63,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2734.07749999933,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_warm": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "reused_steps": 3,
+      "elapsed_ms": 128.02250000095228,
+      "cost_usd": 0.0,
+      "energy_j": null
+    }
+  },
+  "runs": {
+    "baseline_first": {
+      "schema_version": "1",
+      "run_id": "f2aa2f1c-7e15-4720-9e6c-51d0bd23d892",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:23.097227Z",
+      "finished_at": "2026-10-17T18:57:26.189910Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 432,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZQ99Ng2yikYA3xmRb",
+          "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 438,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZLeYzoCFkFDMkVdbW",
+          "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 437,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZTusNbP6Lnfh2Mb6W",
+          "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 438,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZLeYzoCFkFDMkVdbW",
+            "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 1243.3311999993748,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 432,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZQ99Ng2yikYA3xmRb",
+            "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 432,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 773.0109999993147,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 437,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZTusNbP6Lnfh2Mb6W",
+            "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 437,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 798.8778999988426,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1307,
+        "output_tokens": 63,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 3092.807699998957,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "baseline_repeat": {
+      "schema_version": "1",
+      "run_id": "8e81f0d0-2a23-4f06-9853-0e4e7863da55",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:26.205604Z",
+      "finished_at": "2026-10-17T18:57:28.800745Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 432,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZbiR7LgPs9ivPqFjr",
+          "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 438,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZXj3sa6rb9iKUMD93",
+          "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 437,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZfJiLyr6VNshhEhdd",
+          "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 438,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZXj3sa6rb9iKUMD93",
+            "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 812.5814000013634,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 432,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZbiR7LgPs9ivPqFjr",
+            "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 432,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 854.8272000007273,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 437,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZfJiLyr6VNshhEhdd",
+            "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 437,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 712.9206999998132,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1307,
+        "output_tokens": 63,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2593.569699998625,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_cold": {
+      "schema_version": "1",
+      "run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:28.878376Z",
+      "finished_at": "2026-10-17T18:57:31.611293Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 432,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZnhiTFMYnmzGAb9u9",
+          "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 438,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZiyj8Z71ph2XZMPuR",
+          "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 437,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZrySejhyhHBjh4kaS",
+          "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 438,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZiyj8Z71ph2XZMPuR",
+            "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:c2868ff2332cdde335471cc6b289cee7583e2dbac5047143f01c107211fa41ff",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 438,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 754.2406000011397,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 432,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZnhiTFMYnmzGAb9u9",
+            "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:37bfd1d539c5f6ffc017bca15cec810c70cd4bc7f1120944c20b5de48cef9f74",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 432,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 769.9640999999247,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 437,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZrySejhyhHBjh4kaS",
+            "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:67d7ab93599dc9b200785da898385ce15cdbebe9343e04efe3e7193b7deb9a54",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 437,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 972.2117000001163,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1307,
+        "output_tokens": 63,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2734.07749999933,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_warm": {
+      "schema_version": "1",
+      "run_id": "bbcfda43-5a5e-4101-aa22-39cda76e1f7d",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:31.622210Z",
+      "finished_at": "2026-10-17T18:57:31.755222Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 432,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZnhiTFMYnmzGAb9u9",
+          "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 438,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZiyj8Z71ph2XZMPuR",
+          "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 437,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KZrySejhyhHBjh4kaS",
+          "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 438,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZiyj8Z71ph2XZMPuR",
+            "text": "```json\n{\n  \"tool\": \"knowledge_search\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:c2868ff2332cdde335471cc6b289cee7583e2dbac5047143f01c107211fa41ff",
+          "source_run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 432,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZnhiTFMYnmzGAb9u9",
+            "text": "```json\n{\n  \"tool\": \"incident_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:37bfd1d539c5f6ffc017bca15cec810c70cd4bc7f1120944c20b5de48cef9f74",
+          "source_run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 437,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KZrySejhyhHBjh4kaS",
+            "text": "```json\n{\n  \"tool\": \"ticket_lookup\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:67d7ab93599dc9b200785da898385ce15cdbebe9343e04efe3e7193b7deb9a54",
+          "source_run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 128.02250000095228,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    }
+  },
+  "interpretation": "Observed calls and provider usage for this task; no independent correctness score. Provider prompt caching can affect any live run. Canopy reuse is reported separately by reused_steps. Cold and warm results must be assessed separately; cached outputs do not establish answer quality.",
+  "provider_configuration": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "instructions": "Complete the requested business task using only the supplied data.",
+    "max_output_tokens": 128,
+    "temperature": null,
+    "timeout_seconds": 60.0,
+    "cache_namespace": "advisor-live-demo-20261017",
+    "device": null,
+    "max_context_tokens": 4096
+  }
+}

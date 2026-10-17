@@ -1,0 +1,463 @@
+{
+  "format": "canopy-advisor-live-demo/v1",
+  "generated_at": "2026-10-17T19:00:37.602717+00:00",
+  "tenant_id": "sample-tenant",
+  "sample_data": true,
+  "synthetic": false,
+  "sources": [
+    {
+      "label": "anthropic-business-decision",
+      "provider": "anthropic",
+      "category": "business_decision",
+      "categories": [
+        "business_decision"
+      ],
+      "files": {
+        "comparison": "anthropic-business-decision/comparison.json",
+        "frontend_comparison": "anthropic-business-decision/frontend-comparison.json",
+        "advisor_report": "anthropic-business-decision/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "ea8b82d1-670e-4f32-8b06-83a4b666790b",
+        "baseline_repeat": "f19968b1-7af4-492d-9710-16a2a0d27836",
+        "governed_cold": "e700df56-a268-4b52-a07b-c7487a2c6b74",
+        "governed_warm": "ceb23395-4635-4a98-988f-9b8946784696"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 4,
+        "model_calls": 3,
+        "reused_steps": 1
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "f121bb08b66f436853296e23b27f4e2f4a49fd7fea11604a8f3656d77c7d8299",
+        "baseline.sqlite3": "643b1314adf4afe7fc3c35b5a39ee60d80c8cdf49e945135c1717d9b2e71bcaf",
+        "baseline.sqlite3.pollard.sqlite3": "b2e18bd2d4eb5ceb5d902daad070e70cb103de6826f391be012dea2cb333ee2f",
+        "governed.sqlite3": "17eda3707697807dc62d96ac71e83cf00a5b126757e26c97cb4202a0ed588db5",
+        "governed.sqlite3.pollard.sqlite3": "6c55ef138da63348d58f2dcd0ae409006d482ba8ef9042b7a4b6ad6ff5e73723"
+      }
+    },
+    {
+      "label": "gemini-business-decision",
+      "provider": "gemini",
+      "category": "business_decision",
+      "categories": [
+        "business_decision"
+      ],
+      "files": {
+        "comparison": "gemini-business-decision/comparison.json",
+        "frontend_comparison": "gemini-business-decision/frontend-comparison.json",
+        "advisor_report": "gemini-business-decision/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "d2e708b1-0477-4f3b-947e-ef614fc5744d",
+        "baseline_repeat": "7a128313-615b-45b2-a92c-466a376bf6bf",
+        "governed_cold": "827732f2-4753-499e-98ea-8c0b597dd886",
+        "governed_warm": "a7715d9a-d0cb-40de-8541-6e5292dfb211"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 4,
+        "model_calls": 3,
+        "reused_steps": 1
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "ef279003634fab6f896b8162057ca30d27cc27378f0dc99379dcab8cec29f1b1",
+        "baseline.sqlite3": "6424adb050807b4da2b03657634526d9e31433d8577761145e0e0a672c5c45da",
+        "baseline.sqlite3.pollard.sqlite3": "8405610f0541471dae771dc871c600b4b5f191b818022bb50784d7c1539721c9",
+        "governed.sqlite3": "33b640ef1a75d51671ee4316921cb5a05bd6ffda44f14ff6e2c1098c97adabcb",
+        "governed.sqlite3.pollard.sqlite3": "27621ccb2b86a13167568abe434e692f9f43c8fc6af730f88cc248499399dbdd"
+      }
+    },
+    {
+      "label": "openai-business-decision",
+      "provider": "openai",
+      "category": "business_decision",
+      "categories": [
+        "business_decision"
+      ],
+      "files": {
+        "comparison": "openai-business-decision/comparison.json",
+        "frontend_comparison": "openai-business-decision/frontend-comparison.json",
+        "advisor_report": "openai-business-decision/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "15ec64b0-f56b-485b-b028-3c0d4c6e4798",
+        "baseline_repeat": "25e92fe9-21f0-4746-a0f0-1e794abd6427",
+        "governed_cold": "d0c0addb-0507-4c22-9264-86a14b514415",
+        "governed_warm": "88567c31-9908-45fd-a4fa-440ae5a93b08"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 4,
+        "model_calls": 3,
+        "reused_steps": 1
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "134c950d0f62894d5de55fa26cef6b29cd5e7e572eaf347e6015fd794f492575",
+        "baseline.sqlite3": "59414c81efd7353692111097cb2da6af05c6db777e05a7b328b4e37a30a8bb6b",
+        "baseline.sqlite3.pollard.sqlite3": "161fbb64818dad9417d5629e875d8c3e5c18ad86d8e83f52a2ab6e3e497c877d",
+        "governed.sqlite3": "ea32a4e83094ebe434f2cb4a7becf284f0e97231bfb3cb2149e5fd7ceb7be386",
+        "governed.sqlite3.pollard.sqlite3": "714dbc83ad6fc4e139d504904e9afacf691503f4eb381a8eae713ef3f380a8b1"
+      }
+    },
+    {
+      "label": "anthropic-next-step",
+      "provider": "anthropic",
+      "category": "next_step",
+      "categories": [
+        "next_step"
+      ],
+      "files": {
+        "comparison": "anthropic-next-step/comparison.json",
+        "frontend_comparison": "anthropic-next-step/frontend-comparison.json",
+        "advisor_report": "anthropic-next-step/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "86d670ca-62eb-4d62-9d48-4ebcafcf745d",
+        "baseline_repeat": "7f2f8205-7a0f-47b3-9023-505ebf51fa84",
+        "governed_cold": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+        "governed_warm": "86ff15cd-8980-4ff9-98c2-ef0aaac21957"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "f606c6266fb6b9a52076d7c32e7caf77e28537018bea0912d882a69e1d1eba55",
+        "baseline.sqlite3": "88d084e95df045ac4c3f84e9b093b7f98c5d1a9b065fbaec4471ea8b4fa7039a",
+        "baseline.sqlite3.pollard.sqlite3": "47d4791fa761890ce2a1d32dfebb098254562961965a649a0bc210b6287bed2a",
+        "governed.sqlite3": "e79934ed195a492d11fe43d963935c53db6fc07b477b810c8081ddcf88518e98",
+        "governed.sqlite3.pollard.sqlite3": "6ce4fce3029f1a443c86e3bfa6b01e2e32fcbc78a1d593cb54fc3aab55a783d6"
+      }
+    },
+    {
+      "label": "anthropic-tool-selection",
+      "provider": "anthropic",
+      "category": "tool_selection",
+      "categories": [
+        "tool_selection"
+      ],
+      "files": {
+        "comparison": "anthropic-tool-selection/comparison.json",
+        "frontend_comparison": "anthropic-tool-selection/frontend-comparison.json",
+        "advisor_report": "anthropic-tool-selection/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "f2aa2f1c-7e15-4720-9e6c-51d0bd23d892",
+        "baseline_repeat": "8e81f0d0-2a23-4f06-9853-0e4e7863da55",
+        "governed_cold": "a8a90733-6c01-486d-84cf-243c15e83135",
+        "governed_warm": "bbcfda43-5a5e-4101-aa22-39cda76e1f7d"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "178f5b158464de8b910d854dc1b260f48cb6fc5039ee859fd0304e7abb5eb8a8",
+        "baseline.sqlite3": "2b6ac3fe24f6d1f1aede89941a82604a4bf598f6e6f13b32af269654a1fc3145",
+        "baseline.sqlite3.pollard.sqlite3": "9bd6d26a8e7517814df1c1547704aa5a551b67f8864d97328087d986dc456649",
+        "governed.sqlite3": "8dcf4fbbf0d3a6992c2d22087ff70731093261893ac14670b1908e52013f1a0f",
+        "governed.sqlite3.pollard.sqlite3": "a892ba6d82b127459e84c594076b0d267a186f19628c486106386ff415eeae41"
+      }
+    },
+    {
+      "label": "gemini-next-step",
+      "provider": "gemini",
+      "category": "next_step",
+      "categories": [
+        "next_step"
+      ],
+      "files": {
+        "comparison": "gemini-next-step/comparison.json",
+        "frontend_comparison": "gemini-next-step/frontend-comparison.json",
+        "advisor_report": "gemini-next-step/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+        "baseline_repeat": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+        "governed_cold": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+        "governed_warm": "889b1c3d-fb92-4181-99ed-349052a988b6"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "c8c9c5ec23d57202b05bf1676e9252d6128fa684c330f781afb2d7286aded1d3",
+        "baseline.sqlite3": "92d21ee930324dde0e2e91be50db8c110a798825519e20ec729ece1dd9125835",
+        "baseline.sqlite3.pollard.sqlite3": "8d1b01f06dab08712a77f352076bf2939848a0fadac38a957cb398aacc14ef25",
+        "governed.sqlite3": "7b74ff61c4e72bf7b08d280d5a5be8b62919d533a4e54b2efdda42716daef9c0",
+        "governed.sqlite3.pollard.sqlite3": "089173a8ef38375695f668631d59ad36b4d92680811e09d202aea791a7729e9d"
+      }
+    },
+    {
+      "label": "gemini-tool-selection",
+      "provider": "gemini",
+      "category": "tool_selection",
+      "categories": [
+        "tool_selection"
+      ],
+      "files": {
+        "comparison": "gemini-tool-selection/comparison.json",
+        "frontend_comparison": "gemini-tool-selection/frontend-comparison.json",
+        "advisor_report": "gemini-tool-selection/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "59b4968b-f4f0-4f15-ada3-8192b25fcec1",
+        "baseline_repeat": "80f4f3a5-1227-4ce3-a3a5-edca5f6c3375",
+        "governed_cold": "4718054d-4d69-4eec-9080-e8be35bcf159",
+        "governed_warm": "b7d25698-75ac-4d12-82e0-c7c52f917add"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "4ddb9850c5e3c8cba416a93ead16135af12577b9eacdd78ded0acfbfb1dc5b17",
+        "baseline.sqlite3": "c48761e016709dc2f9d2176e74e40c69b6f0a3f09e4b4054babbbc2453beb2c4",
+        "baseline.sqlite3.pollard.sqlite3": "f329e1a1254797101d01944ce1471cf1386223cffa57b2b055dcc82accadb43e",
+        "governed.sqlite3": "30c3e66c97d2474ff780ddda36931a9f0477346fa9e20d41e7f9f5369b09b8d0",
+        "governed.sqlite3.pollard.sqlite3": "80f83b535b0836b69862bf50ca26f74c6dbaa8dbf2e0979c2386779aa5e91242"
+      }
+    },
+    {
+      "label": "openai-next-step",
+      "provider": "openai",
+      "category": "next_step",
+      "categories": [
+        "next_step"
+      ],
+      "files": {
+        "comparison": "openai-next-step/comparison.json",
+        "frontend_comparison": "openai-next-step/frontend-comparison.json",
+        "advisor_report": "openai-next-step/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "d604dc4e-3f0c-4adf-ae02-97b126eb2603",
+        "baseline_repeat": "0953814d-8b90-451e-b086-fc8053253524",
+        "governed_cold": "1485aaa8-b00e-4086-b622-3039da4b7960",
+        "governed_warm": "642d2567-5021-4124-bcae-ac91643bd99d"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "4385f33c2fb2f1b5aaedf21735b95bc2e259d36dc979667a5b76241ef59266ea",
+        "baseline.sqlite3": "abbb94abfc200808e4f38dedb04464b546899d76518e5c8c962207bc3ed4c1a0",
+        "baseline.sqlite3.pollard.sqlite3": "ed91bb0e0e30dcbdd59adae944175c043874a76a292d28a7dd658e6bbe579b00",
+        "governed.sqlite3": "5df9b7dbdb1541fcc2fb9535de2b28affe2500c0504e60df1c5564273fd124f3",
+        "governed.sqlite3.pollard.sqlite3": "f0d15baf7b3f4f258a61ed60aa92619636799036fdfa8b6151f524509fcaa9d9"
+      }
+    },
+    {
+      "label": "openai-tool-selection",
+      "provider": "openai",
+      "category": "tool_selection",
+      "categories": [
+        "tool_selection"
+      ],
+      "files": {
+        "comparison": "openai-tool-selection/comparison.json",
+        "frontend_comparison": "openai-tool-selection/frontend-comparison.json",
+        "advisor_report": "openai-tool-selection/advisor-report.json"
+      },
+      "run_ids": {
+        "baseline_first": "16822f30-871a-4bc7-998f-8f27199f0371",
+        "baseline_repeat": "671dfe5d-5af4-4031-8023-5626bf6111c4",
+        "governed_cold": "4a35266b-900a-4a3e-bcca-74a79bb9bbdf",
+        "governed_warm": "d03d776a-6452-45e0-a759-09c7e09e2bb2"
+      },
+      "counts": {
+        "runs": 4,
+        "step_observations": 12,
+        "model_calls": 9,
+        "reused_steps": 3
+      },
+      "original_recordings_verified": true,
+      "original_sha256": {
+        "report.json": "c56bfe47ac6b526ec3291a2b30e5facd07235a897ae8b7dd2cdb5e262aa1c49a",
+        "baseline.sqlite3": "48c08efc9f6612c95d783aa4585c755e8d6bb4e50e4c3a21b45031de18da1c22",
+        "baseline.sqlite3.pollard.sqlite3": "a515bf9a7d91477f557cbf151c960dc5433e7ded0c847a964f6396f07ddbe52c",
+        "governed.sqlite3": "4f686d6ea5b31ef73af0015e98fd2599462c97f260921ee9097556e96a8982b6",
+        "governed.sqlite3.pollard.sqlite3": "3aa9efe75f46c5026ced1c5eb3c586b824c1a57d6bd023e1ac9316b5370bff9a"
+      }
+    }
+  ],
+  "counts": {
+    "runs": 36,
+    "step_observations": 84,
+    "model_calls": 63,
+    "reused_steps": 21
+  },
+  "combined_advisor": "advisor-report.json",
+  "files": {
+    "anthropic-business-decision/comparison.json": {
+      "sha256": "5a85ba137a6a5853b8c85cd6eb1c70dcfe6a07379e8f798874a17c871fd95fdf",
+      "bytes": 18810
+    },
+    "anthropic-business-decision/frontend-comparison.json": {
+      "sha256": "c9dd06f852275bfa13f2de6d008f2fea414f8eeae3daed2e0c76acb63281ba96",
+      "bytes": 48089
+    },
+    "anthropic-business-decision/advisor-report.json": {
+      "sha256": "e21bc42149306d4fd397dfacdfb78625f71289027465235f71860f0ec2b33a6d",
+      "bytes": 5270
+    },
+    "gemini-business-decision/comparison.json": {
+      "sha256": "84bc842c1e472eb7d02362f82422ffae6d3cbaa1f91bf82b23aeb2596e2e9099",
+      "bytes": 16427
+    },
+    "gemini-business-decision/frontend-comparison.json": {
+      "sha256": "46b03bdeb6ce55bdf89e5727f3dd8c5bca4b1c0169b1234177420960871d303f",
+      "bytes": 44480
+    },
+    "gemini-business-decision/advisor-report.json": {
+      "sha256": "cdaa6cd4d575e1e0273ed6fb2b3b46466efb99936bc797d5eaa8672cb5c34491",
+      "bytes": 5269
+    },
+    "openai-business-decision/comparison.json": {
+      "sha256": "9272271bafda8cc5b593edb70cfbdc1e42fdb15ef6f4c9e1c07e98364d49e095",
+      "bytes": 16772
+    },
+    "openai-business-decision/frontend-comparison.json": {
+      "sha256": "8458a2856f7997a2aac36d66f89abbc94d96c9055d2fdfca9d4199c3dd05499f",
+      "bytes": 44996
+    },
+    "openai-business-decision/advisor-report.json": {
+      "sha256": "808fa8ef94cf71551f290573b5ec593da95e7f4450f14768d16f7522c30b12f4",
+      "bytes": 5269
+    },
+    "anthropic-next-step/comparison.json": {
+      "sha256": "e07b258385122fb545c86d81cd8169596e5416e747db2501afcbd92f2fc75223",
+      "bytes": 35086
+    },
+    "anthropic-next-step/frontend-comparison.json": {
+      "sha256": "ac546e6b17553a4b5e350b8752948d535b8cfd2f765df4686e8e900ec0752630",
+      "bytes": 119999
+    },
+    "anthropic-next-step/advisor-report.json": {
+      "sha256": "19289557f8f5ac6522da77f263a5990dc0829ead057f286e4f9bf7bcb01e146e",
+      "bytes": 12443
+    },
+    "anthropic-tool-selection/comparison.json": {
+      "sha256": "3516f61180b4be90a9fe02ebcebf81c8eab36684c237335ad79c5f30db45b5b0",
+      "bytes": 35289
+    },
+    "anthropic-tool-selection/frontend-comparison.json": {
+      "sha256": "d25291b72fa43d7e7a6dbde22774eca24f14dc4931a6a298210dec056f8b0048",
+      "bytes": 120642
+    },
+    "anthropic-tool-selection/advisor-report.json": {
+      "sha256": "d84e6d0810c94daca59f08261c1e3826d3d08076ee21aeb4a56bf63180fbe818",
+      "bytes": 12410
+    },
+    "gemini-next-step/comparison.json": {
+      "sha256": "9366c19119f0f2c9bae934674b6ecf5b209ab420e685aafe0fbc08b9de9d696a",
+      "bytes": 33644
+    },
+    "gemini-next-step/frontend-comparison.json": {
+      "sha256": "89a01b19ba2ef28e5b5588fa7baba5d49d7408a828ed241d1fcbb16b10d03822",
+      "bytes": 117732
+    },
+    "gemini-next-step/advisor-report.json": {
+      "sha256": "a3a2946159f8022f2b6352f0fc7524138f931a224957a2ff5b431ca1c616512d",
+      "bytes": 12443
+    },
+    "gemini-tool-selection/comparison.json": {
+      "sha256": "aac7b5ebf741f69948183a8d45eb7c0d6b28119a096b4663f5b7c53469dd0a73",
+      "bytes": 33617
+    },
+    "gemini-tool-selection/frontend-comparison.json": {
+      "sha256": "5f56307a588369d91db7f5fef8962c2bb08bcc250a5a526a0a77183142e90da6",
+      "bytes": 118023
+    },
+    "gemini-tool-selection/advisor-report.json": {
+      "sha256": "0150e06ce58b029b09f66061b91fe27013bc0daa51c2533fac86068d2a457f5b",
+      "bytes": 12410
+    },
+    "openai-next-step/comparison.json": {
+      "sha256": "f45eca8b1c9a366ad6877c0c010617599712c872a5768479560a88ec49256915",
+      "bytes": 33726
+    },
+    "openai-next-step/frontend-comparison.json": {
+      "sha256": "c9a56f2cf8550ac3305c1a6196ee769fa41a1f22bbfb72783c3eb2bd77b69e48",
+      "bytes": 117846
+    },
+    "openai-next-step/advisor-report.json": {
+      "sha256": "92a778e21d8b5541d23645a3666bbffb6fa87e544c26644f3bcd656acbafd556",
+      "bytes": 12442
+    },
+    "openai-tool-selection/comparison.json": {
+      "sha256": "3c090eabc8bcd90e49409b7dd873a815c1738a798d7d3ea80cd2743624f1d728",
+      "bytes": 33940
+    },
+    "openai-tool-selection/frontend-comparison.json": {
+      "sha256": "960589889ac3a3bc42f8b9299f68f4cfc7b8c33b27bb7f666dc3c2b160ca5ee5",
+      "bytes": 118505
+    },
+    "openai-tool-selection/advisor-report.json": {
+      "sha256": "5e93597954304688d5ef9931f3b78e4d1a4cee9f3d033a980f96984f8609f4d0",
+      "bytes": 12410
+    },
+    "advisor-report.json": {
+      "sha256": "2019fe322ea255a24fa32e0c70cd69889d836e1845997aed4093c32eca6d1d24",
+      "bytes": 76442
+    },
+    "fixture-checks.json": {
+      "sha256": "80a3e3863166b636b22c9a7e1236a76fb7a67d46c931a930024d3d610fbc28c6",
+      "bytes": 27735
+    },
+    "expected-choices.json": {
+      "sha256": "2f6f3adb50ce0335b6402092fa895a8db3083f4e5ea9d5490fe803481f997a4a",
+      "bytes": 1245
+    },
+    "README.md": {
+      "sha256": "4c497e750849f15378c4f590393c7c968f9dc5056733c6ec80fc1d4f1ff31614",
+      "bytes": 7881
+    }
+  },
+  "export": {
+    "model_calls": 0,
+    "tool_calls": 0,
+    "elapsed_ms": 788.3383000007598,
+    "cost_usd": null,
+    "energy_j": null,
+    "original_recordings_verified": true,
+    "verification_note": "The exporter verified the original read-only SQLite/Pollard recordings and their task, configuration, result and event bindings. Portable JSON does not contain the Pollard proof and remains a structurally validated import.",
+    "omitted_provenance": [
+      "absolute artifacts_directory",
+      "provider endpoint and credential-variable name",
+      "provider worker/cache filesystem paths",
+      "unrecognized report metadata"
+    ]
+  },
+  "limitations": [
+    "Invented sample data, not production traffic or a representative benchmark.",
+    "Non-synthetic marks the recorded handler, not independent provider attestation.",
+    "Three uncached/cold executions and one warm reuse per comparison; no quality score.",
+    "JEV suitability recommendations are unevaluated; no replacement or savings claim.",
+    "File hashes support reproducibility but do not authenticate a portable bundle."
+  ],
+  "fixture_checks": "fixture-checks.json",
+  "expected_choices": "expected-choices.json"
+}

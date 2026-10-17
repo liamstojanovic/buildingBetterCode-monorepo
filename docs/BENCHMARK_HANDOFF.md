@@ -71,6 +71,74 @@ expires after four hours. Use a genuinely current source snapshot, or an
 explicitly generated synthetic fixture, rather than relabeling stale real data
 as fresh to obtain a successful run.
 
+## Retained hosted advisor cases
+
+The [hosted advisor demo](../core/examples/recordings/advisor-live-2026-10-17/README.md)
+and its artifact index provide credential-free comparison exports, frontend
+playback bundles and advisor results across OpenAI, Anthropic and Gemini. The
+recordings use invented business data (`sample_data: true`) with actual hosted
+inference (`synthetic: false`). Playback and offline reanalysis make no new model
+calls. The full source stores remain local; the committed sanitized comparison
+exports can be imported by the advisor without those stores.
+
+The retained set has nine comparisons, 36 runs, 84 step observations, 63 actual
+model calls and 21 warm reuses. The six new tool/next-step comparisons account for
+54 calls and 18 reuses; the three existing business comparisons supply the rest.
+The new selection-only calls produced these
+[authored fixture checks](../core/examples/recordings/advisor-live-2026-10-17/fixture-checks.json):
+
+| Provider / recorded model | Calls | Normalized expected choice | Bare JSON object | Expected choice and strict requested JSON |
+| --- | --- | --- | --- | --- |
+| OpenAI / `gpt-4.1-mini-2025-04-14` | 18 | 17 | 18 | 17 |
+| Anthropic / `claude-haiku-4-5-20251001` | 18 | 18 | 0 | 0 |
+| Gemini / `gemini-2.5-flash-lite` | 18 | 18 | 7 | 7 |
+| Total | 54 | 53 | 25 | 24 |
+
+Expected choices were saved before inference. These counts exclude warm reuses
+and the old business-priority case. All 29 fenced outputs matched the normalized
+choice while violating the request for bare JSON. This is a small smoke study of
+specific recorded models and cases, not a provider ranking.
+
+The new tool-selection and next-step tasks each contain three distinct cases.
+Their outputs select an identity from a declared finite set. No tool is executed,
+no arguments are generated and no selected next step changes the static DAG.
+The existing business-priority case also generates a reason; account for retained
+explanation work when considering a partial substitution.
+The next-step policy is an explicit ordered rule over supplied state, so include
+a deterministic transition-rule baseline before investing in a JEV mapping.
+
+The combined advisor report retains 21 provider-specific groups over seven cases:
+three business, nine tool-selection and nine next-step groups. Every group is
+`evaluate_openjev` / `needs_mapping` / `not_evaluated`; only the three business
+groups are partial substitutions. Group count is not an independent case count
+or evidence that JEV will outperform the original call or a deterministic rule.
+
+Treat these cases as a reproducible connectivity, recording and detector demo.
+Repeated baseline/cold/warm observations are repeated execution of the same
+cases, not extra independent test cases. Authored expected choices are useful
+fixture checks, not a held-out, independently labeled business-quality benchmark.
+The fixed provider/run order is not a fair latency comparison; provider costs
+remain unknown where no price was recorded. All JEV findings are unevaluated and
+the demo performs no native OpenJEV inference or backend substitution.
+
+The retained OpenAI `baseline_first` / `choose_retrieval` result chose `respond`
+despite missing approved evidence; its authored expected choice is `retrieve`.
+Keep this failure when reproducing the smoke study. Later choices differ, but
+there is no runtime transition-eligibility check and no evidence that governance
+caused a quality improvement. The fixture-check report separates normalized
+choice matching from bare-JSON compliance: Markdown-fenced JSON can match the
+choice while violating the requested output format. Keep the original text;
+normalization must not erase those format failures. Frontend `evaluations` remain
+empty because these are authored fixture checks, not independent scoring.
+
+Use the demo guide's generation commands to create fresh invented source
+snapshots before making a new metered comparison. Preserve the retained files
+for playback; do not relabel their old evidence timestamps as current. Use the
+exact recorded model identities in the artifact index when reproducing a result,
+or record a model change explicitly. Extend these cases with independently
+labeled missing-fact, no-tool, unavailable-tool, stop, refresh and review cases
+before evaluating replacement quality.
+
 ## Current Pollard-Jev boundary
 
 The native bridge uses `pollard-jev==0.13` in a separate interpreter because it

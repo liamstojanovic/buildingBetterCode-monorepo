@@ -1,0 +1,37 @@
+{
+  "schema_version": "1",
+  "fixture_suite": "advisor-live-selectors-v1",
+  "created_at": "2026-10-17T18:56:57.488890+00:00",
+  "expected_choices": {
+    "tool-selection": {
+      "choose_knowledge_tool": {
+        "tool": "knowledge_search"
+      },
+      "choose_incident_tool": {
+        "tool": "incident_lookup"
+      },
+      "choose_ticket_tool": {
+        "tool": "ticket_lookup"
+      }
+    },
+    "next-step": {
+      "choose_clarification": {
+        "next_step": "clarify"
+      },
+      "choose_retrieval": {
+        "next_step": "retrieve"
+      },
+      "choose_stop": {
+        "next_step": "stop"
+      }
+    }
+  },
+  "limitations": [
+    "Invented, deliberately simple support cases; not a representative quality benchmark.",
+    "Expected choices are authored independently of provider responses, not OpenJEV results.",
+    "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+    "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+    "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+    "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+  ]
+}

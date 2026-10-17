@@ -1,0 +1,1051 @@
+{
+  "schema_version": "1",
+  "task": {
+    "schema_version": "1",
+    "task_id": "sample-next-step",
+    "tenant_id": "sample-tenant",
+    "workflow_id": "sample-support-next-step",
+    "steps": [
+      {
+        "step_id": "choose_clarification",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": false,
+            "human_required": false,
+            "missing_required_fields": [
+              "report_id"
+            ],
+            "approved_evidence_available": false
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_retrieval",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": false,
+            "human_required": false,
+            "missing_required_fields": [],
+            "approved_evidence_available": false
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_stop",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": true,
+            "human_required": false,
+            "missing_required_fields": [],
+            "approved_evidence_available": true
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "sample-next-step-policy",
+        "tenant_id": "sample-tenant",
+        "source": "sample://advisor-live/next-step-policy",
+        "version": "1",
+        "observed_at": "2026-10-17T18:56:57.488890Z",
+        "expires_at": "2026-10-17T22:56:57.488890Z",
+        "half_life_seconds": null,
+        "quality": 1.0,
+        "data": {
+          "sample_data": true,
+          "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it."
+        }
+      }
+    ],
+    "metadata": {
+      "sample_data": true,
+      "fixture_suite": "advisor-live-selectors-v1",
+      "description": "Invented support selector cases for actual provider recordings.",
+      "limitations": [
+        "Invented, deliberately simple support cases; not a representative quality benchmark.",
+        "Expected choices are authored independently of provider responses, not OpenJEV results.",
+        "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+        "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+        "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+        "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+      ]
+    }
+  },
+  "sample_data": true,
+  "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+  "execution_order": [
+    "baseline_first",
+    "baseline_repeat",
+    "governed_cold",
+    "governed_warm"
+  ],
+  "configuration": {
+    "baseline": {
+      "mode": "baseline",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+      "prompt_version": "1",
+      "cache_enabled": false,
+      "replay_run_id": null
+    },
+    "governed": {
+      "mode": "governed",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "2b900602fc206af387a798cd16220e8e82299c593b7b26a99a19db7836b23411",
+      "prompt_version": "1",
+      "cache_enabled": true,
+      "replay_run_id": null
+    }
+  },
+  "summary": {
+    "baseline_first": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1354,
+      "output_tokens": 64,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2625.9630999993533,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "baseline_repeat": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1354,
+      "output_tokens": 64,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2694.531499999357,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_cold": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1354,
+      "output_tokens": 64,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 3397.9524000005767,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_warm": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "reused_steps": 3,
+      "elapsed_ms": 119.84529999972438,
+      "cost_usd": 0.0,
+      "energy_j": null
+    }
+  },
+  "runs": {
+    "baseline_first": {
+      "schema_version": "1",
+      "run_id": "86d670ca-62eb-4d62-9d48-4ebcafcf745d",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:32.505592Z",
+      "finished_at": "2026-10-17T18:57:35.140234Z",
+      "output": {
+        "choose_clarification": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 454,
+            "output_tokens": 22
+          },
+          "response_id": "msg_011Cg8Ka12ssUs7XftmjHyZT",
+          "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+        },
+        "choose_retrieval": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8Ka4jNiuHhanFpQsJoy",
+          "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+        },
+        "choose_stop": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8Ka88m9Y3GWoaxiGMXH",
+          "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 454,
+              "output_tokens": 22
+            },
+            "response_id": "msg_011Cg8Ka12ssUs7XftmjHyZT",
+            "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 454,
+            "output_tokens": 22,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 813.2700999994995,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8Ka4jNiuHhanFpQsJoy",
+            "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 768.6870000015915,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8Ka88m9Y3GWoaxiGMXH",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 772.5540000010369,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1354,
+        "output_tokens": 64,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2625.9630999993533,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "baseline_repeat": {
+      "schema_version": "1",
+      "run_id": "7f2f8205-7a0f-47b3-9023-505ebf51fa84",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:35.166893Z",
+      "finished_at": "2026-10-17T18:57:37.859925Z",
+      "output": {
+        "choose_clarification": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 454,
+            "output_tokens": 22
+          },
+          "response_id": "msg_011Cg8KaBqWSBxbzofYEzChr",
+          "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+        },
+        "choose_retrieval": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaG5FN8mwPq2dwEApn",
+          "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+        },
+        "choose_stop": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaKi2ARuBepaP9Q5aX",
+          "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 454,
+              "output_tokens": 22
+            },
+            "response_id": "msg_011Cg8KaBqWSBxbzofYEzChr",
+            "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 454,
+            "output_tokens": 22,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 783.0460999994102,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaG5FN8mwPq2dwEApn",
+            "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 876.4876999994158,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaKi2ARuBepaP9Q5aX",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 818.0611999996472,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1354,
+        "output_tokens": 64,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2694.531499999357,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_cold": {
+      "schema_version": "1",
+      "run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:37.938931Z",
+      "finished_at": "2026-10-17T18:57:41.336925Z",
+      "output": {
+        "choose_clarification": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 454,
+            "output_tokens": 22
+          },
+          "response_id": "msg_011Cg8KaR9Swdnb5iibWDqAF",
+          "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+        },
+        "choose_retrieval": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaWeM3SjTZLzamPmty",
+          "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+        },
+        "choose_stop": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaaXkxkfqj7adj4Kwf",
+          "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 454,
+              "output_tokens": 22
+            },
+            "response_id": "msg_011Cg8KaR9Swdnb5iibWDqAF",
+            "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:0d92ef0a528febe4286ff26c989f205d67ec10ff8a3210606b67fd56b27e8d7f",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 454,
+            "output_tokens": 22,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 948.4195000004547,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaWeM3SjTZLzamPmty",
+            "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:6f2ba217b006d06c2bae240f09ce7ab7b6caff48d710189c6e8bbf03dfcabb66",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 756.5895000007004,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaaXkxkfqj7adj4Kwf",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:ee584903fc0a4c2eb5bbb05ac5505694a393a2cf5dd4588671a0004750e8dbce",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 450,
+            "output_tokens": 21,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 768.6496000005718,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1354,
+        "output_tokens": 64,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 3397.9524000005767,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_warm": {
+      "schema_version": "1",
+      "run_id": "86ff15cd-8980-4ff9-98c2-ef0aaac21957",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:41.360790Z",
+      "finished_at": "2026-10-17T18:57:41.481711Z",
+      "output": {
+        "choose_clarification": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 454,
+            "output_tokens": 22
+          },
+          "response_id": "msg_011Cg8KaR9Swdnb5iibWDqAF",
+          "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+        },
+        "choose_retrieval": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaWeM3SjTZLzamPmty",
+          "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+        },
+        "choose_stop": {
+          "model": "claude-haiku-4-5-20251001",
+          "provider": "anthropic",
+          "provider_usage": {
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "input_tokens": 450,
+            "output_tokens": 21
+          },
+          "response_id": "msg_011Cg8KaaXkxkfqj7adj4Kwf",
+          "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 454,
+              "output_tokens": 22
+            },
+            "response_id": "msg_011Cg8KaR9Swdnb5iibWDqAF",
+            "text": "```json\n{\n  \"next_step\": \"clarify\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:0d92ef0a528febe4286ff26c989f205d67ec10ff8a3210606b67fd56b27e8d7f",
+          "source_run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaWeM3SjTZLzamPmty",
+            "text": "```json\n{\n  \"next_step\": \"retrieve\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:6f2ba217b006d06c2bae240f09ce7ab7b6caff48d710189c6e8bbf03dfcabb66",
+          "source_run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "reused",
+          "output": {
+            "model": "claude-haiku-4-5-20251001",
+            "provider": "anthropic",
+            "provider_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "input_tokens": 450,
+              "output_tokens": 21
+            },
+            "response_id": "msg_011Cg8KaaXkxkfqj7adj4Kwf",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:ee584903fc0a4c2eb5bbb05ac5505694a393a2cf5dd4588671a0004750e8dbce",
+          "source_run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 119.84529999972438,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    }
+  },
+  "interpretation": "Observed calls and provider usage for this task; no independent correctness score. Provider prompt caching can affect any live run. Canopy reuse is reported separately by reused_steps. Cold and warm results must be assessed separately; cached outputs do not establish answer quality.",
+  "provider_configuration": {
+    "provider": "anthropic",
+    "model": "claude-haiku-4-5-20251001",
+    "instructions": "Complete the requested business task using only the supplied data.",
+    "max_output_tokens": 128,
+    "temperature": null,
+    "timeout_seconds": 60.0,
+    "cache_namespace": "advisor-live-demo-20261017",
+    "device": null,
+    "max_context_tokens": 4096
+  }
+}

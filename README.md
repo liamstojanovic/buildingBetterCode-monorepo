@@ -54,6 +54,11 @@ conversion and automatic routing remain separate work. See the
 [advisor guide](core/docs/advisor.md) for supported inputs, grouping hints, limits
 and the frontend report schema.
 
+For playback without credentials, use the
+[recorded hosted-provider demo](core/examples/recordings/advisor-live-2026-10-17/README.md).
+It includes business decisions, tool selection and authored next-step choices from
+OpenAI, Anthropic and Gemini, with advisor reports and preserved fixture failures.
+
 For real inference, install `python -m pip install -e "core[models]"`, set the
 selected provider's key in the environment, then run:
 

@@ -1,0 +1,1027 @@
+{
+  "schema_version": "1",
+  "task": {
+    "schema_version": "1",
+    "task_id": "sample-next-step",
+    "tenant_id": "sample-tenant",
+    "workflow_id": "sample-support-next-step",
+    "steps": [
+      {
+        "step_id": "choose_clarification",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": false,
+            "human_required": false,
+            "missing_required_fields": [
+              "report_id"
+            ],
+            "approved_evidence_available": false
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_retrieval",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": false,
+            "human_required": false,
+            "missing_required_fields": [],
+            "approved_evidence_available": false
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_stop",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+        "inputs": {
+          "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+          "current_state": {
+            "resolved": true,
+            "human_required": false,
+            "missing_required_fields": [],
+            "approved_evidence_available": true
+          },
+          "allowed_next_steps": [
+            {
+              "name": "stop",
+              "eligibility": "The customer has confirmed resolution; the workflow is complete."
+            },
+            {
+              "name": "escalate",
+              "eligibility": "Unresolved state explicitly requires a human specialist."
+            },
+            {
+              "name": "clarify",
+              "eligibility": "Unresolved state is missing one or more required fields."
+            },
+            {
+              "name": "retrieve",
+              "eligibility": "Unresolved state has required fields but lacks approved evidence."
+            },
+            {
+              "name": "respond",
+              "eligibility": "Unresolved state has required fields and approved evidence."
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "next_step": {
+                "type": "string",
+                "enum": [
+                  "stop",
+                  "escalate",
+                  "clarify",
+                  "retrieve",
+                  "respond"
+                ]
+              }
+            },
+            "required": [
+              "next_step"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-next-step-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "sample-next-step-policy",
+        "tenant_id": "sample-tenant",
+        "source": "sample://advisor-live/next-step-policy",
+        "version": "1",
+        "observed_at": "2026-10-17T18:56:57.488890Z",
+        "expires_at": "2026-10-17T22:56:57.488890Z",
+        "half_life_seconds": null,
+        "quality": 1.0,
+        "data": {
+          "sample_data": true,
+          "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it."
+        }
+      }
+    ],
+    "metadata": {
+      "sample_data": true,
+      "fixture_suite": "advisor-live-selectors-v1",
+      "description": "Invented support selector cases for actual provider recordings.",
+      "limitations": [
+        "Invented, deliberately simple support cases; not a representative quality benchmark.",
+        "Expected choices are authored independently of provider responses, not OpenJEV results.",
+        "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+        "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+        "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+        "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+      ]
+    }
+  },
+  "sample_data": true,
+  "model_fingerprint": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+  "execution_order": [
+    "baseline_first",
+    "baseline_repeat",
+    "governed_cold",
+    "governed_warm"
+  ],
+  "configuration": {
+    "baseline": {
+      "mode": "baseline",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+      "prompt_version": "1",
+      "cache_enabled": false,
+      "replay_run_id": null
+    },
+    "governed": {
+      "mode": "governed",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "9bd62937b55d6c94d80b57c3a4f12f479e033712f55474dd8126d206f5ace3b6",
+      "prompt_version": "1",
+      "cache_enabled": true,
+      "replay_run_id": null
+    }
+  },
+  "summary": {
+    "baseline_first": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1191,
+      "output_tokens": 22,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2804.0636999994604,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "baseline_repeat": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1191,
+      "output_tokens": 22,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 4191.582400000698,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_cold": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1191,
+      "output_tokens": 22,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2946.469000000434,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_warm": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "reused_steps": 3,
+      "elapsed_ms": 124.42259999988892,
+      "cost_usd": 0.0,
+      "energy_j": null
+    }
+  },
+  "runs": {
+    "baseline_first": {
+      "schema_version": "1",
+      "run_id": "d604dc4e-3f0c-4adf-ae02-97b126eb2603",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:41.207475Z",
+      "finished_at": "2026-10-17T18:57:44.014450Z",
+      "output": {
+        "choose_clarification": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "total_tokens": 407
+          },
+          "response_id": "resp_0c836605e0ef38fe016ad3c525c33087d2a6b2f95ffcc8b85e",
+          "text": "{\"next_step\":\"clarify\"}"
+        },
+        "choose_retrieval": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_0599288af72e0f2a016ad3c5269e3887d284c8189829b62dbd",
+          "text": "{\"next_step\":\"respond\"}"
+        },
+        "choose_stop": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_0baf03caffd37d67016ad3c5278bcc87d2b3d71832872c33d0",
+          "text": "{\"next_step\":\"stop\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 399,
+              "output_tokens": 8,
+              "total_tokens": 407
+            },
+            "response_id": "resp_0c836605e0ef38fe016ad3c525c33087d2a6b2f95ffcc8b85e",
+            "text": "{\"next_step\":\"clarify\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 849.1984000011144,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_0599288af72e0f2a016ad3c5269e3887d284c8189829b62dbd",
+            "text": "{\"next_step\":\"respond\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 715.0920999993104,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_0baf03caffd37d67016ad3c5278bcc87d2b3d71832872c33d0",
+            "text": "{\"next_step\":\"stop\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 826.5970000011293,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1191,
+        "output_tokens": 22,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2804.0636999994604,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "baseline_repeat": {
+      "schema_version": "1",
+      "run_id": "0953814d-8b90-451e-b086-fc8053253524",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:44.034385Z",
+      "finished_at": "2026-10-17T18:57:48.225935Z",
+      "output": {
+        "choose_clarification": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "total_tokens": 407
+          },
+          "response_id": "resp_001ebe16602bb4bf016ad3c528915887d29008e80d17291ab4",
+          "text": "{\"next_step\":\"clarify\"}"
+        },
+        "choose_retrieval": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_09335c2a0c813cf5016ad3c52a023887d292272d3145469592",
+          "text": "{\"next_step\":\"retrieve\"}"
+        },
+        "choose_stop": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_01db8443247ebbac016ad3c52bb92487d2a43fbcfe4f7a93ea",
+          "text": "{\"next_step\":\"stop\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 399,
+              "output_tokens": 8,
+              "total_tokens": 407
+            },
+            "response_id": "resp_001ebe16602bb4bf016ad3c528915887d29008e80d17291ab4",
+            "text": "{\"next_step\":\"clarify\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 1417.7992999993876,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_09335c2a0c813cf5016ad3c52a023887d292272d3145469592",
+            "text": "{\"next_step\":\"retrieve\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 1691.4904999994178,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_01db8443247ebbac016ad3c52bb92487d2a43fbcfe4f7a93ea",
+            "text": "{\"next_step\":\"stop\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 856.7567999998573,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1191,
+        "output_tokens": 22,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 4191.582400000698,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_cold": {
+      "schema_version": "1",
+      "run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:48.302235Z",
+      "finished_at": "2026-10-17T18:57:51.246896Z",
+      "output": {
+        "choose_clarification": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "total_tokens": 407
+          },
+          "response_id": "resp_0ea37d3bc06fa76e016ad3c52cbfe887d2ab07b97e0150b360",
+          "text": "{\"next_step\":\"clarify\"}"
+        },
+        "choose_retrieval": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_00cb252d8094bfc3016ad3c52da9f487d2a289c9decca2464f",
+          "text": "{\"next_step\":\"retrieve\"}"
+        },
+        "choose_stop": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_05f09f066320a009016ad3c52eb0bc87d2abca1585f03c4bbf",
+          "text": "{\"next_step\":\"stop\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 399,
+              "output_tokens": 8,
+              "total_tokens": 407
+            },
+            "response_id": "resp_0ea37d3bc06fa76e016ad3c52cbfe887d2ab07b97e0150b360",
+            "text": "{\"next_step\":\"clarify\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:866766fe5e44957326cbaa03c9cd99409c80d4ed944f3ba0a36e258f58c8b85e",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 814.1581999989285,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_00cb252d8094bfc3016ad3c52da9f487d2a289c9decca2464f",
+            "text": "{\"next_step\":\"retrieve\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:997f9d078131429c7fd4af9225b1a2198d81697ddb5ecfac10ced3cf9f789fce",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 962.3601000002964,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "completed",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_05f09f066320a009016ad3c52eb0bc87d2abca1585f03c4bbf",
+            "text": "{\"next_step\":\"stop\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:064258bebace99d34026ba8ecea9578999f9ab189523956432163dab059f750f",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 906.3960000003135,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1191,
+        "output_tokens": 22,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2946.469000000434,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_warm": {
+      "schema_version": "1",
+      "run_id": "642d2567-5021-4124-bcae-ac91643bd99d",
+      "task_id": "sample-next-step",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:51.264728Z",
+      "finished_at": "2026-10-17T18:57:51.389633Z",
+      "output": {
+        "choose_clarification": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 399,
+            "output_tokens": 8,
+            "total_tokens": 407
+          },
+          "response_id": "resp_0ea37d3bc06fa76e016ad3c52cbfe887d2ab07b97e0150b360",
+          "text": "{\"next_step\":\"clarify\"}"
+        },
+        "choose_retrieval": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_00cb252d8094bfc3016ad3c52da9f487d2a289c9decca2464f",
+          "text": "{\"next_step\":\"retrieve\"}"
+        },
+        "choose_stop": {
+          "model": "gpt-4.1-mini-2025-04-14",
+          "provider": "openai",
+          "provider_usage": {
+            "input_tokens": 396,
+            "output_tokens": 7,
+            "total_tokens": 403
+          },
+          "response_id": "resp_05f09f066320a009016ad3c52eb0bc87d2abca1585f03c4bbf",
+          "text": "{\"next_step\":\"stop\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_clarification",
+          "status": "reused",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 399,
+              "output_tokens": 8,
+              "total_tokens": 407
+            },
+            "response_id": "resp_0ea37d3bc06fa76e016ad3c52cbfe887d2ab07b97e0150b360",
+            "text": "{\"next_step\":\"clarify\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:866766fe5e44957326cbaa03c9cd99409c80d4ed944f3ba0a36e258f58c8b85e",
+          "source_run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_retrieval",
+          "status": "reused",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_00cb252d8094bfc3016ad3c52da9f487d2a289c9decca2464f",
+            "text": "{\"next_step\":\"retrieve\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:997f9d078131429c7fd4af9225b1a2198d81697ddb5ecfac10ced3cf9f789fce",
+          "source_run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_stop",
+          "status": "reused",
+          "output": {
+            "model": "gpt-4.1-mini-2025-04-14",
+            "provider": "openai",
+            "provider_usage": {
+              "input_tokens": 396,
+              "output_tokens": 7,
+              "total_tokens": 403
+            },
+            "response_id": "resp_05f09f066320a009016ad3c52eb0bc87d2abca1585f03c4bbf",
+            "text": "{\"next_step\":\"stop\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:064258bebace99d34026ba8ecea9578999f9ab189523956432163dab059f750f",
+          "source_run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 124.42259999988892,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-next-step-policy": "1"
+      },
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    }
+  },
+  "interpretation": "Observed calls and provider usage for this task; no independent correctness score. Provider prompt caching can affect any live run. Canopy reuse is reported separately by reused_steps. Cold and warm results must be assessed separately; cached outputs do not establish answer quality.",
+  "provider_configuration": {
+    "provider": "openai",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "instructions": "Complete the requested business task using only the supplied data.",
+    "max_output_tokens": 128,
+    "temperature": null,
+    "timeout_seconds": 60.0,
+    "cache_namespace": "advisor-live-demo-20261017",
+    "device": null,
+    "max_context_tokens": 4096
+  }
+}

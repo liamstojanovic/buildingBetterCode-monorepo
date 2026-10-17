@@ -1,0 +1,937 @@
+{
+  "schema_version": "1",
+  "check_type": "canopy.authored_fixture_checks",
+  "scope": "54 actual new hosted selections on six invented cases; repeated runs and providers are not independent scenarios. Existing business recordings and reused outputs are excluded.",
+  "expectations_authored_before_calls": true,
+  "quality_benchmark": false,
+  "jev_evaluated": false,
+  "normalization": "Accept an entire standalone JSON fence for the selection check; separately mark raw bare-JSON compliance.",
+  "summary": {
+    "model_calls_checked": 54,
+    "selected_choice_matches": 53,
+    "normalized_output_matches": 53,
+    "bare_json_object": 25,
+    "strict_requested_output_matches": 24
+  },
+  "checks": [
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "86d670ca-62eb-4d62-9d48-4ebcafcf745d",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "86d670ca-62eb-4d62-9d48-4ebcafcf745d",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "86d670ca-62eb-4d62-9d48-4ebcafcf745d",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "7f2f8205-7a0f-47b3-9023-505ebf51fa84",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "7f2f8205-7a0f-47b3-9023-505ebf51fa84",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "7f2f8205-7a0f-47b3-9023-505ebf51fa84",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "ca86c6da-6b79-4be0-9d80-9a7532d7a313",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "f2aa2f1c-7e15-4720-9e6c-51d0bd23d892",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "f2aa2f1c-7e15-4720-9e6c-51d0bd23d892",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "f2aa2f1c-7e15-4720-9e6c-51d0bd23d892",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "8e81f0d0-2a23-4f06-9853-0e4e7863da55",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "8e81f0d0-2a23-4f06-9853-0e4e7863da55",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "8e81f0d0-2a23-4f06-9853-0e4e7863da55",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "anthropic",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "a8a90733-6c01-486d-84cf-243c15e83135",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "59b4968b-f4f0-4f15-ada3-8192b25fcec1",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "59b4968b-f4f0-4f15-ada3-8192b25fcec1",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "59b4968b-f4f0-4f15-ada3-8192b25fcec1",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "80f4f3a5-1227-4ce3-a3a5-edca5f6c3375",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "80f4f3a5-1227-4ce3-a3a5-edca5f6c3375",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "80f4f3a5-1227-4ce3-a3a5-edca5f6c3375",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": false,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "gemini",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "d604dc4e-3f0c-4adf-ae02-97b126eb2603",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "d604dc4e-3f0c-4adf-ae02-97b126eb2603",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "respond"
+      },
+      "selected_choice_matches": false,
+      "normalized_output_matches": false,
+      "bare_json_object": true,
+      "strict_requested_output_matches": false
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_first",
+      "run_id": "d604dc4e-3f0c-4adf-ae02-97b126eb2603",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "0953814d-8b90-451e-b086-fc8053253524",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "0953814d-8b90-451e-b086-fc8053253524",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "baseline_repeat",
+      "run_id": "0953814d-8b90-451e-b086-fc8053253524",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+      "step_id": "choose_clarification",
+      "expected": {
+        "next_step": "clarify"
+      },
+      "observed_normalized": {
+        "next_step": "clarify"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+      "step_id": "choose_retrieval",
+      "expected": {
+        "next_step": "retrieve"
+      },
+      "observed_normalized": {
+        "next_step": "retrieve"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "next-step",
+      "run_label": "governed_cold",
+      "run_id": "1485aaa8-b00e-4086-b622-3039da4b7960",
+      "step_id": "choose_stop",
+      "expected": {
+        "next_step": "stop"
+      },
+      "observed_normalized": {
+        "next_step": "stop"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "16822f30-871a-4bc7-998f-8f27199f0371",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "16822f30-871a-4bc7-998f-8f27199f0371",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_first",
+      "run_id": "16822f30-871a-4bc7-998f-8f27199f0371",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "671dfe5d-5af4-4031-8023-5626bf6111c4",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "671dfe5d-5af4-4031-8023-5626bf6111c4",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "baseline_repeat",
+      "run_id": "671dfe5d-5af4-4031-8023-5626bf6111c4",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4a35266b-900a-4a3e-bcca-74a79bb9bbdf",
+      "step_id": "choose_knowledge_tool",
+      "expected": {
+        "tool": "knowledge_search"
+      },
+      "observed_normalized": {
+        "tool": "knowledge_search"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4a35266b-900a-4a3e-bcca-74a79bb9bbdf",
+      "step_id": "choose_incident_tool",
+      "expected": {
+        "tool": "incident_lookup"
+      },
+      "observed_normalized": {
+        "tool": "incident_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    },
+    {
+      "provider": "openai",
+      "category": "tool-selection",
+      "run_label": "governed_cold",
+      "run_id": "4a35266b-900a-4a3e-bcca-74a79bb9bbdf",
+      "step_id": "choose_ticket_tool",
+      "expected": {
+        "tool": "ticket_lookup"
+      },
+      "observed_normalized": {
+        "tool": "ticket_lookup"
+      },
+      "selected_choice_matches": true,
+      "normalized_output_matches": true,
+      "bare_json_object": true,
+      "strict_requested_output_matches": true
+    }
+  ],
+  "expectations_created_at": "2026-10-17T18:56:57.488890+00:00"
+}

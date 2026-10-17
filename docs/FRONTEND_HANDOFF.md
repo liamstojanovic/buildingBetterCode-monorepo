@@ -106,6 +106,81 @@ Python environment and prepared model weights; its sample is a numeric inventory
 decision. Actual local OpenJEV inference has not yet been verified here. Contract
 tests using a synthetic encoder must never appear as a real inference demo.
 
+## Retained hosted demo: all three advisor categories
+
+The [retained hosted demo](../core/examples/recordings/advisor-live-2026-10-17/README.md)
+contains committed, credential-free exports from actual OpenAI, Anthropic and
+Gemini calls on invented business, tool-selection and next-step cases. Follow its
+artifact index for the frontend comparison bundles, sanitized comparison exports
+and combined advisor report. These are historical recordings: playback and
+offline analysis require neither provider credentials nor OpenJEV weights.
+
+The retained set contains nine comparisons, 36 runs and 84 step observations:
+63 hosted model calls and 21 warm reuses. Each provider contributes the existing
+business-priority case plus three tool-selection and three next-step cases.
+The 54 new selection calls matched the authored expected choice 53 times after
+normalization; only 24 also met the requested bare-JSON contract. These are
+fixture checks, not measured JEV quality. See the saved
+[fixture checks](../core/examples/recordings/advisor-live-2026-10-17/fixture-checks.json)
+for individual outcomes; the old business-priority recordings are excluded from
+those 54 checks.
+
+Use **Import recording** to load one `canopy-comparison/v1` bundle. Compare cold
+execution and unchanged warm reuse, then open each step's recorded output and
+usage. Each bundle preserves one provider and one workload; import another bundle
+to change either. Do not combine providers into baseline/Canopy lanes or treat
+their different recordings as a controlled provider-performance comparison.
+
+For a useful failure example, open OpenAI's next-step bundle and choose the cold
+comparison. Inspect `choose_retrieval` in the baseline lane (`baseline_cold` in
+the bundle, `baseline_first` in the core export): the model chose `respond`
+although the recorded state had no approved evidence and the authored expectation
+was `retrieve`. Preserve this result in the demo. Different choices in later runs
+do not show governance fixing decision quality; the runtime does not enforce
+transition eligibility. The committed fixture checks separately assess normalized
+choice and requested bare-JSON format; fenced JSON can satisfy the former while
+failing the latter. Those checks are not an independent quality benchmark, and
+the frontend bundles' `evaluations` remain empty.
+
+Next open the combined `AdvisorReport` and filter its findings by business
+decision, tool selection and next step. The current frontend supports recording
+import; its advisor view is still an integration task described below. Until that
+view is implemented, use the saved advisor JSON for this part of the demo rather
+than feeding it to **Import recording**. Show selected choices, reasons, mapping
+gaps, measured work and `not_evaluated` side by side.
+
+The [combined advisor report](../core/examples/recordings/advisor-live-2026-10-17/advisor-report.json)
+contains 21 provider-specific groups over seven distinct cases: three business,
+nine tool-selection and nine next-step groups. All have `evaluate_openjev` /
+`needs_mapping`; only the three business groups have `partial_substitution: true`.
+These are suggestions for evaluation, not 21 validated replacement decisions.
+All nine frontend bundles have passed the current `parseBundle` and
+`RecordedRunClient` path: 36 run playbacks and 618 events, with network disabled.
+
+Keep the two provenance labels visible: `task.metadata.sample_data: true` means
+the business cases are invented, while `RunResult.synthetic: false` means the
+handler made actual model calls. Warm results reuse those real outputs. None of
+the tool names was executed and the next-step choices did not modify the static
+DAG. These are hosted selection recordings, not an autonomous agent trajectory.
+The support-priority result also includes a generated explanation; replacing its
+selection alone would leave that explanation work. All JEV recommendations still
+need mapping and independent replacement evaluation.
+
+To export a new retained comparison for the current frontend, use its existing
+converter while the original SQLite stores and events are available:
+
+```powershell
+.venv\Scripts\python.exe web\scripts\import-comparison.py .canopy\comparisons\YOUR_RUN\report.json --output web\public\recordings\my-comparison.json
+```
+
+That script writes only inside `web/`; leave this conversion to the frontend
+owner. It accepts repeated reports only for the same task snapshot and model
+fingerprint, so run it separately for different providers or categories. The
+committed demo bundles already include the recorded events and need no database.
+The sanitized comparison JSON alone cannot reconstruct those events through this
+converter. Reanalyze a comparison with the advisor CLI instead, as shown in the
+demo guide.
+
 ## HTTP integration details
 
 | Request | Response / behavior |
@@ -291,7 +366,7 @@ it contains Canopy results:
 | Artifact | Discriminator / structure | Current consumer |
 | --- | --- | --- |
 | Frontend session/core fixture bundle | `format: "canopy-comparison/v1"`, `recordings` with task/result/events | Frontend `parseBundle` |
-| Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; frontend needs a separate adapter for this export |
+| Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; `scripts/import-comparison.py` converts retained reports plus databases/events for the frontend |
 | Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | New frontend advisor import to implement |
 
 The frontend's `exportSession()` and `fixtures:core` bundle are **not** accepted by
@@ -378,11 +453,13 @@ component reports to show budget containment, probe-driven drift containment,
 and actual message-byte counts/deduplication. Message byte savings can be negative
 and say nothing by themselves about tokens, energy, or latency.
 
-Finish with one real provider comparison report if available, then import the
-offline advisor report. Open a business, tool and next-step finding, show each
-missing mapping/evaluation, and contrast retained generation with a deterministic
-alternative. Explain the next independent replacement experiment. The analyzer
-works now; the generic catalog fixture does not implement adaptive agent routes.
+Finish with the retained hosted bundles above, then review their combined offline
+advisor report in the advisor view when implemented, or as saved JSON. Open a
+business, tool and next-step finding and show each missing mapping/evaluation.
+Use the separate synthetic advisor demo to contrast retained generation with a
+deterministic alternative. Explain the next independent replacement experiment.
+The analyzer works now; neither the recorded selections nor the generic catalog
+fixture implement adaptive agent routes.
 
 Before demo day: check API/proxy connectivity, fresh evidence, matching tenant,
 unknown metric labels, reuse provenance, approval rejection/consumption, and

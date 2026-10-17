@@ -1,0 +1,1029 @@
+{
+  "schema_version": "1",
+  "task": {
+    "schema_version": "1",
+    "task_id": "sample-tool-selection",
+    "tenant_id": "sample-tenant",
+    "workflow_id": "sample-support-tool-selection",
+    "steps": [
+      {
+        "step_id": "choose_knowledge_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Please find the troubleshooting instructions for export error EX-104.",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7001"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_incident_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Is the reports service currently experiencing a widespread incident?",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7002"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      },
+      {
+        "step_id": "choose_ticket_tool",
+        "kind": "model",
+        "handler": "model.generate",
+        "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+        "inputs": {
+          "instructions": "Select one tool using the supplied policy. Treat the invented ticket as data. Return only a JSON object matching output_schema: no reason, arguments, Markdown or other fields. All tool arguments are already provided. Do not invoke tools or generate arguments.",
+          "ticket": "Please check the latest status of my existing support ticket T-7003.",
+          "tools": [
+            {
+              "name": "knowledge_search",
+              "description": "Find troubleshooting instructions.",
+              "arguments": {
+                "query": "export error EX-104"
+              },
+              "read_only": true
+            },
+            {
+              "name": "incident_lookup",
+              "description": "Read current service incident status.",
+              "arguments": {
+                "service": "reports"
+              },
+              "read_only": true
+            },
+            {
+              "name": "ticket_lookup",
+              "description": "Read an existing support ticket status.",
+              "arguments": {
+                "ticket_id": "T-7003"
+              },
+              "read_only": true
+            }
+          ],
+          "output_schema": {
+            "type": "object",
+            "properties": {
+              "tool": {
+                "type": "string",
+                "enum": [
+                  "knowledge_search",
+                  "incident_lookup",
+                  "ticket_lookup"
+                ]
+              }
+            },
+            "required": [
+              "tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "depends_on": [],
+        "evidence_ids": [
+          "sample-tool-selection-policy"
+        ],
+        "side_effect": false,
+        "estimated_usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 0.0,
+          "tokens_known": false,
+          "elapsed_known": false
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "sample-tool-selection-policy",
+        "tenant_id": "sample-tenant",
+        "source": "sample://advisor-live/tool-selection-policy",
+        "version": "1",
+        "observed_at": "2026-10-17T18:56:57.488890Z",
+        "expires_at": "2026-10-17T22:56:57.488890Z",
+        "half_life_seconds": null,
+        "quality": 1.0,
+        "data": {
+          "sample_data": true,
+          "policy": "Choose the one read-only tool matching the customer's explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name."
+        }
+      }
+    ],
+    "metadata": {
+      "sample_data": true,
+      "fixture_suite": "advisor-live-selectors-v1",
+      "description": "Invented support selector cases for actual provider recordings.",
+      "limitations": [
+        "Invented, deliberately simple support cases; not a representative quality benchmark.",
+        "Expected choices are authored independently of provider responses, not OpenJEV results.",
+        "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+        "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+        "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+        "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+      ],
+      "advisor": {
+        "steps": {
+          "choose_knowledge_tool": {
+            "argument_source": "existing"
+          },
+          "choose_incident_tool": {
+            "argument_source": "existing"
+          },
+          "choose_ticket_tool": {
+            "argument_source": "existing"
+          }
+        }
+      }
+    }
+  },
+  "sample_data": true,
+  "model_fingerprint": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+  "execution_order": [
+    "baseline_first",
+    "baseline_repeat",
+    "governed_cold",
+    "governed_warm"
+  ],
+  "configuration": {
+    "baseline": {
+      "mode": "baseline",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+      "prompt_version": "1",
+      "cache_enabled": false,
+      "replay_run_id": null
+    },
+    "governed": {
+      "mode": "governed",
+      "actor_id": "live-comparison-operator",
+      "permissions": [
+        "execute:*"
+      ],
+      "policy": {
+        "version": "1",
+        "allowed_tools": [],
+        "approval_required_tools": [],
+        "max_amount_minor": null,
+        "freshness_threshold": 0.5,
+        "drift_action": "review"
+      },
+      "budget": {
+        "max_tokens": null,
+        "max_steps": 3,
+        "max_cost_usd": null,
+        "max_elapsed_ms": null,
+        "max_energy_j": null
+      },
+      "model_fingerprint": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+      "prompt_version": "1",
+      "cache_enabled": true,
+      "replay_run_id": null
+    }
+  },
+  "summary": {
+    "baseline_first": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1277,
+      "output_tokens": 27,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2598.983500000031,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "baseline_repeat": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1277,
+      "output_tokens": 22,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2039.8135999985243,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_cold": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 1277,
+      "output_tokens": 34,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 3,
+      "tool_calls": 0,
+      "reused_steps": 0,
+      "elapsed_ms": 2108.168200000364,
+      "cost_usd": null,
+      "energy_j": null
+    },
+    "governed_warm": {
+      "status": "completed",
+      "reason": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "tokens_known": true,
+      "provider_cached_input_tokens": 0,
+      "model_calls": 0,
+      "tool_calls": 0,
+      "reused_steps": 3,
+      "elapsed_ms": 119.83429999963846,
+      "cost_usd": 0.0,
+      "energy_j": null
+    }
+  },
+  "runs": {
+    "baseline_first": {
+      "schema_version": "1",
+      "run_id": "59b4968b-f4f0-4f15-ada3-8192b25fcec1",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:23.114066Z",
+      "finished_at": "2026-10-17T18:57:25.705518Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 7,
+            "promptTokenCount": 422,
+            "totalTokenCount": 429
+          },
+          "response_id": "FMXTap-SHeaVmtkPwoGM0Qc",
+          "text": "{\"tool\":\"incident_lookup\"}"
+        },
+        "choose_knowledge_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 13,
+            "promptTokenCount": 426,
+            "totalTokenCount": 439
+          },
+          "response_id": "E8XTavysM7aHz7IPg7bXqQ8",
+          "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 7,
+            "promptTokenCount": 429,
+            "totalTokenCount": 436
+          },
+          "response_id": "FcXTau3mIZ2gz7IPnqfeoQY",
+          "text": "{\"tool\":\"ticket_lookup\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 426,
+              "totalTokenCount": 439
+            },
+            "response_id": "E8XTavysM7aHz7IPg7bXqQ8",
+            "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 426,
+            "output_tokens": 13,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 827.0714999998745,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 7,
+              "promptTokenCount": 422,
+              "totalTokenCount": 429
+            },
+            "response_id": "FMXTap-SHeaVmtkPwoGM0Qc",
+            "text": "{\"tool\":\"incident_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 422,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 892.6116999991791,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 7,
+              "promptTokenCount": 429,
+              "totalTokenCount": 436
+            },
+            "response_id": "FcXTau3mIZ2gz7IPnqfeoQY",
+            "text": "{\"tool\":\"ticket_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 429,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 604.7132999992755,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1277,
+        "output_tokens": 27,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2598.983500000031,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "baseline_repeat": {
+      "schema_version": "1",
+      "run_id": "80f4f3a5-1227-4ce3-a3a5-edca5f6c3375",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:25.738958Z",
+      "finished_at": "2026-10-17T18:57:27.778343Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 8,
+            "promptTokenCount": 422,
+            "totalTokenCount": 430
+          },
+          "response_id": "FsXTavG_Nr6hz7IP4tCu8A4",
+          "text": "{\"tool\": \"incident_lookup\"}"
+        },
+        "choose_knowledge_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 7,
+            "promptTokenCount": 426,
+            "totalTokenCount": 433
+          },
+          "response_id": "FsXTarfzEoWFz7IPxI6jqQ8",
+          "text": "{\"tool\":\"knowledge_search\"}"
+        },
+        "choose_ticket_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 7,
+            "promptTokenCount": 429,
+            "totalTokenCount": 436
+          },
+          "response_id": "F8XTaomOJJ3Vz7IPq6GKqQY",
+          "text": "{\"tool\":\"ticket_lookup\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 7,
+              "promptTokenCount": 426,
+              "totalTokenCount": 433
+            },
+            "response_id": "FsXTarfzEoWFz7IPxI6jqQ8",
+            "text": "{\"tool\":\"knowledge_search\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 426,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 563.5887999997067,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 8,
+              "promptTokenCount": 422,
+              "totalTokenCount": 430
+            },
+            "response_id": "FsXTavG_Nr6hz7IP4tCu8A4",
+            "text": "{\"tool\": \"incident_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 422,
+            "output_tokens": 8,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 544.4948999993358,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 7,
+              "promptTokenCount": 429,
+              "totalTokenCount": 436
+            },
+            "response_id": "F8XTaomOJJ3Vz7IPq6GKqQY",
+            "text": "{\"tool\":\"ticket_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 429,
+            "output_tokens": 7,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 611.2885000002279,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1277,
+        "output_tokens": 22,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2039.8135999985243,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_cold": {
+      "schema_version": "1",
+      "run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:27.857911Z",
+      "finished_at": "2026-10-17T18:57:29.965202Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 13,
+            "promptTokenCount": 422,
+            "totalTokenCount": 435
+          },
+          "response_id": "GcXTasORApWcz7IP192e0QM",
+          "text": "```json\n{\"tool\": \"incident_lookup\"}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 13,
+            "promptTokenCount": 426,
+            "totalTokenCount": 439
+          },
+          "response_id": "GMXTarDoGNCs6dkP5qyCOA",
+          "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 8,
+            "promptTokenCount": 429,
+            "totalTokenCount": 437
+          },
+          "response_id": "GcXTau6-LfSJmtkPsr3KwQg",
+          "text": "{\"tool\": \"ticket_lookup\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 426,
+              "totalTokenCount": 439
+            },
+            "response_id": "GMXTarDoGNCs6dkP5qyCOA",
+            "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:207896b18d19c81dd80c07d62c354bca224a0c95b9cf56ffdb28ec349076dc5d",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 426,
+            "output_tokens": 13,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 692.4168999994436,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 422,
+              "totalTokenCount": 435
+            },
+            "response_id": "GcXTasORApWcz7IP192e0QM",
+            "text": "```json\n{\"tool\": \"incident_lookup\"}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:d8f026e8308b4515282b9314a9049e7355795d97afeb6182684cfff827365c9d",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 422,
+            "output_tokens": 13,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 507.0462999992742,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "completed",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 8,
+              "promptTokenCount": 429,
+              "totalTokenCount": 437
+            },
+            "response_id": "GcXTau6-LfSJmtkPsr3KwQg",
+            "text": "{\"tool\": \"ticket_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:a4aa0758ea0e8844683756ec74242c23b59d08d01d38fac44b262e0141d2ceb6",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 429,
+            "output_tokens": 8,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 658.3673999994062,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 1277,
+        "output_tokens": 34,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 3,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 2108.168200000364,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    },
+    "governed_warm": {
+      "schema_version": "1",
+      "run_id": "b7d25698-75ac-4d12-82e0-c7c52f917add",
+      "task_id": "sample-tool-selection",
+      "tenant_id": "sample-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T18:57:29.980592Z",
+      "finished_at": "2026-10-17T18:57:30.100365Z",
+      "output": {
+        "choose_incident_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 13,
+            "promptTokenCount": 422,
+            "totalTokenCount": 435
+          },
+          "response_id": "GcXTasORApWcz7IP192e0QM",
+          "text": "```json\n{\"tool\": \"incident_lookup\"}\n```"
+        },
+        "choose_knowledge_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 13,
+            "promptTokenCount": 426,
+            "totalTokenCount": 439
+          },
+          "response_id": "GMXTarDoGNCs6dkP5qyCOA",
+          "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+        },
+        "choose_ticket_tool": {
+          "model": "gemini-2.5-flash-lite",
+          "provider": "gemini",
+          "provider_usage": {
+            "candidatesTokenCount": 8,
+            "promptTokenCount": 429,
+            "totalTokenCount": 437
+          },
+          "response_id": "GcXTau6-LfSJmtkPsr3KwQg",
+          "text": "{\"tool\": \"ticket_lookup\"}"
+        }
+      },
+      "steps": [
+        {
+          "step_id": "choose_knowledge_tool",
+          "status": "reused",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 426,
+              "totalTokenCount": 439
+            },
+            "response_id": "GMXTarDoGNCs6dkP5qyCOA",
+            "text": "```json\n{\"tool\": \"knowledge_search\"}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:207896b18d19c81dd80c07d62c354bca224a0c95b9cf56ffdb28ec349076dc5d",
+          "source_run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_incident_tool",
+          "status": "reused",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 422,
+              "totalTokenCount": 435
+            },
+            "response_id": "GcXTasORApWcz7IP192e0QM",
+            "text": "```json\n{\"tool\": \"incident_lookup\"}\n```"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:d8f026e8308b4515282b9314a9049e7355795d97afeb6182684cfff827365c9d",
+          "source_run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "choose_ticket_tool",
+          "status": "reused",
+          "output": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 8,
+              "promptTokenCount": 429,
+              "totalTokenCount": 437
+            },
+            "response_id": "GcXTau6-LfSJmtkPsr3KwQg",
+            "text": "{\"tool\": \"ticket_lookup\"}"
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:a4aa0758ea0e8844683756ec74242c23b59d08d01d38fac44b262e0141d2ceb6",
+          "source_run_id": "4718054d-4d69-4eec-9080-e8be35bcf159",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 119.83429999963846,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "sample-tool-selection-policy": "1"
+      },
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": false,
+      "reason": null
+    }
+  },
+  "interpretation": "Observed calls and provider usage for this task; no independent correctness score. Provider prompt caching can affect any live run. Canopy reuse is reported separately by reused_steps. Cold and warm results must be assessed separately; cached outputs do not establish answer quality.",
+  "provider_configuration": {
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "instructions": "Complete the requested business task using only the supplied data.",
+    "max_output_tokens": 128,
+    "temperature": null,
+    "timeout_seconds": 60.0,
+    "cache_namespace": "advisor-live-demo-20261017",
+    "device": null,
+    "max_context_tokens": 4096
+  }
+}

@@ -1,0 +1,3272 @@
+{
+  "format": "canopy-comparison/v1",
+  "description": "Recorded hosted-provider execution on invented sample data. Original usage, elapsed times, outputs and events are preserved; unknown cost stays null. Playback makes zero provider calls. No independent quality evaluation or JEV replacement result is included.",
+  "recordings": {
+    "baseline_cold": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "workflow_id": "sample-support-next-step",
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [
+                  "report_id"
+                ],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": true,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": true
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "sample-next-step-policy",
+            "tenant_id": "sample-tenant",
+            "source": "sample://advisor-live/next-step-policy",
+            "version": "1",
+            "observed_at": "2026-10-17T18:56:57.488890Z",
+            "expires_at": "2026-10-17T22:56:57.488890Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.",
+              "sample_data": true
+            }
+          }
+        ],
+        "metadata": {
+          "description": "Invented support selector cases for actual provider recordings.",
+          "fixture_suite": "advisor-live-selectors-v1",
+          "limitations": [
+            "Invented, deliberately simple support cases; not a representative quality benchmark.",
+            "Expected choices are authored independently of provider responses, not OpenJEV results.",
+            "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+            "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+            "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+            "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+          ],
+          "sample_data": true
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T18:57:30.893202Z",
+        "finished_at": "2026-10-17T18:57:32.798207Z",
+        "output": {
+          "choose_clarification": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 9,
+              "promptTokenCount": 434,
+              "totalTokenCount": 443
+            },
+            "response_id": "G8XTapS-GvXQz7IPi-KsqA8",
+            "text": "{\"next_step\": \"clarify\"}"
+          },
+          "choose_retrieval": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 431,
+              "totalTokenCount": 444
+            },
+            "response_id": "HMXTasr0AYKgz7IP9ZeYoQY",
+            "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+          },
+          "choose_stop": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 18,
+              "promptTokenCount": 431,
+              "totalTokenCount": 449
+            },
+            "response_id": "HMXTapjmIsGZqtsPopDAqQg",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          }
+        },
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 9,
+                "promptTokenCount": 434,
+                "totalTokenCount": 443
+              },
+              "response_id": "G8XTapS-GvXQz7IPi-KsqA8",
+              "text": "{\"next_step\": \"clarify\"}"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 434,
+              "output_tokens": 9,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 574.1056999995635,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 13,
+                "promptTokenCount": 431,
+                "totalTokenCount": 444
+              },
+              "response_id": "HMXTasr0AYKgz7IP9ZeYoQY",
+              "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 500.79139999979816,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 18,
+                "promptTokenCount": 431,
+                "totalTokenCount": 449
+              },
+              "response_id": "HMXTapjmIsGZqtsPopDAqQg",
+              "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 18,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 517.519999999422,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 1296,
+          "output_tokens": 40,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 3,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 1901.6578000009758,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "sample-next-step-policy": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": false,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 0,
+          "timestamp": "2026-10-17T18:57:30.903330Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "b818ceecc8c0400bf23c2d5475fca3b2de6fccdb7ef6d8b79156bdb72b5b6fa3",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 1,
+          "timestamp": "2026-10-17T18:57:30.932556Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 2,
+          "timestamp": "2026-10-17T18:57:30.966310Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_clarification",
+          "payload": {
+            "trace_id": "9ff68766df178652d00fde3ce428fd612d57d3ef4c7f72f31774ce11c943b6e9"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 3,
+          "timestamp": "2026-10-17T18:57:31.005803Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_clarification",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 4,
+          "timestamp": "2026-10-17T18:57:31.023175Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_clarification",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 5,
+          "timestamp": "2026-10-17T18:57:31.617972Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_clarification",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "300deeecc664edb8b4446053f2278822a117f2e071709619f6170d3f90417ed5",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 574.1056999995635,
+              "energy_j": null,
+              "input_tokens": 434,
+              "model_calls": 1,
+              "output_tokens": 9,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 6,
+          "timestamp": "2026-10-17T18:57:31.622210Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_clarification",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 9,
+                  "promptTokenCount": 434,
+                  "totalTokenCount": 443
+                },
+                "response_id": "G8XTapS-GvXQz7IPi-KsqA8",
+                "text": "{\"next_step\": \"clarify\"}"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_clarification",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 574.1056999995635,
+                "energy_j": null,
+                "input_tokens": 434,
+                "model_calls": 1,
+                "output_tokens": 9,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 7,
+          "timestamp": "2026-10-17T18:57:31.635699Z",
+          "event_type": "step_completed",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 8,
+          "timestamp": "2026-10-17T18:57:31.644777Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 9,
+          "timestamp": "2026-10-17T18:57:31.654685Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "trace_id": "1036609a0a672f6b7a3905fd578c704b1d7a1e4e59ac90a4c5177471623c7b76"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 10,
+          "timestamp": "2026-10-17T18:57:31.670866Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_retrieval",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 11,
+          "timestamp": "2026-10-17T18:57:31.672838Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 12,
+          "timestamp": "2026-10-17T18:57:32.180427Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "615d0795caf0f36b91e0bd3456eec9541d84f74b4e82dfee881e2a25c7e46dc7",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 500.79139999979816,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 13,
+          "timestamp": "2026-10-17T18:57:32.194705Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 13,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 444
+                },
+                "response_id": "HMXTasr0AYKgz7IP9ZeYoQY",
+                "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_retrieval",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 500.79139999979816,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 13,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 14,
+          "timestamp": "2026-10-17T18:57:32.203715Z",
+          "event_type": "step_completed",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 15,
+          "timestamp": "2026-10-17T18:57:32.210546Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 16,
+          "timestamp": "2026-10-17T18:57:32.213860Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_stop",
+          "payload": {
+            "trace_id": "41d438aba25f570ced41947ee2195ee33c444d0a287d04cc37529ac7e770fdc2"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 17,
+          "timestamp": "2026-10-17T18:57:32.242895Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_stop",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 18,
+          "timestamp": "2026-10-17T18:57:32.244336Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_stop",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 19,
+          "timestamp": "2026-10-17T18:57:32.771625Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_stop",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "75b727c4e7af7a2bf68eab851986b07a1c06241e543e7557d1c1e4bf209cc540",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 517.519999999422,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 18,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 20,
+          "timestamp": "2026-10-17T18:57:32.780490Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_stop",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 18,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 449
+                },
+                "response_id": "HMXTapjmIsGZqtsPopDAqQg",
+                "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_stop",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 517.519999999422,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 18,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 21,
+          "timestamp": "2026-10-17T18:57:32.789160Z",
+          "event_type": "step_completed",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+          "sequence": 22,
+          "timestamp": "2026-10-17T18:57:32.800208Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:1dea45f6166e54cce76ea196c526b6c2fe35969aa139468cd7553c489c502580"
+          }
+        }
+      ]
+    },
+    "baseline": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "workflow_id": "sample-support-next-step",
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [
+                  "report_id"
+                ],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": true,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": true
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "sample-next-step-policy",
+            "tenant_id": "sample-tenant",
+            "source": "sample://advisor-live/next-step-policy",
+            "version": "1",
+            "observed_at": "2026-10-17T18:56:57.488890Z",
+            "expires_at": "2026-10-17T22:56:57.488890Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.",
+              "sample_data": true
+            }
+          }
+        ],
+        "metadata": {
+          "description": "Invented support selector cases for actual provider recordings.",
+          "fixture_suite": "advisor-live-selectors-v1",
+          "limitations": [
+            "Invented, deliberately simple support cases; not a representative quality benchmark.",
+            "Expected choices are authored independently of provider responses, not OpenJEV results.",
+            "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+            "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+            "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+            "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+          ],
+          "sample_data": true
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T18:57:32.810439Z",
+        "finished_at": "2026-10-17T18:57:34.809340Z",
+        "output": {
+          "choose_clarification": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 14,
+              "promptTokenCount": 434,
+              "totalTokenCount": 448
+            },
+            "response_id": "HcXTarCCFLz-qtsPoKbRsAg",
+            "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+          },
+          "choose_retrieval": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 431,
+              "totalTokenCount": 444
+            },
+            "response_id": "HcXTapyjO6LPz7IPmqH_kA8",
+            "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+          },
+          "choose_stop": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 431,
+              "totalTokenCount": 444
+            },
+            "response_id": "HsXTaoGDJbCsz7IPhOr9mA8",
+            "text": "```json\n{\"next_step\": \"stop\"}\n```"
+          }
+        },
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 14,
+                "promptTokenCount": 434,
+                "totalTokenCount": 448
+              },
+              "response_id": "HcXTarCCFLz-qtsPoKbRsAg",
+              "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 434,
+              "output_tokens": 14,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 649.4848000002094,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 13,
+                "promptTokenCount": 431,
+                "totalTokenCount": 444
+              },
+              "response_id": "HcXTapyjO6LPz7IPmqH_kA8",
+              "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 553.447000000233,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 13,
+                "promptTokenCount": 431,
+                "totalTokenCount": 444
+              },
+              "response_id": "HsXTaoGDJbCsz7IPhOr9mA8",
+              "text": "```json\n{\"next_step\": \"stop\"}\n```"
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 563.7129999995523,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 1296,
+          "output_tokens": 40,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 3,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 1998.7306999992143,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "sample-next-step-policy": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": false,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 0,
+          "timestamp": "2026-10-17T18:57:32.815589Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "96261bdad1b4dbde08e2392efc331c29811941dd74343828d0e98449fe2215da",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 1,
+          "timestamp": "2026-10-17T18:57:32.830477Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 2,
+          "timestamp": "2026-10-17T18:57:32.839683Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_clarification",
+          "payload": {
+            "trace_id": "1ea94533b382caf095c8abea08adb4f70c7e1463080359c2d8d373cd2bf735aa"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 3,
+          "timestamp": "2026-10-17T18:57:32.857689Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_clarification",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 4,
+          "timestamp": "2026-10-17T18:57:32.859684Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_clarification",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 5,
+          "timestamp": "2026-10-17T18:57:33.518877Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_clarification",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "96e9392ec15b0d0d64944f8bb163173ff38b2ffb453bee3216020657df49c393",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 649.4848000002094,
+              "energy_j": null,
+              "input_tokens": 434,
+              "model_calls": 1,
+              "output_tokens": 14,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 6,
+          "timestamp": "2026-10-17T18:57:33.527994Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_clarification",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 14,
+                  "promptTokenCount": 434,
+                  "totalTokenCount": 448
+                },
+                "response_id": "HcXTarCCFLz-qtsPoKbRsAg",
+                "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_clarification",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 649.4848000002094,
+                "energy_j": null,
+                "input_tokens": 434,
+                "model_calls": 1,
+                "output_tokens": 14,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 7,
+          "timestamp": "2026-10-17T18:57:33.538277Z",
+          "event_type": "step_completed",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 8,
+          "timestamp": "2026-10-17T18:57:33.546573Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 9,
+          "timestamp": "2026-10-17T18:57:33.557632Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "trace_id": "65bb01b3e330f4a89a1a076d6ea85c46831f488812e0d09de958fe7f54666ceb"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 10,
+          "timestamp": "2026-10-17T18:57:33.576719Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_retrieval",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 11,
+          "timestamp": "2026-10-17T18:57:33.576719Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 12,
+          "timestamp": "2026-10-17T18:57:34.144398Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "6095b010317584e219f5b1a9371537a63c797ec556728993d146e1df822e4b3d",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 553.447000000233,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 13,
+          "timestamp": "2026-10-17T18:57:34.151628Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 13,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 444
+                },
+                "response_id": "HcXTapyjO6LPz7IPmqH_kA8",
+                "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_retrieval",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 553.447000000233,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 13,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 14,
+          "timestamp": "2026-10-17T18:57:34.165821Z",
+          "event_type": "step_completed",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 15,
+          "timestamp": "2026-10-17T18:57:34.174887Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 16,
+          "timestamp": "2026-10-17T18:57:34.184894Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_stop",
+          "payload": {
+            "trace_id": "a8d0ff8e990cf85fa13ca11d3ab30374b1adfb70565cc4c8f5db56e967803956"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 17,
+          "timestamp": "2026-10-17T18:57:34.205272Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_stop",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 18,
+          "timestamp": "2026-10-17T18:57:34.205272Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_stop",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 19,
+          "timestamp": "2026-10-17T18:57:34.780566Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_stop",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "09626e3ef0b181dbcd33e02df89b36b3136b6f6dd69b7ec3e02a8cd52d469009",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 563.7129999995523,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 20,
+          "timestamp": "2026-10-17T18:57:34.794505Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_stop",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 13,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 444
+                },
+                "response_id": "HsXTaoGDJbCsz7IPhOr9mA8",
+                "text": "```json\n{\"next_step\": \"stop\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_stop",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 563.7129999995523,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 13,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 21,
+          "timestamp": "2026-10-17T18:57:34.804236Z",
+          "event_type": "step_completed",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+          "sequence": 22,
+          "timestamp": "2026-10-17T18:57:34.809340Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:4357ca8878a8f89792d3b469afeaf80c1727b38882aedfd88216a66630542e47"
+          }
+        }
+      ]
+    },
+    "cold": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "workflow_id": "sample-support-next-step",
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [
+                  "report_id"
+                ],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": true,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": true
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "sample-next-step-policy",
+            "tenant_id": "sample-tenant",
+            "source": "sample://advisor-live/next-step-policy",
+            "version": "1",
+            "observed_at": "2026-10-17T18:56:57.488890Z",
+            "expires_at": "2026-10-17T22:56:57.488890Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.",
+              "sample_data": true
+            }
+          }
+        ],
+        "metadata": {
+          "description": "Invented support selector cases for actual provider recordings.",
+          "fixture_suite": "advisor-live-selectors-v1",
+          "limitations": [
+            "Invented, deliberately simple support cases; not a representative quality benchmark.",
+            "Expected choices are authored independently of provider responses, not OpenJEV results.",
+            "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+            "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+            "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+            "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+          ],
+          "sample_data": true
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T18:57:34.893025Z",
+        "finished_at": "2026-10-17T18:57:36.705282Z",
+        "output": {
+          "choose_clarification": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 14,
+              "promptTokenCount": 434,
+              "totalTokenCount": 448
+            },
+            "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+            "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+          },
+          "choose_retrieval": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 431,
+              "totalTokenCount": 444
+            },
+            "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+            "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+          },
+          "choose_stop": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 18,
+              "promptTokenCount": 431,
+              "totalTokenCount": 449
+            },
+            "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          }
+        },
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 14,
+                "promptTokenCount": 434,
+                "totalTokenCount": 448
+              },
+              "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+              "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:8e9585175b6d225ebebc69c4afa3fbfb5b1a43c071a108350bf1322fd39461fd",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 434,
+              "output_tokens": 14,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 469.3524000012985,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 13,
+                "promptTokenCount": 431,
+                "totalTokenCount": 444
+              },
+              "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+              "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6c95fcf890c08fd505cac62f891efb4dfaf4d5c4bab895e44db27cd6251585ed",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 555.8853999991697,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "status": "completed",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 18,
+                "promptTokenCount": 431,
+                "totalTokenCount": 449
+              },
+              "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+              "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:8270adc3b134a4fd0b1b8af7faa06bf0c6ee01b5303e603cb5cc2cdd4b555cfd",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 431,
+              "output_tokens": 18,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 545.559800000774,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 1296,
+          "output_tokens": 45,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 3,
+          "tool_calls": 0,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 1817.8211000013107,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "sample-next-step-policy": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": false,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 0,
+          "timestamp": "2026-10-17T18:57:34.899632Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "68640f7e36faf1d7c30e4af099917057fb7d3d4f9676c3600316b87e3a996493",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 1,
+          "timestamp": "2026-10-17T18:57:34.905476Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 2,
+          "timestamp": "2026-10-17T18:57:34.905476Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 3,
+          "timestamp": "2026-10-17T18:57:34.922802Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_clarification",
+          "payload": {
+            "trace_id": "fa641884e8bbba22125aa2bdee9aaf32e2a9a4bcb5ac5b022fafed5085ff6492"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 4,
+          "timestamp": "2026-10-17T18:57:34.941213Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_clarification",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 5,
+          "timestamp": "2026-10-17T18:57:34.943215Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_clarification",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 6,
+          "timestamp": "2026-10-17T18:57:35.418580Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_clarification",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "70f2b23d042f4c0a5ccff2f5ed32bbae8e97f90b8aa13ac021120a719e43cc5b",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 469.3524000012985,
+              "energy_j": null,
+              "input_tokens": 434,
+              "model_calls": 1,
+              "output_tokens": 14,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 7,
+          "timestamp": "2026-10-17T18:57:35.435405Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_clarification",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:8e9585175b6d225ebebc69c4afa3fbfb5b1a43c071a108350bf1322fd39461fd",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 14,
+                  "promptTokenCount": 434,
+                  "totalTokenCount": 448
+                },
+                "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+                "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_clarification",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 469.3524000012985,
+                "energy_j": null,
+                "input_tokens": 434,
+                "model_calls": 1,
+                "output_tokens": 14,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 8,
+          "timestamp": "2026-10-17T18:57:35.444409Z",
+          "event_type": "step_completed",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 9,
+          "timestamp": "2026-10-17T18:57:35.447171Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 10,
+          "timestamp": "2026-10-17T18:57:35.463865Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 11,
+          "timestamp": "2026-10-17T18:57:35.471363Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "trace_id": "4e69f4a20bd2d03bc63dce1d694c919c35c6b021693be4c4b47475c265a8e285"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 12,
+          "timestamp": "2026-10-17T18:57:35.488708Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_retrieval",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 13,
+          "timestamp": "2026-10-17T18:57:35.491800Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 14,
+          "timestamp": "2026-10-17T18:57:36.043061Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "6c765b27bfb51a3109c93628544e598d92ee5ffe5bc442b88f8ad46543fdb0c2",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 555.8853999991697,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 15,
+          "timestamp": "2026-10-17T18:57:36.068997Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6c95fcf890c08fd505cac62f891efb4dfaf4d5c4bab895e44db27cd6251585ed",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 13,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 444
+                },
+                "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+                "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_retrieval",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 555.8853999991697,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 13,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 16,
+          "timestamp": "2026-10-17T18:57:36.074129Z",
+          "event_type": "step_completed",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 17,
+          "timestamp": "2026-10-17T18:57:36.074129Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 18,
+          "timestamp": "2026-10-17T18:57:36.093461Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 19,
+          "timestamp": "2026-10-17T18:57:36.101191Z",
+          "event_type": "budget_admitted",
+          "step_id": "choose_stop",
+          "payload": {
+            "trace_id": "12a7dbe8884ec822fcf7dbc352b08cd2a7556f3c361fb90af2b48405a6bc3c96"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 20,
+          "timestamp": "2026-10-17T18:57:36.119388Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "choose_stop",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 21,
+          "timestamp": "2026-10-17T18:57:36.122411Z",
+          "event_type": "step_dispatched",
+          "step_id": "choose_stop",
+          "payload": {
+            "handler": "model.generate",
+            "synthetic": false
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 22,
+          "timestamp": "2026-10-17T18:57:36.678210Z",
+          "event_type": "budget_settled",
+          "step_id": "choose_stop",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "697f15f9d1e6fbad95aa5a70f8b06db554085a5c02d2c2d482382d93519f990e",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 545.559800000774,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 18,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 23,
+          "timestamp": "2026-10-17T18:57:36.693892Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_stop",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:8270adc3b134a4fd0b1b8af7faa06bf0c6ee01b5303e603cb5cc2cdd4b555cfd",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 18,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 449
+                },
+                "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+                "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "choose_stop",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 545.559800000774,
+                "energy_j": null,
+                "input_tokens": 431,
+                "model_calls": 1,
+                "output_tokens": 18,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 24,
+          "timestamp": "2026-10-17T18:57:36.702249Z",
+          "event_type": "step_completed",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+          "sequence": 25,
+          "timestamp": "2026-10-17T18:57:36.705282Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:89a952d155b64f81fe55f0263ae9f9f486d8e74ab3c67990ec4e2c6d27dad4c4"
+          }
+        }
+      ]
+    },
+    "warm": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "workflow_id": "sample-support-next-step",
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [
+                  "report_id"
+                ],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": false,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": false
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "kind": "model",
+            "handler": "model.generate",
+            "handler_version": "6201de08851060b6def789e59a7ab2697831659ae3811d6e0a23902b747de1d3",
+            "inputs": {
+              "allowed_next_steps": [
+                {
+                  "eligibility": "The customer has confirmed resolution; the workflow is complete.",
+                  "name": "stop"
+                },
+                {
+                  "eligibility": "Unresolved state explicitly requires a human specialist.",
+                  "name": "escalate"
+                },
+                {
+                  "eligibility": "Unresolved state is missing one or more required fields.",
+                  "name": "clarify"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields but lacks approved evidence.",
+                  "name": "retrieve"
+                },
+                {
+                  "eligibility": "Unresolved state has required fields and approved evidence.",
+                  "name": "respond"
+                }
+              ],
+              "current_state": {
+                "approved_evidence_available": true,
+                "human_required": false,
+                "missing_required_fields": [],
+                "resolved": true
+              },
+              "instructions": "Select the next transition from the supplied current state, catalog and policy. Return only a JSON object matching output_schema: no reason, Markdown or other fields. Do not perform the transition or create a plan.",
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "next_step": {
+                    "enum": [
+                      "stop",
+                      "escalate",
+                      "clarify",
+                      "retrieve",
+                      "respond"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "next_step"
+                ],
+                "type": "object"
+              }
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "sample-next-step-policy"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": false,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "sample-next-step-policy",
+            "tenant_id": "sample-tenant",
+            "source": "sample://advisor-live/next-step-policy",
+            "version": "1",
+            "observed_at": "2026-10-17T18:56:57.488890Z",
+            "expires_at": "2026-10-17T22:56:57.488890Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "policy": "Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.",
+              "sample_data": true
+            }
+          }
+        ],
+        "metadata": {
+          "description": "Invented support selector cases for actual provider recordings.",
+          "fixture_suite": "advisor-live-selectors-v1",
+          "limitations": [
+            "Invented, deliberately simple support cases; not a representative quality benchmark.",
+            "Expected choices are authored independently of provider responses, not OpenJEV results.",
+            "No actual tool invocation, argument generation, transition execution or dynamic planning occurs.",
+            "Unknown facts, absent eligible options, abstention and conflicting evidence are not covered.",
+            "Next-step cases cover clarify, retrieve and stop; respond and escalate remain untested.",
+            "Bounded choices identify evaluation opportunities, not validated JEV replacements or savings."
+          ],
+          "sample_data": true
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+        "task_id": "sample-next-step",
+        "tenant_id": "sample-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T18:57:36.713859Z",
+        "finished_at": "2026-10-17T18:57:36.847081Z",
+        "output": {
+          "choose_clarification": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 14,
+              "promptTokenCount": 434,
+              "totalTokenCount": 448
+            },
+            "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+            "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+          },
+          "choose_retrieval": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 13,
+              "promptTokenCount": 431,
+              "totalTokenCount": 444
+            },
+            "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+            "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+          },
+          "choose_stop": {
+            "model": "gemini-2.5-flash-lite",
+            "provider": "gemini",
+            "provider_usage": {
+              "candidatesTokenCount": 18,
+              "promptTokenCount": 431,
+              "totalTokenCount": 449
+            },
+            "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+            "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+          }
+        },
+        "steps": [
+          {
+            "step_id": "choose_clarification",
+            "status": "reused",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 14,
+                "promptTokenCount": 434,
+                "totalTokenCount": 448
+              },
+              "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+              "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:8e9585175b6d225ebebc69c4afa3fbfb5b1a43c071a108350bf1322fd39461fd",
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_retrieval",
+            "status": "reused",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 13,
+                "promptTokenCount": 431,
+                "totalTokenCount": 444
+              },
+              "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+              "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6c95fcf890c08fd505cac62f891efb4dfaf4d5c4bab895e44db27cd6251585ed",
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "choose_stop",
+            "status": "reused",
+            "output": {
+              "model": "gemini-2.5-flash-lite",
+              "provider": "gemini",
+              "provider_usage": {
+                "candidatesTokenCount": 18,
+                "promptTokenCount": 431,
+                "totalTokenCount": 449
+              },
+              "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+              "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:8270adc3b134a4fd0b1b8af7faa06bf0c6ee01b5303e603cb5cc2cdd4b555cfd",
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": 0.0,
+          "energy_j": null,
+          "elapsed_ms": 120.10680000093998,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "sample-next-step-policy": "1"
+        },
+        "reused_steps": 3,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": false,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 0,
+          "timestamp": "2026-10-17T18:57:36.733519Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "40e2a07159b176c33f3d6051d1c7383ceb3d4ef557a647c30faad58335a7519b",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 1,
+          "timestamp": "2026-10-17T18:57:36.742601Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 2,
+          "timestamp": "2026-10-17T18:57:36.751189Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_clarification",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 3,
+          "timestamp": "2026-10-17T18:57:36.759620Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_clarification",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:8e9585175b6d225ebebc69c4afa3fbfb5b1a43c071a108350bf1322fd39461fd",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 14,
+                  "promptTokenCount": 434,
+                  "totalTokenCount": 448
+                },
+                "response_id": "H8XTavLyEIqwqtsP_4ncuAg",
+                "text": "```json\n{\"next_step\": \"clarify\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+              "status": "reused",
+              "step_id": "choose_clarification",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 4,
+          "timestamp": "2026-10-17T18:57:36.768011Z",
+          "event_type": "step_reused",
+          "step_id": "choose_clarification",
+          "payload": {
+            "cache_key": "canopy-json-v1:8e9585175b6d225ebebc69c4afa3fbfb5b1a43c071a108350bf1322fd39461fd",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 469.3524000012985,
+              "energy_j": null,
+              "input_tokens": 434,
+              "model_calls": 1,
+              "output_tokens": 14,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            },
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 5,
+          "timestamp": "2026-10-17T18:57:36.772604Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 6,
+          "timestamp": "2026-10-17T18:57:36.786709Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 7,
+          "timestamp": "2026-10-17T18:57:36.793324Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6c95fcf890c08fd505cac62f891efb4dfaf4d5c4bab895e44db27cd6251585ed",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 13,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 444
+                },
+                "response_id": "H8XTaoDaNbDtz7IPxsGFsQ8",
+                "text": "```json\n{\"next_step\": \"retrieve\"}\n```"
+              },
+              "reason": null,
+              "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+              "status": "reused",
+              "step_id": "choose_retrieval",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 8,
+          "timestamp": "2026-10-17T18:57:36.803946Z",
+          "event_type": "step_reused",
+          "step_id": "choose_retrieval",
+          "payload": {
+            "cache_key": "canopy-json-v1:6c95fcf890c08fd505cac62f891efb4dfaf4d5c4bab895e44db27cd6251585ed",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 555.8853999991697,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 13,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            },
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 9,
+          "timestamp": "2026-10-17T18:57:36.809481Z",
+          "event_type": "evidence_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "sample-next-step-policy",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 10,
+          "timestamp": "2026-10-17T18:57:36.809481Z",
+          "event_type": "policy_checked",
+          "step_id": "choose_stop",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 11,
+          "timestamp": "2026-10-17T18:57:36.829965Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "choose_stop",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:8270adc3b134a4fd0b1b8af7faa06bf0c6ee01b5303e603cb5cc2cdd4b555cfd",
+              "output": {
+                "model": "gemini-2.5-flash-lite",
+                "provider": "gemini",
+                "provider_usage": {
+                  "candidatesTokenCount": 18,
+                  "promptTokenCount": 431,
+                  "totalTokenCount": 449
+                },
+                "response_id": "IMXTatToH8i_qtsPhLCL2AI",
+                "text": "```json\n{\n  \"next_step\": \"stop\"\n}\n```"
+              },
+              "reason": null,
+              "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+              "status": "reused",
+              "step_id": "choose_stop",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 12,
+          "timestamp": "2026-10-17T18:57:36.838890Z",
+          "event_type": "step_reused",
+          "step_id": "choose_stop",
+          "payload": {
+            "cache_key": "canopy-json-v1:8270adc3b134a4fd0b1b8af7faa06bf0c6ee01b5303e603cb5cc2cdd4b555cfd",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 545.559800000774,
+              "energy_j": null,
+              "input_tokens": 431,
+              "model_calls": 1,
+              "output_tokens": 18,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            },
+            "source_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+          "sequence": 13,
+          "timestamp": "2026-10-17T18:57:36.847081Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:4421950bfd32e69cd0b957087133284b8e3b5ed76943540e650768a4c908bb18"
+          }
+        }
+      ]
+    }
+  },
+  "evaluations": [],
+  "benchmark": {
+    "repetitions": 1,
+    "cases": {
+      "cold": {
+        "baseline": [
+          1901.6578000009758
+        ],
+        "governed": [
+          1817.8211000013107
+        ],
+        "trials": [
+          {
+            "baseline_run_id": "ec3523b2-82b8-44c1-a6f2-c21a4c89d2c9",
+            "governed_run_id": "5b3074be-9b1e-4d28-bb16-82a7e8def166",
+            "baseline_cost_usd": null,
+            "governed_cost_usd": null,
+            "completed": true,
+            "synthetic": false
+          }
+        ]
+      },
+      "warm": {
+        "baseline": [
+          1998.7306999992143
+        ],
+        "governed": [
+          120.10680000093998
+        ],
+        "trials": [
+          {
+            "baseline_run_id": "81b5ff6b-9880-4022-861c-81fb6b6b29da",
+            "governed_run_id": "889b1c3d-fb92-4181-99ed-349052a988b6",
+            "baseline_cost_usd": null,
+            "governed_cost_usd": 0.0,
+            "completed": true,
+            "synthetic": false
+          }
+        ]
+      }
+    }
+  }
+}

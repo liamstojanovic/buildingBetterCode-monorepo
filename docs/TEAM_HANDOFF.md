@@ -26,13 +26,52 @@ Updated October 17, 2026. Start with the role-specific guides:
 | Drift probes/containment and compact messaging/deduplication | Python components and smoke example | `core/scripts/component_smoke.py`; no dedicated HTTP dashboard endpoints |
 | OpenAI, compatible endpoints, Anthropic, Gemini | Implemented live handlers | Explicit provider/model and credentials; `live_comparison.py` |
 | Pollard-Jev/OpenJEV | Implemented isolated native worker | Separate environment and cached pinned weights required; actual local inference unverified here |
-| Business/tool/next-step optimization advisor | Offline Python/CLI discovery and JSON report | `core/examples/advisor_demo.py`; actual analysis of synthetic recordings; no advisor HTTP endpoint |
+| Business/tool/next-step optimization advisor | Offline Python/CLI discovery and JSON report | [Retained hosted recordings](../core/examples/recordings/advisor-live-2026-10-17/README.md) across three providers; `core/examples/advisor_demo.py` for synthetic coverage; no advisor HTTP endpoint |
 | Automatic backend switching or dynamic agent loop | Not implemented | No production control or success claims in the demo |
 
 Use the current commit's test/CI results as integration evidence, not business
 quality or savings evidence.
 Prior hosted smoke runs exercised real calls; the local API example still uses
 synthetic handlers. Preserve provenance for each displayed result.
+
+## Ready-to-demo hosted recordings
+
+The [hosted advisor demo](../core/examples/recordings/advisor-live-2026-10-17/README.md)
+contains sanitized comparison exports, frontend playback bundles and the combined
+advisor report for business decisions, tool selection and next-step choices across
+OpenAI, Anthropic and Gemini. Its artifact index identifies every source and model.
+The committed files work without credentials or local databases. Imported runs
+are historical playback; they do not populate the local HTTP service's run store.
+
+Across the nine comparisons there are 36 runs, 63 hosted model calls and 21 warm
+reuses. The new tool/next-step tasks account for 54 of those calls. Their authored
+fixture checks show 53 expected choices after normalization, but only 24 choices
+also met the requested bare-JSON contract. Warm reuses and the old business case
+are excluded from that check; it is not an independent quality benchmark.
+
+The advisor reports 21 provider-specific groups: three business, nine tool
+selection and nine next step. All suggest OpenJEV evaluation and require mapping;
+only the business groups are partial substitutions because their calls also
+generate explanations. None has been evaluated for replacement quality.
+
+The inputs are invented sample data and the inference is real: preserve both
+`sample_data: true` and `synthetic: false` in the explanation. Tool names were
+selected without execution, and next steps were selected from authored choices
+without changing the runtime DAG. The findings identify opportunities to evaluate;
+they do not establish successful JEV replacement, measured savings or independent
+business accuracy. Native OpenJEV inference remains unverified here.
+
+Include the retained OpenAI next-step error in the demo: `choose_retrieval` chose
+`respond` in its first baseline despite missing approved evidence. The fixture
+checks also distinguish normalized choice matches from bare-JSON compliance.
+These outcomes remain visible; subsequent answer variation is not evidence that
+governance corrected quality, and the runtime has no transition-eligibility gate.
+
+The frontend can import the supplied comparison bundles now. Its separate advisor
+report view still needs the integration described in the frontend handoff; use
+the saved advisor JSON until it is built. The benchmark teammate can reanalyze
+the full comparison exports and extend the cases with independently labeled
+outcomes. The artifact guide includes fresh-task and reanalysis commands.
 
 ## Local development
 
@@ -113,15 +152,17 @@ for implemented endpoints and the explicit authentication boundary.
 One workload should run through baseline and governed adapters and render in the
 frontend before expanding the suite. Demonstrate unchanged reuse, refresh or
 refusal after a relevant change, unaffected work remaining reusable, and replay
-with zero new model/tool calls. All demonstration records are synthetic until a
-real provider is explicitly selected.
+with zero new model/tool calls. The local API and synthetic examples use fixture
+handlers; the retained hosted demo above contains real model-call recordings on
+invented inputs. Keep those origins distinct.
 
-For the expanded demo, show run comparison and controls, then import the generated
+For the expanded demo, show run comparison and controls, then review the generated
 offline advisor report: business classification, choosing a known tool, and
 choosing an authored next step. Show reasons, required mappings and missing
-evaluation. The analyzer is implemented; its demo inputs are synthetic, and
-OpenJEV replacement quality/savings remain unevaluated. Tool/next-step detection
-does not implement a dynamic agent loop.
+evaluation. Use the hosted bundles for real inference and the separate synthetic
+advisor demo for broader detector cases. OpenJEV replacement quality/savings
+remain unevaluated. Tool/next-step detection does not implement a dynamic agent
+loop.
 
 ## Team ownership and coordination
 

@@ -49,6 +49,12 @@ finding is `candidate` / `evaluate_openjev`, with synthetic predetermined output
 it demonstrates structural detection, not real inference or measured quality.
 See the paths printed by the example for import.
 
+The [retained hosted demo](../examples/recordings/advisor-live-2026-10-17/README.md)
+contains actual provider recordings on invented business, tool-selection and
+next-step cases, portable frontend bundles and a combined advisor report. It
+also preserves a wrong next-step selection and raw JSON-format violations.
+Use its recorded outputs for playback; generate fresh fixtures for new calls.
+
 On macOS/Linux use `.venv/bin/python`. There is no advisor HTTP endpoint; a
 frontend imports JSON, or a trusted application invokes the Python API.
 
