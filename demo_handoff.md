@@ -475,6 +475,37 @@ model cache and API databases. Generated results remain in `.canopy/demo-results
 and are Git-ignored. Copy the selected result folder and its trial journal for
 your benchmark evidence; do not commit credentials or private databases.
 
+## Validation performed on 17 October 2026
+
+All three Docker images built successfully. The CPU stack, live frontend/API,
+warm reuse, freshness changes, approval flow, advisor imports and communication
+reports were exercised. Core tests passed **821/821**; frontend tests passed
+**59/59**, including a successful build and contract check. The implementation's
+[CI run also passed](https://github.com/liamstojanovic/buildingBetterCode-monorepo/actions/runs/39064452878).
+
+The GPU image was exercised on a **4090 Laptop with 16 GB VRAM**, using the Linux
+Docker model volume. The capacity check completed all **7 calls / 26 hypothesis
+pairs**, with a maximum of 217 tokens and no truncation. Peak PyTorch memory was
+**9,143.99 MiB allocated / 9,186 MiB reserved**, under the 11,264 MiB allocator
+ceiling. These measurements do **not** establish fit on your physical 12 GB 4080:
+run the complete capacity check on your machine before the comparison.
+
+The subsequent comparison completed **14/14 raw matches** and **12/14 accepted
+matches** across two passes. The business decision deferred in both passes;
+all tool-selection and next-step decisions were accepted. Warm median latency
+was **301.87 ms**; the first call took **6,469.67 ms**, including **5,643.78 ms** of
+model loading. These are a local rehearsal on seven cases, not a controlled
+cross-provider speed benchmark or a promise of your machine's performance.
+
+**Local compatibility caveat:** the validation host had Docker Desktop 4.28.
+Its standard GPU setup failed CUDA initialization because a Windows driver
+library was missing inside the container. A temporary, read-only library bind
+allowed the GPU checks above; no host software was changed, and that workaround
+is not part of the shipped Compose files. The current-Docker GPU configuration
+must still be checked on your machine as described in steps 1 and 7. We reused
+and SHA256-verified all five pinned model files rather than downloading them
+again, and made no new hosted-model calls during this rehearsal.
+
 ## Included deployment files
 
 | File | Purpose |

@@ -81,7 +81,9 @@ def check(args: argparse.Namespace, report: dict) -> None:
         return
 
     report["stage"] = "verify_model_cache"
+    print("Verifying pinned model files (about 9.1 GB)...", file=sys.stderr, flush=True)
     report["model"] = verify_cache(args.cache_dir)
+    print("Model file verification complete.", file=sys.stderr, flush=True)
     cases = retained_inputs()
     report["max_context_tokens"] = args.max_context_tokens
     # This bounds PyTorch's caching allocator, not total driver/process memory.
@@ -100,6 +102,7 @@ def check(args: argparse.Namespace, report: dict) -> None:
     from pollard_jev.providers.context import ContextCheckedEncoder
     from pollard_jev.providers.openjev import OpenJevProvider, _validated_rows
 
+    print("Loading OpenJEV checkpoint onto the GPU...", file=sys.stderr, flush=True)
     started = perf_counter()
     provider = OpenJevProvider.from_local_cache(
         cache_dir=args.cache_dir, device="cuda", max_length=args.max_context_tokens,
@@ -107,6 +110,7 @@ def check(args: argparse.Namespace, report: dict) -> None:
     )
     torch.cuda.synchronize()
     report["model_load_ms"] = (perf_counter() - started) * 1000
+    print("Checkpoint loaded; running all seven complete cases.", file=sys.stderr, flush=True)
     report["model_identity"] = provider.identity.model_dump(mode="json")
     guard = ContextCheckedEncoder(provider._encoder)
     report["stage"] = "run_complete_demo_inputs"
