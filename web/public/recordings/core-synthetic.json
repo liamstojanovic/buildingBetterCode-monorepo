@@ -1,0 +1,5797 @@
+{
+  "format": "canopy-comparison/v1",
+  "description": "Actual core execution with deterministic synthetic handlers. Zero live provider requests; costs and energy are unknown. Timings measure this local fixture only.",
+  "recordings": {
+    "baseline_cold": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-cold-4-baseline",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+        "task_id": "web-cold-4-baseline",
+        "tenant_id": "demo-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:21.464355Z",
+        "finished_at": "2026-10-17T17:51:21.485044Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12833400978706777,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13341700832825154,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12820800475310534,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 20.68320800026413,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:21.465547Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "c6bcd902a4b0b431d6c5bf9c3a97c60b1971247989d854e06ed3230510f00a11",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:21.466200Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:21.466885Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "8c1628bb9729006238cb4ceeed96c43c4d34aca6f0e92e1e3bf26e0e4274535e"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:21.468415Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:21.468943Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:21.469810Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "9101a7fda197fe001fcf11367410be9a33da62e0fd809fc422c90efbbf54a58b",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12833400978706777,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:21.470485Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12833400978706777,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:21.471074Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:21.471726Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:21.472406Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "6bf540ac43abd9f12d2f24335ee6ac806d48e26f1c9fda14200c12ce12f4ef33"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:21.474671Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:21.475207Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:21.476153Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "bbc842fbb3e934733e2418f33c6ede44d2a2bf6d3b435a124f5c89338aa8f3d0",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13341700832825154,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:21.476807Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13341700832825154,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:21.477364Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:21.478006Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:21.478917Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "2acc95714723cb1fa7149b4fbdf176219ff89822b67316138f050a1f1d340833"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:21.481924Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:21.482475Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:21.483302Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "3aaacb1df430506a66336cf500fab5459dedf1a02a2859426f6fe37faa3e734a",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12820800475310534,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:21.483918Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12820800475310534,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:21.484589Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:21.485520Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:5e5666733edffaf4af7834846dbb3c5a564853361eb876ce97c6321a018307c5"
+          }
+        }
+      ]
+    },
+    "cold": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-cold-4-governed",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+        "task_id": "web-cold-4-governed",
+        "tenant_id": "demo-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:21.487571Z",
+        "finished_at": "2026-10-17T17:51:21.514611Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13191699690651149,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.15020799764897674,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13116699119564146,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 27.034166996600106,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:21.489163Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "139256bb2b6e5c4e7442b36f4a3ab87f70d57a23665dd43f28d53d2de7176d7f",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:21.489809Z",
+          "event_type": "evidence_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:21.490915Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:21.491678Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "f470c37f04ffc81b4a7f6cfff1da5221d5931dc215b0e1e4703450dc54571a71"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:21.493359Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:21.493896Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:21.494818Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "572aac037f64c266f3ed7a9c4fba5c1e390ed84eb6516370a97645c74a2376d5",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13191699690651149,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:21.496044Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13191699690651149,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:21.496653Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:21.497216Z",
+          "event_type": "evidence_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:21.498273Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:21.499149Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "8044a1132aebbdaf7abcf260ac1bc69dd79cde499b85a8afc1053314577431e7"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:21.501741Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:21.502319Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:21.503208Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "dd7334a82cd14fd2edeadab7782e8bea9860fc56dc6af2abae5a385a8b458ab3",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.15020799764897674,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:21.504452Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.15020799764897674,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:21.505068Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:21.505742Z",
+          "event_type": "evidence_checked",
+          "step_id": "greeting",
+          "payload": {
+            "evidence": []
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:21.506699Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:21.507441Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "f10af6a9f9f3cfcd29609eba972f74326294ac7326c8a450f3ec137b3905ddde"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:21.510809Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:21.511393Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:21.512287Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "dfaeeb1fa40ac20a1fa0fb14aecc3943880d2365f51ba65041d530ae32997cfd",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13116699119564146,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 23,
+          "timestamp": "2026-10-17T17:51:21.513511Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13116699119564146,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 24,
+          "timestamp": "2026-10-17T17:51:21.514140Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+          "sequence": 25,
+          "timestamp": "2026-10-17T17:51:21.515102Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:c6d442a7ce21d8ff782ce83b5dd132e71bd3b30c212d5e3115d9cb9dc1dc34de"
+          }
+        }
+      ]
+    },
+    "seed": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "synthetic-quote-task",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+        "task_id": "synthetic-quote-task",
+        "tenant_id": "demo-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:21.794634Z",
+        "finished_at": "2026-10-17T17:51:21.817878Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.11870799062307924,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13004201173316687,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.1209579932037741,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 23.238875000970438,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:21.795851Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "b431b91c6b75c47c5ede36b09381d42c7b79d537973c58275aaa6e9d4c59cc59",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:21.796437Z",
+          "event_type": "evidence_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:21.797392Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:21.797994Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "29743893e0e4d765423a0660409a8f4d4643ca689acc17e5816a580269a3a1b3"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:21.799443Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:21.799947Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:21.800774Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "78090117df23a2d5ae9c50dbb5a637bdbcf44d17b8a556d4fe6ddefe03a500b0",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.11870799062307924,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:21.801866Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.11870799062307924,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:21.802388Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:21.802893Z",
+          "event_type": "evidence_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:21.803788Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:21.804453Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "415bcb9ef6c0c7c3fac8c58f985242f3cb9cc0901ac10a33daf663fb199bb0bf"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:21.806640Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:21.807104Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:21.807910Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "99de2667bf7fd48b80e9c5dc4c6d44fbaeb3f6abfc54033510fd814ad239b569",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13004201173316687,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:21.809028Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13004201173316687,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:21.809632Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:21.810143Z",
+          "event_type": "evidence_checked",
+          "step_id": "greeting",
+          "payload": {
+            "evidence": []
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:21.810967Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:21.811572Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "796ddc4c39728f6117916f3d40931080c8dc72f16a7729fccfb9c9c027787d3c"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:21.814584Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:21.815077Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:21.815867Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "dc3fab7756c09b4a90d60cd1d8296079709bb4a632e5865c12302e4274b0d7e8",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.1209579932037741,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 23,
+          "timestamp": "2026-10-17T17:51:21.816915Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.1209579932037741,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 24,
+          "timestamp": "2026-10-17T17:51:21.817425Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+          "sequence": 25,
+          "timestamp": "2026-10-17T17:51:21.818332Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:6565efe32fa4878f66c38771172180bc3776a11cee43a158a02e0e446c2fea83"
+          }
+        }
+      ]
+    },
+    "baseline": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-warm-4-baseline",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+        "task_id": "web-warm-4-baseline",
+        "tenant_id": "demo-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:21.820173Z",
+        "finished_at": "2026-10-17T17:51:21.838553Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13637500524055213,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12150000839028507,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.11204199108760804,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 18.375250001554377,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:21.821226Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "a23e68411af18398090003762cef8af3da84dc48a7ccf7e8d0348c7828d6ca2c",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:21.821855Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:21.822440Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "081ca683a2d21f781f79453bf717d8b957e1da9d465d0f50e0b1bc3202d1a321"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:21.823793Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:21.824312Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:21.825144Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "55f65d3eb03f60add6ee3ce3b80bdd1bb2b123ccc4707f703a2ef91f483f3f14",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13637500524055213,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:21.825857Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13637500524055213,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:21.826370Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:21.826954Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:21.827527Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "9bef3f7158cc7dd9b1dde13abdb1c1f2d8fbb5ffdb58a69fdde1cc04c23e49e6"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:21.829591Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:21.830051Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:21.830822Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "1d20991683e055819e7c3b91fdcad149660dea33efc4d830c84af57187718338",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12150000839028507,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:21.831386Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12150000839028507,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:21.831899Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:21.832522Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:21.833119Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "f88ff46113ebc3a5f9d43fdb82a8896a5f9f4e9d974c083cd9279b0eae86c9b4"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:21.835761Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:21.836236Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:21.837003Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "837134699cbc57356e6cec2f3bee316a84aab4249892f4e0a0a1c977b4a1bf99",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.11204199108760804,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:21.837604Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.11204199108760804,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:21.838104Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:21.839002Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:141251d2d3d3db049dee04d06e6e59627e69960b822afd9fe0fc82096427608d"
+          }
+        }
+      ]
+    },
+    "warm": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-warm-4-governed",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+        "task_id": "web-warm-4-governed",
+        "tenant_id": "demo-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:21.841216Z",
+        "finished_at": "2026-10-17T17:51:21.850725Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "reused",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "reused",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "reused",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": 0.0,
+          "energy_j": null,
+          "elapsed_ms": 9.504124987870455,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1"
+        },
+        "reused_steps": 3,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:21.842444Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "1e6704a8ca0ce3c4d9711c45ad4391e0bec58fd63c5bfe1810265107742bd0e0",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:21.842943Z",
+          "event_type": "evidence_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:21.843931Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:21.844553Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+              "status": "reused",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:21.845070Z",
+          "event_type": "step_reused",
+          "step_id": "read_catalog",
+          "payload": {
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.11870799062307924,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            },
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:21.845566Z",
+          "event_type": "evidence_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:21.846574Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:21.847158Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+              "status": "reused",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:21.847716Z",
+          "event_type": "step_reused",
+          "step_id": "summarize_quote",
+          "payload": {
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13004201173316687,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            },
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:21.848230Z",
+          "event_type": "evidence_checked",
+          "step_id": "greeting",
+          "payload": {
+            "evidence": []
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:21.849087Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:21.849662Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a",
+              "status": "reused",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:21.850168Z",
+          "event_type": "step_reused",
+          "step_id": "greeting",
+          "payload": {
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.1209579932037741,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            },
+            "source_run_id": "987522f8-56e8-4bce-a641-15eaa7e9c35a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:21.851210Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:1722d36ce963a653a4f5e9ece28ebb31bb701c9e91635dd69e158c4cea4771e5"
+          }
+        }
+      ]
+    },
+    "baseline_changed": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-changed-4-baseline",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "2",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 3100,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+        "task_id": "web-changed-4-baseline",
+        "tenant_id": "demo-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:22.190762Z",
+        "finished_at": "2026-10-17T17:51:22.210423Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 3100,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "2",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 3100,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 3100,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "2",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.14329099212773144,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 3100,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12970800162293017,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12058300490025431,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 19.65616700181272,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "2"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:22.191794Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "5909c277b719497000e19c4f32e7ecdb721ede02f44e1deb1829548146bf5bb1",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:22.192393Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:22.193035Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "3904a6a4784c6b05bbaef2217d928fb7fa4452a1f39a2e2142ef36d7e61b3560"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:22.194535Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:22.195073Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:22.196097Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "b0ec0cdde3690f70f0b349e7b18d9cb8aafc7ecde3f8f750fb49f419068309a0",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.14329099212773144,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:22.196737Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 3100,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "2",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.14329099212773144,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:22.197261Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:22.197969Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:22.198665Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "59c60da1e5dbc819f88cb2615e0f8a7791e9853dfa11876e5f511b08d8e2fe75"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:22.200926Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:22.201431Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:22.202245Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "1f4421c126c7b6d5e78e7bf1f6ac8142c519f40b901d62db34869865bcf4fefb",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12970800162293017,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:22.202827Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 3100,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12970800162293017,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:22.203368Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:22.204034Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:22.204764Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "0e4583c449e49f04a76ee24e30e2272f57dec0fd52644fc5b87f72cf1718038c"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:22.207524Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:22.208011Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:22.208820Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "a58addb7aa718d717a5371991e5fd698e6222951966ca9b1b6e5aef9fd6a7e59",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12058300490025431,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:22.209440Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12058300490025431,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:22.209942Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:22.210885Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:ff61da0e16010df7a1759c2bc2c2e896ce6b9deef59aa2ff0d9ead1af08176ac"
+          }
+        }
+      ]
+    },
+    "changed": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-changed-4-governed",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "2",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 3100,
+              "synthetic": true
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+        "task_id": "web-changed-4-governed",
+        "tenant_id": "demo-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:22.214948Z",
+        "finished_at": "2026-10-17T17:51:22.233686Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 3100,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "2",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 3100,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 3100,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "2",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:edc0306ff68873d90a25eac3122d66d61bd0a9ac415d33595a8a15b3ef2881ce",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13029201363679022,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 3100,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6138811748d81f4f579b862b09f9b021d38ab8cd4890cafcc2666c31960558e1",
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.1331249950453639,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "reused",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "source_run_id": "1b164e5e-a301-4e05-bf68-65e561b0439c",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 1,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 18.733417004114017,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "2"
+        },
+        "reused_steps": 1,
+        "invalidated_steps": 2,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:22.216200Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "224d507643f6a2e1628b4c5b544c17a71cf2bf0c40792e5f3311359fc99ecd4b",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:22.216652Z",
+          "event_type": "evidence_invalidated",
+          "step_id": null,
+          "payload": {
+            "step_ids": [
+              "read_catalog",
+              "summarize_quote"
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:22.217168Z",
+          "event_type": "evidence_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:22.218052Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:22.218682Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "1b24042ff9d9dd7387601d31407e39542fd0f1b6c54039449a1974c887e96d9b"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:22.220194Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:22.220717Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:22.221535Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "2d1e11ed65424518500468b96f727bb239156966180e6e9b38713ae71c4a2b40",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13029201363679022,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:22.222673Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:edc0306ff68873d90a25eac3122d66d61bd0a9ac415d33595a8a15b3ef2881ce",
+              "output": {
+                "amount_minor": 3100,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "2",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13029201363679022,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:22.223216Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:22.223720Z",
+          "event_type": "evidence_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:22.224623Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:22.225264Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "5fb834d55e631b4f763042e4c3fe15726b821d5ccaf63f11d4fd189c60ab3c7a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:22.227510Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:22.227999Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:22.228814Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "a63e3f12d7398970fe0c9b305fbb9934cb84237efc0c42aa9a7f8e12255618a3",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.1331249950453639,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:22.230058Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6138811748d81f4f579b862b09f9b021d38ab8cd4890cafcc2666c31960558e1",
+              "output": {
+                "amount_minor": 3100,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.1331249950453639,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:22.230629Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:22.231135Z",
+          "event_type": "evidence_checked",
+          "step_id": "greeting",
+          "payload": {
+            "evidence": []
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:22.232004Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:22.232583Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "1b164e5e-a301-4e05-bf68-65e561b0439c",
+              "status": "reused",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:22.233190Z",
+          "event_type": "step_reused",
+          "step_id": "greeting",
+          "payload": {
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12312500621192157,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            },
+            "source_run_id": "1b164e5e-a301-4e05-bf68-65e561b0439c"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:22.234153Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:bfd9df5416537f07b561f114e882b0f6fab2a44dc7c9c64af223558c45edabef"
+          }
+        }
+      ]
+    },
+    "baseline_unrelated": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-unrelated-4-baseline",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          },
+          {
+            "evidence_id": "unrelated-source",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://unrelated",
+            "version": "2",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": null,
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "note": "No step consumes this source."
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+        "task_id": "web-unrelated-4-baseline",
+        "tenant_id": "demo-tenant",
+        "mode": "baseline",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:22.530205Z",
+        "finished_at": "2026-10-17T17:51:22.549612Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12549999519251287,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "completed",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 1,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.13520799984689802,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "completed",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": null,
+            "source_run_id": null,
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 1,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.12754100316669792,
+              "tokens_known": true,
+              "elapsed_known": true
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 1,
+          "tool_calls": 2,
+          "cost_usd": null,
+          "energy_j": null,
+          "elapsed_ms": 19.40054200531449,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1",
+          "unrelated-source": "2"
+        },
+        "reused_steps": 0,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:22.531335Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "93cfa1eab0dd808dc457e611d0c940023a6da5eeb45753313b2033086b4ddc9c",
+            "mode": "baseline"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:22.531926Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:22.532556Z",
+          "event_type": "budget_admitted",
+          "step_id": "read_catalog",
+          "payload": {
+            "trace_id": "756fb681e0496d4e4507a10a86aacbea97a9748b0cd76d78849ff3661e926f2a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:22.533929Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "read_catalog",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:22.534391Z",
+          "event_type": "step_dispatched",
+          "step_id": "read_catalog",
+          "payload": {
+            "handler": "synthetic.catalog",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:22.535269Z",
+          "event_type": "budget_settled",
+          "step_id": "read_catalog",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "7d31477a21646212edb7dcfb96e1178557a47ec13a159aea5f422572e7264d94",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12549999519251287,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:22.535863Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12549999519251287,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:22.536361Z",
+          "event_type": "step_completed",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:22.536985Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:22.537603Z",
+          "event_type": "budget_admitted",
+          "step_id": "summarize_quote",
+          "payload": {
+            "trace_id": "a7297f45110c173752d22f5c16c9e38086d1331e106677fa8c5c411cbd17367a"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:22.539954Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "summarize_quote",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:22.540542Z",
+          "event_type": "step_dispatched",
+          "step_id": "summarize_quote",
+          "payload": {
+            "handler": "synthetic.summary",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:22.541406Z",
+          "event_type": "budget_settled",
+          "step_id": "summarize_quote",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "987dbb35da8e3190ceb68086fc2e144478a21bbd3b9d1c46d50b78e6a522fffe",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13520799984689802,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:22.541992Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.13520799984689802,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 1,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 14,
+          "timestamp": "2026-10-17T17:51:22.542484Z",
+          "event_type": "step_completed",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 15,
+          "timestamp": "2026-10-17T17:51:22.543075Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 16,
+          "timestamp": "2026-10-17T17:51:22.543684Z",
+          "event_type": "budget_admitted",
+          "step_id": "greeting",
+          "payload": {
+            "trace_id": "f4fd3fd63aa5b38e5a47ae7c77901ad847f8576a15a7a07c2b16afb151639408"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 17,
+          "timestamp": "2026-10-17T17:51:22.546638Z",
+          "event_type": "canopy.step.claimed",
+          "step_id": "greeting",
+          "payload": {}
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 18,
+          "timestamp": "2026-10-17T17:51:22.547222Z",
+          "event_type": "step_dispatched",
+          "step_id": "greeting",
+          "payload": {
+            "handler": "synthetic.greeting",
+            "synthetic": true
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 19,
+          "timestamp": "2026-10-17T17:51:22.548034Z",
+          "event_type": "budget_settled",
+          "step_id": "greeting",
+          "payload": {
+            "ok": true,
+            "reason": null,
+            "trace_id": "672206a6baa317f7e4d0339b6c538f0bc0e3360ec3921a78537e83bfe189d555",
+            "unknown_metrics": [
+              "energy_j",
+              "usd"
+            ],
+            "usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.12754100316669792,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 20,
+          "timestamp": "2026-10-17T17:51:22.548631Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": null,
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": null,
+              "status": "completed",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": null,
+                "elapsed_known": true,
+                "elapsed_ms": 0.12754100316669792,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 1
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 21,
+          "timestamp": "2026-10-17T17:51:22.549130Z",
+          "event_type": "step_completed",
+          "step_id": "greeting",
+          "payload": {
+            "reason": null
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+          "sequence": 22,
+          "timestamp": "2026-10-17T17:51:22.550090Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:5af1b9a6443035c1d43c894a79f68ba906b50397785326d11692e1f9a2f3c8ec"
+          }
+        }
+      ]
+    },
+    "unrelated": {
+      "task": {
+        "schema_version": "1",
+        "task_id": "web-unrelated-4-governed",
+        "tenant_id": "demo-tenant",
+        "workflow_id": "synthetic-quote-workflow",
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "kind": "tool",
+            "handler": "synthetic.catalog",
+            "handler_version": "1",
+            "inputs": {
+              "sku": "DEMO-001"
+            },
+            "depends_on": [],
+            "evidence_ids": [
+              "synthetic-catalog"
+            ],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "kind": "model",
+            "handler": "synthetic.summary",
+            "handler_version": "1",
+            "inputs": {},
+            "depends_on": [
+              "read_catalog"
+            ],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "kind": "tool",
+            "handler": "synthetic.greeting",
+            "handler_version": "1",
+            "inputs": {
+              "name": "Canopy demo"
+            },
+            "depends_on": [],
+            "evidence_ids": [],
+            "side_effect": false,
+            "estimated_usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": null,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "evidence": [
+          {
+            "evidence_id": "synthetic-catalog",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://catalog",
+            "version": "1",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": "2026-10-17T18:51:21.235846Z",
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "amount_minor": 2400,
+              "synthetic": true
+            }
+          },
+          {
+            "evidence_id": "unrelated-source",
+            "tenant_id": "demo-tenant",
+            "source": "synthetic://unrelated",
+            "version": "2",
+            "observed_at": "2026-10-17T17:51:21.235846Z",
+            "expires_at": null,
+            "half_life_seconds": null,
+            "quality": 1.0,
+            "data": {
+              "note": "No step consumes this source."
+            }
+          }
+        ],
+        "metadata": {
+          "synthetic": true,
+          "description": "Deterministic local fixture; no live model or external tool calls."
+        }
+      },
+      "result": {
+        "schema_version": "1",
+        "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+        "task_id": "web-unrelated-4-governed",
+        "tenant_id": "demo-tenant",
+        "mode": "governed",
+        "status": "completed",
+        "started_at": "2026-10-17T17:51:22.552233Z",
+        "finished_at": "2026-10-17T17:51:22.562524Z",
+        "output": {
+          "greeting": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "read_catalog": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "summarize_quote": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          }
+        },
+        "steps": [
+          {
+            "step_id": "read_catalog",
+            "status": "reused",
+            "output": {
+              "amount_minor": 2400,
+              "currency": "USD",
+              "sku": "DEMO-001",
+              "source_version": "1",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "summarize_quote",
+            "status": "reused",
+            "output": {
+              "amount_minor": 2400,
+              "provider": "deterministic-python-fixture",
+              "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          },
+          {
+            "step_id": "greeting",
+            "status": "reused",
+            "output": {
+              "message": "Hello, Canopy demo.",
+              "synthetic": true
+            },
+            "reason": null,
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+            "usage": {
+              "input_tokens": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "model_calls": 0,
+              "tool_calls": 0,
+              "cost_usd": 0.0,
+              "energy_j": null,
+              "elapsed_ms": 0.0,
+              "tokens_known": true,
+              "elapsed_known": false
+            }
+          }
+        ],
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "provider_cached_input_tokens": 0,
+          "model_calls": 0,
+          "tool_calls": 0,
+          "cost_usd": 0.0,
+          "energy_j": null,
+          "elapsed_ms": 10.28583299193997,
+          "tokens_known": true,
+          "elapsed_known": true
+        },
+        "policy_version": "1",
+        "evidence_versions": {
+          "synthetic-catalog": "1",
+          "unrelated-source": "2"
+        },
+        "reused_steps": 3,
+        "invalidated_steps": 0,
+        "replay_source_run_id": null,
+        "synthetic": true,
+        "reason": null
+      },
+      "events": [
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 0,
+          "timestamp": "2026-10-17T17:51:22.553525Z",
+          "event_type": "runtime_started",
+          "step_id": null,
+          "payload": {
+            "budget_trace_id": "8e079fc93d83cb80caacb225a61370c90ca0a0757efb1109fe2e44272ab886ba",
+            "mode": "governed"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 1,
+          "timestamp": "2026-10-17T17:51:22.554048Z",
+          "event_type": "evidence_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 2,
+          "timestamp": "2026-10-17T17:51:22.555179Z",
+          "event_type": "policy_checked",
+          "step_id": "read_catalog",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 3,
+          "timestamp": "2026-10-17T17:51:22.555937Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "read_catalog",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+              "output": {
+                "amount_minor": 2400,
+                "currency": "USD",
+                "sku": "DEMO-001",
+                "source_version": "1",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+              "status": "reused",
+              "step_id": "read_catalog",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 4,
+          "timestamp": "2026-10-17T17:51:22.556520Z",
+          "event_type": "step_reused",
+          "step_id": "read_catalog",
+          "payload": {
+            "cache_key": "canopy-json-v1:a11fa32048712a42b8820204bcc909e4d5925f6d2c6109aab6b6c008bfd32cf2",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13854200369678438,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            },
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 5,
+          "timestamp": "2026-10-17T17:51:22.557073Z",
+          "event_type": "evidence_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "evidence": [
+              {
+                "evidence_id": "synthetic-catalog",
+                "reason": "Evidence meets the supplied freshness and applicability constraints.",
+                "status": "fresh",
+                "valid": true
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 6,
+          "timestamp": "2026-10-17T17:51:22.558225Z",
+          "event_type": "policy_checked",
+          "step_id": "summarize_quote",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 7,
+          "timestamp": "2026-10-17T17:51:22.558850Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "summarize_quote",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+              "output": {
+                "amount_minor": 2400,
+                "provider": "deterministic-python-fixture",
+                "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+              "status": "reused",
+              "step_id": "summarize_quote",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 8,
+          "timestamp": "2026-10-17T17:51:22.559416Z",
+          "event_type": "step_reused",
+          "step_id": "summarize_quote",
+          "payload": {
+            "cache_key": "canopy-json-v1:6530942eb701c3ec688a39d2a4381851d12728ae9c5633733d7d3bf1af7525a9",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.13758298882748932,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 1,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 0
+            },
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 9,
+          "timestamp": "2026-10-17T17:51:22.559960Z",
+          "event_type": "evidence_checked",
+          "step_id": "greeting",
+          "payload": {
+            "evidence": []
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 10,
+          "timestamp": "2026-10-17T17:51:22.560867Z",
+          "event_type": "policy_checked",
+          "step_id": "greeting",
+          "payload": {
+            "reason": "current deterministic policy permits action",
+            "status": "allow"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 11,
+          "timestamp": "2026-10-17T17:51:22.561451Z",
+          "event_type": "canopy.step.recorded",
+          "step_id": "greeting",
+          "payload": {
+            "result": {
+              "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+              "output": {
+                "message": "Hello, Canopy demo.",
+                "synthetic": true
+              },
+              "reason": null,
+              "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6",
+              "status": "reused",
+              "step_id": "greeting",
+              "usage": {
+                "cost_usd": 0.0,
+                "elapsed_known": false,
+                "elapsed_ms": 0.0,
+                "energy_j": null,
+                "input_tokens": 0,
+                "model_calls": 0,
+                "output_tokens": 0,
+                "provider_cached_input_tokens": 0,
+                "tokens_known": true,
+                "tool_calls": 0
+              }
+            }
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 12,
+          "timestamp": "2026-10-17T17:51:22.561946Z",
+          "event_type": "step_reused",
+          "step_id": "greeting",
+          "payload": {
+            "cache_key": "canopy-json-v1:3c428787ffe986adc0b59dcf59b7705fd5271e15edbb9f623cb3619dd96425fc",
+            "historical_usage": {
+              "cost_usd": null,
+              "elapsed_known": true,
+              "elapsed_ms": 0.1458329934393987,
+              "energy_j": null,
+              "input_tokens": 0,
+              "model_calls": 0,
+              "output_tokens": 0,
+              "provider_cached_input_tokens": 0,
+              "tokens_known": true,
+              "tool_calls": 1
+            },
+            "source_run_id": "d8d8f21b-8df2-4cac-8bb1-aaa93081b0f6"
+          }
+        },
+        {
+          "schema_version": "1",
+          "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+          "sequence": 13,
+          "timestamp": "2026-10-17T17:51:22.563043Z",
+          "event_type": "canopy.run.finished",
+          "step_id": null,
+          "payload": {
+            "result_digest": "canopy-json-v1:11bc72105ec4a5f1ecbddbee390d15220d615de0dcca89767e4db28e4d6ef60e"
+          }
+        }
+      ]
+    }
+  },
+  "evaluations": [
+    {
+      "run_id": "75af8381-20a4-49fa-bc76-9f08810f78a0",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "b9120fa8-553e-4063-993d-c46ecd7803cd",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "a99f465c-2255-4baa-baea-5a31d8d1f6df",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "45e2dcbf-363d-488e-9b94-67981e4cd1b3",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "00b4d007-6a42-446d-93ed-449bdc245477",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "f9718a27-c090-4e7e-86d1-cb13baf9cbab",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "1a056212-e950-4b5e-9a10-50bc360bfe0d",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "7294c2f2-47d7-43b3-9317-a659a3da4c2d",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "73bc5df6-6e1b-4c2f-8a0c-3d72e2fa77a6",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "5eac18b7-478a-4aaa-82ed-b780613f592b",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "a5c624e2-e3c6-4652-a277-736f8d3dbe84",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "4dfcf3d6-bf2a-486e-bbba-3f266dd6e0ce",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "b630c21e-bc60-4c1b-95b6-340f001ac856",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "f85fc302-848b-407d-927d-f0de39c387d0",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "e4dbc977-6996-4bca-9667-5c1739e267a2",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "a81d25b1-1f42-4106-8b99-223007cd3904",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "c2b95560-d11a-4a1e-8c89-22265205ad6d",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "26d902d3-b073-45b6-ba8d-f4cbecef576b",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "e630206d-c96b-4093-972f-65a9a07ef19f",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "03eed624-05f6-4a67-9a06-5321d7b8a103",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "e7f248af-e6ee-4dd2-8303-de0a093f859a",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "5e25c908-3bbd-4675-9795-3e536e37bc7f",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "1a8fd31c-9bfb-402d-a8c6-0dda0a1e334f",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "1175c73a-dddb-4207-8617-b7ca2e7eb0f3",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "3c5fb930-f8c9-4d57-be95-c9599a63b741",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "d9ce061a-4112-4216-8b43-8ee1e7add6e8",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "f98201f2-acb6-4bff-9290-f21a5e2ca37b",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "3ded34f8-24b2-44d1-b4d3-e9a3c8f7adee",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "a9f39411-19bf-4b78-af8b-57395f621978",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "e7ff6367-f443-42de-8370-1dd0d4e605a3",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "b5cdbd0d-83e1-4338-bf31-ac2ce2491e2d",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "88e8ba7b-7a69-49c9-a546-0343f35fabc2",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "ad75242b-4165-40bf-9173-47da8600b9e4",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "67cec693-e1da-4967-aa8a-8b06eff32020",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "0fac3106-b870-4f84-9cd2-9627063881c7",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "828cdc67-796d-4365-9986-67b3ea38259b",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "a63c2994-c494-4f93-afcc-d4d638eab652",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "8e76f448-c863-49d5-a837-eb29c306d38c",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "cf1a78e1-d244-412a-ae83-c0001568fa05",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    },
+    {
+      "run_id": "d93ea430-8dfd-4da8-8547-10abf8c6ecf9",
+      "passed": true,
+      "checked_fields": 3,
+      "correct_fields": 3,
+      "method": "Independent exact-output checks for the three deterministic synthetic handlers."
+    }
+  ],
+  "benchmark": {
+    "repetitions": 5,
+    "cases": {
+      "cold": {
+        "baseline": [
+          20.46600000176113,
+          20.129625001573004,
+          19.468874990707263,
+          19.177333000698127,
+          20.68320800026413
+        ],
+        "governed": [
+          25.180833996273577,
+          25.11304200743325,
+          24.365083008888178,
+          24.2336250084918,
+          27.034166996600106
+        ]
+      },
+      "warm": {
+        "baseline": [
+          20.90266699087806,
+          18.670792007469572,
+          18.55054199404549,
+          18.478707992471755,
+          18.375250001554377
+        ],
+        "governed": [
+          10.534458997426555,
+          9.728750010253862,
+          9.465874987654388,
+          9.739375003846362,
+          9.504124987870455
+        ]
+      },
+      "changed": {
+        "baseline": [
+          21.256958003505133,
+          20.107292002649046,
+          20.054416003404185,
+          18.810584006132558,
+          19.65616700181272
+        ],
+        "governed": [
+          18.913042003987357,
+          20.29887499520555,
+          19.734792003873736,
+          18.34441600658465,
+          18.733417004114017
+        ]
+      },
+      "unrelated": {
+        "baseline": [
+          18.371083002421074,
+          18.759707993012853,
+          18.30770800006576,
+          21.74383300007321,
+          19.40054200531449
+        ],
+        "governed": [
+          9.608042004401796,
+          9.518582999589853,
+          9.709624995593913,
+          9.43570799427107,
+          10.28583299193997
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+src/api/generated/
+public/
+node_modules/
+dist/
+storybook-static/

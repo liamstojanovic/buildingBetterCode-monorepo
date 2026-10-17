@@ -1,0 +1,102 @@
+{
+  "schema_version": "1",
+  "task_id": "synthetic-quote-task",
+  "tenant_id": "demo-tenant",
+  "workflow_id": "synthetic-quote-workflow",
+  "steps": [
+    {
+      "step_id": "read_catalog",
+      "kind": "tool",
+      "handler": "synthetic.catalog",
+      "handler_version": "1",
+      "inputs": {
+        "sku": "DEMO-001"
+      },
+      "depends_on": [],
+      "evidence_ids": [
+        "synthetic-catalog"
+      ],
+      "side_effect": false,
+      "estimated_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 0.0,
+        "tokens_known": true,
+        "elapsed_known": false
+      }
+    },
+    {
+      "step_id": "summarize_quote",
+      "kind": "model",
+      "handler": "synthetic.summary",
+      "handler_version": "1",
+      "inputs": {},
+      "depends_on": [
+        "read_catalog"
+      ],
+      "evidence_ids": [],
+      "side_effect": false,
+      "estimated_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 0.0,
+        "tokens_known": true,
+        "elapsed_known": false
+      }
+    },
+    {
+      "step_id": "greeting",
+      "kind": "tool",
+      "handler": "synthetic.greeting",
+      "handler_version": "1",
+      "inputs": {
+        "name": "Canopy demo"
+      },
+      "depends_on": [],
+      "evidence_ids": [],
+      "side_effect": false,
+      "estimated_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 0.0,
+        "tokens_known": true,
+        "elapsed_known": false
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "synthetic-catalog",
+      "tenant_id": "demo-tenant",
+      "source": "synthetic://catalog",
+      "version": "1",
+      "observed_at": "2026-10-17T17:51:21.235846Z",
+      "expires_at": "2026-10-17T18:51:21.235846Z",
+      "half_life_seconds": null,
+      "quality": 1.0,
+      "data": {
+        "amount_minor": 2400,
+        "synthetic": true
+      }
+    }
+  ],
+  "metadata": {
+    "synthetic": true,
+    "description": "Deterministic local fixture; no live model or external tool calls."
+  }
+}
