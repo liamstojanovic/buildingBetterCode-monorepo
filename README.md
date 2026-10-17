@@ -9,6 +9,9 @@ and drift monitoring. The Python core lives in `core/`; the team's frontend live
 in `web/`. The benchmark is independently owned by another teammate.
 
 - [Team setup and integration handoff](docs/TEAM_HANDOFF.md)
+- [Frontend integration and demo guide](docs/FRONTEND_HANDOFF.md)
+- [Benchmark teammate guide](docs/BENCHMARK_HANDOFF.md)
+- [Workflow optimization advisor proposal (not implemented)](docs/ADVISOR_DESIGN.md)
 - [Core component ownership and execution semantics](docs/CORE_BUILD_PLAN.md)
 - [Shared Python contracts](core/src/canopy/contracts.py)
 
