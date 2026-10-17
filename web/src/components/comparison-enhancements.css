@@ -1,0 +1,310 @@
+.improvement-summary,
+.provider-pricing {
+  margin: 26px 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+.benefits-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.benefits-heading h2,
+.benefits-heading h3 {
+  margin: 8px 0 0;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+.benefits-date,
+.pricing-status {
+  font: 10px var(--mono);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.comparison-context {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  max-width: 1000px;
+}
+.benefit-highlights {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.benefit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-top: 2px solid currentColor;
+  border-radius: 9px;
+  background: var(--bg);
+}
+.benefit-card strong {
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+}
+.benefit-card span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.benefit-card small {
+  font: 11px var(--mono);
+}
+.benefit-saving {
+  --benefit-color: var(--lime);
+}
+.benefit-efficiency {
+  --benefit-color: var(--blue);
+}
+.benefit-guardrail {
+  --benefit-color: var(--amber);
+}
+.benefit-card,
+.benefit-value {
+  color: var(--benefit-color);
+}
+.improvement-details > summary,
+.provider-expansion > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+}
+.improvement-details > summary::-webkit-details-marker,
+.provider-expansion > summary::-webkit-details-marker {
+  display: none;
+}
+.improvement-details[open] > summary > svg,
+.provider-expansion[open] > summary > svg {
+  transform: rotate(180deg);
+}
+.improvement-table-scroll {
+  overflow-x: auto;
+}
+.improvement-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.improvement-table caption {
+  text-align: left;
+  color: var(--muted);
+  padding: 14px 0;
+  font-size: 11px;
+}
+.improvement-table th,
+.improvement-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 13px 16px 13px 0;
+  text-align: left;
+  vertical-align: top;
+}
+.improvement-table thead th {
+  color: var(--muted);
+  font: 10px var(--mono);
+}
+.improvement-table th[scope="row"] {
+  width: 28%;
+  font-weight: 500;
+}
+.improvement-table td:nth-child(2) {
+  width: 43%;
+  font-variant-numeric: tabular-nums;
+}
+.benefit-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.measurement-context {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 6px;
+}
+.measurement-context summary {
+  cursor: pointer;
+}
+.measurement-context p {
+  max-width: 440px;
+}
+.measurement-context a,
+.provider-source {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.measurement-context a {
+  display: block;
+  margin-top: 5px;
+}
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.provider-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  min-width: 0;
+  background: var(--bg);
+}
+.provider-card h4 {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+.provider-model-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.provider-model-heading a {
+  font-size: 12px;
+  font-weight: 500;
+}
+.provider-model-heading span,
+.provider-rates,
+.provider-verification,
+.provider-note {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+.provider-cost-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 15px 0 12px;
+}
+.provider-cost-pair > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.provider-cost-pair span,
+.provider-cost-pair small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.provider-cost-pair small {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 15px;
+}
+.provider-cost-pair strong {
+  font: 14px var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.provider-cost-pair .baseline-higher strong {
+  color: var(--amber);
+  font-weight: 700;
+}
+.provider-cost-pair .baseline-higher small {
+  color: var(--amber);
+}
+.canopy-cost strong {
+  color: var(--lime);
+}
+.cost-tick {
+  animation: cost-tick 450ms ease-out;
+}
+@keyframes cost-tick {
+  from {
+    opacity: 0.45;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.provider-expansion {
+  border-top: 1px solid var(--line);
+  margin-top: 14px;
+}
+.provider-model-list {
+  display: grid;
+  gap: 16px;
+}
+.provider-model-list > .provider-model {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+}
+.provider-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
+.pricing-unavailable strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.pricing-unavailable p,
+.provider-model-list > p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.presentation .improvement-summary {
+  display: none;
+}
+@media (max-width: 1100px) {
+  .benefit-highlights {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .provider-grid {
+    grid-template-columns: 1fr;
+  }
+  .provider-cost-pair strong {
+    font-size: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .improvement-summary,
+  .provider-pricing {
+    padding: 16px;
+  }
+  .benefits-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .benefit-highlights {
+    gap: 8px;
+  }
+  .benefit-card {
+    padding: 12px;
+  }
+  .benefit-card strong {
+    font-size: 19px;
+  }
+  .benefits-heading h2,
+  .benefits-heading h3 {
+    font-size: 19px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cost-tick {
+    animation: none;
+  }
+}

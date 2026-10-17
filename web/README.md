@@ -28,26 +28,59 @@ separate green palette, and animations respect reduced motion.
 
 Mock tokens (9,600 on a full execution) and timing (3.01 s full / 455 ms reused)
 are invented UI examples, labeled **ILLUSTRATIVE**, not provider measurements.
-The mock pricing selector compares OpenAI GPT-6 Astra ($10 input / $50 output),
-Gemini 3.8 Flash ($0.75 / $3.75, promotional through December 31, 2026), and
-Claude Sonnet 5.5 ($2 / $10), in USD per million tokens. Rates were checked on
-October 17, 2026; links and the exact per-token prices are available in each
-lane’s **Rates & per-token deltas** disclosure.
+The pricing panel groups text input/output estimates under **OpenAI**, **Anthropic**,
+and **Gemini**. Each provider defaults to its verified flagship; **All models**
+expands the model list, published per-million rates and paired run estimates.
+Amounts update as simulated usage settles. Amber text and an upward arrow indicate
+faster baseline accumulation; completed pairs can show higher baseline LLM spend.
+Reduced-motion preferences disable the ticker animation.
 
-Canopy also models one JeV 1.13 decision per observed model task, at an assumed
-256 input and one output token per decision. Its $0.042 / free per-million rate
-adds $0.000043008 for four decisions. The Canopy token counters and input/output/
-total cost estimates include this overhead. Deltas are Canopy minus baseline;
-only completed pairs show savings. Reused tokens are not billed to the LLM.
-JeV appears only in the Canopy lane. The model does not make actual requests or
-claim JeV replacement quality; token usage and totals are illustrative.
-This hosted OpenRouter JeV pricing example is separate from the measured local
-Pollard-Jev/OpenJEV results in **Benchmarks**. Those results do not inherit the
-mock token costs or establish dollar savings.
+OpenAI and Anthropic rates were transcribed from the user's official-pricing
+screenshots supplied October 17, 2026. OpenAI includes GPT-6 Astra, GPT-6.1 Sol and
+GPT-6 Luna; Anthropic includes Claude Fable 5.1, Opus 5.5, Sonnet 5.5 and Haiku 5.5.
+The collapsed defaults are GPT-6 Astra and Claude Fable 5.1. Standard uncached
+short-context input/output rates price this simulation. OpenAI's long-context
+rates and Haiku's over-100,000-token tier remain visible in notes. Provider prompt
+cache discounts are separate from Canopy reuse and are not applied.
 
-Recorded and live sources preserve their reported costs and unknown values.
-The mock price selector does not alter stored runtime results or enable provider
-requests. Independent quality remains unknown.
+Gemini's user-supplied paid text rates include Gemini 4 Argon, 3.8 Flash,
+3.6 Flash and 3.8 Live, defaulting to Argon. Argon is $2 input / $10 output per
+million tokens through November 30, 2026, then $4 / $20 from December 1.
+Both Flash models are $0.75 / $3.75 through December 31, 2026, then $1.50 / $7.50
+from January 1, 2027. Live uses only its $0.75 text input / $4.50 text output
+rates. Gemini output prices include thinking tokens; the illustrative token
+workload is unchanged. Free-tier pricing is not applied. Omni Flash is omitted
+because no rates were supplied.
+
+Scheduled prices resolve using UTC dates at page load and each simulation start.
+Both lanes retain that rate snapshot during playback, including across a date
+boundary. The displayed per-million rates and accumulating dollar amounts use
+the same snapshot. Each model in `src/fixtures/pricing.ts` records its name,
+official source URL, supplied evidence type/date, flagship status and rate terms.
+The UI distinguishes screenshot evidence from user-supplied text; neither implies
+that this environment independently fetched the official sites.
+
+Canopy still models one JeV decision per observed model task, including reuse,
+with 256 input and one output token per decision. These illustrative tokens remain
+in Canopy's counters. The pricing panel estimates LLM charges only; unverified JeV
+charges, tool fees, storage and infrastructure are excluded. Total Canopy cost and
+net dollar savings remain unmeasured. No provider calls are enabled by the panel.
+Recorded and live sources preserve their own costs and unknown values.
+
+### Homepage improvement summary
+
+The homepage highlights fewer repeat calls, lower repeat duration, smaller message
+payloads and fewer SQLite commit transactions. **Explore all 14 improvements**
+opens the full table with measurement context and source links for every row.
+Green identifies reductions, cyan efficiency, and amber guardrail outcomes; each
+also has a text label. There is no PDF embed or download.
+
+`src/fixtures/improvements.ts` summarizes retained October 17 sample evidence.
+The 21 → 0 calls, 8,970 → 0 tokens and 21.33 → 1.10 seconds aggregate the nine
+retained baseline-repeat and governed-warm hosted comparisons. Communication
+figures refer to a local replay; JEV figures cover authored sample cases. These
+are separate workloads from the illustrative cargo tutorial. The measured
+Benchmarks workspace and its raw evidence remain unchanged.
 
 ## Measured benchmarks: JEV and CBOR-LD-EX
 

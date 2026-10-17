@@ -11,7 +11,7 @@ const copy: Record<
   workflow: {
     label: "THE WORK",
     title: "Follow the work through the swarm.",
-    body: "The job splits into document reads, checks, and a handoff. Novel tasks use the selected LLM. Compare the same job in both execution paths.",
+    body: "The job splits into document reads, checks, and a handoff. Novel tasks execute normally. Compare the same job in both execution paths.",
     selector: '[data-demo-focus="workflow"]',
   },
   repeat: {
@@ -23,7 +23,7 @@ const copy: Record<
   savings: {
     label: "THE DIFFERENCE",
     title: "Read the cost of the repeat.",
-    body: "Compare time, tokens, and input/output costs. Canopy includes the modeled JeV charge. A negative cost delta means less spend in this illustrative run.",
+    body: "Compare time and tokens, then inspect the provider cards below. Estimates use verified text rates when available; unverified rates are omitted. Modeled JeV tokens are separate from measured local JEV results.",
     selector: '[data-demo-focus="metrics"]',
   },
   view: {

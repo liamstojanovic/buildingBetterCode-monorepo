@@ -55,12 +55,9 @@ import {
   type Scenario,
 } from "../fixtures/cargo";
 import { DemoTour, type DemoTourStep } from "./DemoTour";
-import { MockTokenCosts } from "./MockTokenCosts";
-import {
-  swarmPrices,
-  modeledJevUsage,
-  type TokenPrice,
-} from "../fixtures/pricing";
+import { ProviderPricing } from "./ProviderPricing";
+import { ImprovementSummary } from "./ImprovementSummary";
+import { modeledJevUsage } from "../fixtures/pricing";
 import { ExecutionTree } from "./ExecutionTree";
 import { ExecutionGraph, statusLabels } from "./ExecutionGraph";
 
@@ -165,9 +162,7 @@ function RunLane({
   reference,
   view,
   illustrative,
-  price,
 }: {
-  price: TokenPrice;
   reference: RunState;
   view: "workflow" | "tree";
   illustrative: boolean;
@@ -304,14 +299,6 @@ function RunLane({
           {usage.model_calls} model dispatches <span>·</span> {reused} steps
           reused
         </div>
-        {illustrative && (
-          <MockTokenCosts
-            state={state}
-            baseline={variant === "baseline" ? state : reference}
-            variant={variant}
-            price={price}
-          />
-        )}
       </div>
       {view === "tree" ? (
         <ExecutionTree
@@ -658,9 +645,6 @@ export function Console(props: ConsoleProps) {
   const [methodology, setMethodology] = useState(false);
   const [presentation, setPresentation] = useState(false);
   const [view, setView] = useState<"workflow" | "tree">("workflow");
-  const [modelId, setModelId] = useState<string>(swarmPrices[0].id);
-  const mockPrice =
-    swarmPrices.find((price) => price.id === modelId) ?? swarmPrices[0];
   const [tourDismissed, setTourDismissed] = useState(() => {
     try {
       return sessionStorage.getItem("canopy-demo-tour") === "seen";
@@ -902,6 +886,7 @@ export function Console(props: ConsoleProps) {
               </div>
             </div>
           </div>
+          <ImprovementSummary />
           <section className="control-bar" aria-label="Run controls">
             <div className="scenario-control">
               <span className="control-icon">
@@ -1091,22 +1076,6 @@ export function Console(props: ConsoleProps) {
                     Take the tour
                   </button>
                 )}
-                {sourceMode === "mock" && (
-                  <label className="mock-model-picker">
-                    <span>MOCK SWARM MODEL</span>
-                    <select
-                      aria-label="Mock swarm model"
-                      value={modelId}
-                      onChange={(event) => setModelId(event.target.value)}
-                    >
-                      {swarmPrices.map((model) => (
-                        <option key={model.id} value={model.id}>
-                          {model.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                )}
                 <div
                   className="view-toggle"
                   role="group"
@@ -1204,7 +1173,6 @@ export function Console(props: ConsoleProps) {
                 reference={canopy}
                 view={view}
                 illustrative={sourceMode === "mock"}
-                price={mockPrice}
                 variant="baseline"
                 selected={
                   selected?.lane === "baseline" ? selected.stepId : undefined
@@ -1217,7 +1185,6 @@ export function Console(props: ConsoleProps) {
                 reference={baseline}
                 view={view}
                 illustrative={sourceMode === "mock"}
-                price={mockPrice}
                 variant="canopy"
                 selected={
                   selected?.lane === "canopy" ? selected.stepId : undefined
@@ -1226,6 +1193,7 @@ export function Console(props: ConsoleProps) {
                 evaluations={props.evaluations}
               />
             </div>
+            {sourceMode === "mock" && <ProviderPricing baseline={baseline} canopy={canopy} />}
             <div className="execution-foot">
               <span>
                 <Radio size={12} />

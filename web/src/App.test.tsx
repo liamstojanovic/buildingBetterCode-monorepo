@@ -102,42 +102,17 @@ describe("guided repeat demo", () => {
     ).toHaveTextContent("Read invoice");
   });
 
-  it("reprices both lanes when the mock model changes and hides estimates for recordings", async () => {
+  it("shows provider comparisons only for the simulation and preserves the evidence summary", async () => {
     render(<App />);
-    fireEvent.change(
-      screen.getByRole("combobox", { name: "Mock swarm model" }),
-      { target: { value: "gemini-3.8-flash" } },
-    );
-    const baseline = screen.getByRole("region", {
-      name: "baseline token costs",
-    });
-    const canopy = screen.getByRole("region", { name: "canopy token costs" });
-    expect(within(baseline).getByText("$0.014400")).toBeVisible();
-    expect(within(canopy).getByText("$0.014443")).toBeVisible();
-    expect(
-      within(canopy).getByText(/Promotional rates through December 31, 2026/),
-    ).toBeVisible();
-    fireEvent.change(
-      screen.getByRole("combobox", { name: "Mock swarm model" }),
-      { target: { value: "claude-sonnet-5.5" } },
-    );
-    expect(within(baseline).getByText("$0.038400")).toBeVisible();
-    expect(within(canopy).getByText("$0.038443")).toBeVisible();
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => new Response(JSON.stringify(coreBundle))),
-    );
-    await act(async () =>
-      fireEvent.change(screen.getByRole("combobox", { name: "Data source" }), {
-        target: { value: "recorded" },
-      }),
-    );
-    expect(
-      screen.queryByRole("region", { name: "canopy token costs" }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("combobox", { name: "Mock swarm model" }),
-    ).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "The same work. A different bill." })).toBeVisible();
+    expect(screen.getByRole("article", { name: "OpenAI pricing" })).toBeVisible();
+    expect(screen.getByRole("region", { name: "Less repeat work. More room to build." })).toBeVisible();
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify(coreBundle))));
+    await act(async () => fireEvent.change(screen.getByRole("combobox", { name: "Data source" }), {
+      target: { value: "recorded" },
+    }));
+    expect(screen.queryByRole("region", { name: "The same work. A different bill." })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Less repeat work. More room to build." })).toBeVisible();
   });
 
   it("reopens a dismissed guide from Take the tour and supports Back and Skip", () => {
