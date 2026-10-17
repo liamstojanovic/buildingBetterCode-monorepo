@@ -38,7 +38,7 @@ class DecisionDescriptor(Contract):
         if self.instance_fields and self.template_id is None:
             raise ValueError("instance_fields require a declared template and version")
         reserved = {"choices", "candidates", "allowed_labels", "tools", "allowed_tools",
-                    "next_steps", "allowed_next_steps", "output_schema", "instructions",
+                    "next_steps", "allowed_next_steps", "output_schema", "questions", "instructions",
                     "decision_request", "prompt", "messages", "system", "system_prompt",
                     "developer", "developer_prompt"}
         if (len(set(self.instance_fields)) != len(self.instance_fields)

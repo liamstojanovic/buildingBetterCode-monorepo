@@ -234,8 +234,9 @@ def test_readonly_store_has_verified_provenance_and_no_dispatch_or_writes(tmp_pa
             analyze_store(store, tenant_id="team-a")
 
 
-def test_descriptor_cannot_hide_catalogs_as_instance_data():
-    settings = {"template_id": "template", "template_version": "1", "instance_fields": ["tools"]}
+@pytest.mark.parametrize("catalog", ["tools", "questions"])
+def test_descriptor_cannot_hide_catalogs_as_instance_data(catalog):
+    settings = {"template_id": "template", "template_version": "1", "instance_fields": [catalog]}
     with pytest.raises(ValueError, match="excluding catalogs"):
         DecisionDescriptor(**settings)
     with pytest.raises(ValueError, match="require a declared template"):

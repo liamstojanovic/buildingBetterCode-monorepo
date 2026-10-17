@@ -31,6 +31,163 @@ def test_business_enum_discovered_without_annotation_but_needs_text_mapping():
     assert found.selected_choice == "delivery"
 
 
+def choice_question_inputs(field="priority"):
+    return {
+        "prompt": "An invented team cannot export a report needed tomorrow.",
+        "questions": {field: {
+            "type": "choice", "instructions": "Apply the supplied policy.",
+            "criteria": {
+                "high": "A workflow is blocked with a deadline within 48 hours.",
+                "normal": "A workaround exists without a near-term deadline.",
+            },
+        }},
+    }
+
+
+@pytest.mark.parametrize("wrapper", ["{}", "```json\n{}\n```", "```\n{}\n```"])
+def test_real_recording_choice_question_is_partial_text_mapping(wrapper):
+    found = inspect(choice_question_inputs(), {
+        "provider": "anthropic", "model": "recorded-model", "response_id": "recorded-response",
+        "provider_usage": {"input_tokens": 347},
+        "text": wrapper.format('{"priority":"high","reason":"The deadline is tomorrow."}'),
+    })
+    assert found.finding.category == "business_decision"
+    assert found.finding.status == "needs_mapping"
+    assert found.finding.strategy == "evaluate_openjev"
+    assert found.finding.native_compatibility == "requires_text_adapter"
+    assert found.finding.partial_substitution
+    assert found.finding.choices == ["high", "normal"]
+    assert found.selected_choice == "high"
+    assert found.descriptor.output_field == "priority"
+    assert found.descriptor.candidate_hypotheses == {}
+    assert "bounded_choice_question" in found.finding.signals
+    assert any("Author and review a hypothesis" in change for change in found.finding.required_changes)
+    assert any("remaining output work" in change for change in found.finding.required_changes)
+
+
+@pytest.mark.parametrize("field, category", [
+    ("priority", "business_decision"), ("tool", "tool_selection"),
+    ("tool_name", "tool_selection"), ("next_step", "next_step"),
+])
+def test_named_question_maps_explicit_output_field_to_category(field, category):
+    found = inspect(choice_question_inputs(field), {field: "high"})
+    assert found.finding.category == category
+    assert found.finding.status == "needs_mapping"
+    assert found.selected_choice == "high"
+
+
+def test_standalone_fences_do_not_split_equivalent_observed_output_shapes():
+    inputs = choice_question_inputs()
+    bare = '{"priority":"high","reason":"A deadline."}'
+    plain = inspect(inputs, {"provider": "openai", "text": bare})
+    fenced = inspect(inputs, {"provider": "anthropic", "text": f"```json\r\n{bare}\r\n```"})
+    assert plain.grouping == fenced.grouping
+
+
+def test_choice_question_criteria_semantics_remain_part_of_group_identity():
+    hints = {"template_id": "priority", "template_version": "1"}
+    inputs = choice_question_inputs()
+    first = inspect(inputs, {"priority": "high"}, hints)
+    changed = deepcopy(inputs)
+    changed["questions"]["priority"]["criteria"]["high"] = "Different policy threshold."
+    second = inspect(changed, {"priority": "high"}, hints)
+    assert first.grouping != second.grouping
+    assert first.grouping["catalogs"]["questions"] == inputs["questions"]
+
+
+@pytest.mark.parametrize("questions", [
+    None, [], {},
+    {"priority": {"type": "text", "criteria": {"high": "Urgent"}}},
+    {"priority": {"type": "choice", "criteria": {}}},
+    {"priority": {"type": "choice", "criteria": {"high": ""}}},
+    {"priority": {"type": "choice", "criteria": {"high": {"nested": "Urgent"}}}},
+    {"priority": {"type": "choice", "criteria": {"high": "Urgent"}, "instructions": []}},
+    {"priority": {"type": "choice", "criteria": {" ": "Urgent"}}},
+    {"priority": {"type": "choice", "criteria": {str(i): "Criterion" for i in range(129)}}},
+    {"priority": {"type": "choice", "criteria": {"high": "x" * 4001}}},
+    {"priority": {"type": "choice", "criteria": {"high": "Urgent"}},
+     "queue": {"type": "choice", "criteria": {"support": "Support queue"}}},
+])
+def test_malformed_or_multiple_questions_require_explicit_mapping(questions):
+    found = inspect({"questions": questions}, {"priority": "high", "queue": "support"})
+    assert found.finding.status == "needs_mapping"
+    assert found.finding.strategy == "retain_llm"
+    assert found.finding.partial_substitution
+    assert found.selected_choice is None
+    assert any("questions contract" in blocker for blocker in found.finding.blockers)
+
+
+@pytest.mark.parametrize("schema", [
+    {"enum": ["high", "normal"]},
+    {"properties": {"label": {"enum": ["high", "normal"]}}},
+    {"properties": {"priority": {"enum": ["high", "low"]}}},
+    {"properties": {"tool": {"enum": ["high", "normal"]}}},
+])
+def test_choice_question_conflicts_with_different_schema_shape_field_or_choices(schema):
+    found = inspect({**choice_question_inputs(), "output_schema": schema}, {"priority": "high"})
+    assert found.finding.status == "needs_mapping"
+    assert any("disagree" in blocker for blocker in found.finding.blockers)
+
+
+def test_choice_question_with_matching_schema_keeps_bounded_discovery():
+    found = inspect({**choice_question_inputs(), "output_schema": {
+        "properties": {"priority": {"enum": ["high", "normal"]}}
+    }}, {"priority": "high"})
+    assert not any("disagree" in blocker for blocker in found.finding.blockers)
+    assert found.selected_choice == "high"
+
+
+@pytest.mark.parametrize("change,hints", [
+    ({"allowed_tools": ["high", "normal"]}, None),
+    ({"allowed_next_steps": ["high", "normal"]}, None),
+    ({"choices": ["high", "low"]}, None),
+    ({}, {"category": "tool_selection"}),
+    ({}, {"output_field": "label"}),
+])
+def test_choice_question_conflicts_with_candidates_category_or_output_hint(change, hints):
+    found = inspect({**choice_question_inputs(), **change}, {"priority": "high"}, hints)
+    assert found.finding.status == "needs_mapping"
+    assert any("disagree" in blocker for blocker in found.finding.blockers)
+
+
+def test_multiple_questions_downgrade_even_an_otherwise_native_candidate():
+    inputs = deepcopy(pollard_jev_sample_task().steps[0].inputs)
+    inputs["questions"] = {
+        "decision": {"type": "choice", "criteria": {"reorder": "Low", "wait": "Enough"}},
+        "another": {"type": "choice", "criteria": {"yes": "Confirmed"}},
+    }
+    found = inspect(inputs, {"decision": "reorder", "another": "yes"})
+    assert found.finding.status == "needs_mapping"
+    assert found.finding.partial_substitution
+    assert any("questions contract" in blocker for blocker in found.finding.blockers)
+
+
+def test_declared_generation_does_not_hide_a_malformed_question_contract():
+    found = inspect({"questions": {"priority": {"type": "choice"}}}, "Generated answer.",
+                    {"generation_required": True})
+    assert found.finding.status == "needs_mapping"
+    assert found.finding.strategy == "retain_llm"
+    assert found.finding.partial_substitution
+    assert any("questions contract" in blocker for blocker in found.finding.blockers)
+
+
+@pytest.mark.parametrize("text", [
+    'Here is the answer:\n```json\n{"priority":"high"}\n```',
+    '```json\n{"priority":"high"}\n```\nMore explanation.',
+    '```json\n{"priority":"high"}\n```\n```json\n{"priority":"normal"}\n```',
+    '```python\n{"priority":"high"}\n```',
+    '```json {"priority":"high"}```',
+    '```json\n{"priority":"high"}',
+    '```json\n{"priority":"high","priority":"normal"}\n```',
+    '```json\n{"priority":"high","confidence":NaN}\n```',
+    '```json\n{"priority":"high","confidence":1e999}\n```',
+])
+def test_malformed_fenced_output_is_not_extracted_or_selected(text):
+    found = inspect(choice_question_inputs(), {"provider": "openai", "text": text})
+    assert found.selected_choice is None
+    assert found.grouping["output_shape"] == "string"
+
+
 @pytest.mark.parametrize("text", [
     '{"label":"a","label":"b"}',
     '{"label":"a","details":{"x":1,"x":2}}',

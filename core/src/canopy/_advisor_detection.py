@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import json
 import math
+import re
 from typing import Any, Literal
 
 from pydantic import AwareDatetime, TypeAdapter, ValidationError
@@ -20,7 +21,7 @@ _MISSING = object()
 _OUTPUT_KEYS = ("tool", "tool_name", "next_step", "action", "label", "decision", "classification")
 _CATALOG_KEYS = (
     "output_schema", "choices", "candidates", "allowed_labels", "tools", "allowed_tools",
-    "allowed_next_steps", "next_steps",
+    "allowed_next_steps", "next_steps", "questions",
 )
 
 
@@ -128,9 +129,15 @@ def _output(value: Any) -> Any:
         if set(value) == {"text"} or known_envelope:
             value = value["text"]
     if isinstance(value, str) and len(value) <= 16384:
+        candidate = value
+        # Accept one complete JSON code block, never extract a fragment from
+        # surrounding prose or multiple blocks. Keep the strict JSON checks.
+        fence = re.fullmatch(r"```(?:json)?\r?\n(.*?)\r?\n```", value.strip(), re.DOTALL)
+        if fence and "```" not in fence[1]:
+            candidate = fence[1]
         try:
             return json.loads(
-                value, object_pairs_hook=_json_object,
+                candidate, object_pairs_hook=_json_object,
                 parse_float=_json_number, parse_constant=_json_number,
             )
         except (ValueError, RecursionError):
@@ -208,6 +215,29 @@ def _schema_choices(schema: Any) -> tuple[list[str], str | None, bool]:
     return enums[0][1], enums[0][0], False
 
 
+def _question_choices(questions: Any) -> tuple[list[str], str | None, bool]:
+    """Recognize one authored choice question; criteria are not JEV hypotheses."""
+    if questions is _MISSING:
+        return [], None, False
+    if not isinstance(questions, dict) or len(questions) != 1:
+        return [], None, True
+    field, question = next(iter(questions.items()))
+    if (not _name(field) or not isinstance(question, dict)
+            or question.get("type") != "choice"
+            or ("instructions" in question and not _name(question["instructions"], 8000))):
+        return [], None, True
+    criteria = question.get("criteria")
+    if (not isinstance(criteria, dict) or not _names(list(criteria))
+            or not all(_name(text, 4000) for text in criteria.values())):
+        return [], None, True
+    return list(criteria), field, False
+
+
+def _field_category(field: str | None) -> str:
+    return ("tool_selection" if field in ("tool", "tool_name") else
+            "next_step" if field == "next_step" else "business_decision")
+
+
 def _grouping(step: Step, descriptor: DecisionDescriptor, output: Any) -> tuple[dict, str]:
     grouping: dict[str, Any] = {
         "descriptor": descriptor.model_dump(mode="json"),
@@ -246,12 +276,17 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
     native = _is_native_shape(native_request)
     schema = step.inputs.get("output_schema")
     choices, field, ambiguous = _schema_choices(schema)
+    question_choices, question_field, question_problem = _question_choices(
+        step.inputs.get("questions", _MISSING)
+    )
+    question_conflict = bool(question_choices and choices and field != question_field)
     sources: list[tuple[str, list[str], str]] = []
     if choices:
-        category = "tool_selection" if field in ("tool", "tool_name") else (
-            "next_step" if field == "next_step" else "business_decision"
-        )
-        sources.append(("bounded_output_schema", choices, category))
+        sources.append(("bounded_output_schema", choices, _field_category(field)))
+    if question_choices:
+        sources.append(("bounded_choice_question", question_choices, _field_category(question_field)))
+        if field is None:
+            field = question_field
     for key, category in (
         ("allowed_next_steps", "next_step"), ("next_steps", "next_step"),
         ("allowed_tools", "tool_selection"), ("tools", "tool_selection"),
@@ -287,6 +322,11 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
     ambiguous_category = len(specialized_categories) > 1
     if ambiguous_category:
         category = "unknown"
+    if question_choices:
+        question_category = _field_category(question_field)
+        question_conflict = question_conflict or bool(
+            specialized_categories - {question_category}
+        ) or declared_category not in ("unknown", question_category)
     hypothesis_map = dict(descriptor.candidate_hypotheses)
     for key in ("choices", "candidates"):
         for choice in step.inputs.get(key, []) if isinstance(step.inputs.get(key), list) else []:
@@ -337,12 +377,13 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
     generated_arguments = descriptor.argument_source == "generated" or (
         has_arguments and descriptor.argument_source != "existing"
     )
-    mixed = (descriptor.explanation_required or descriptor.generation_required
+    mixed = (descriptor.explanation_required or descriptor.generation_required or question_problem
              or bool(extra_fields) or generated_arguments)
     category_conflict = declared_category != "unknown" and bool(
         specialized_categories - {declared_category}
     )
-    conflict = ambiguous or ambiguous_category or category_conflict or bool(
+    conflict = (ambiguous or ambiguous_category or category_conflict
+                or question_problem or question_conflict) or bool(
         annotated and field and task.metadata["advisor"]["steps"][step.step_id].get("output_field")
         and task.metadata["advisor"]["steps"][step.step_id]["output_field"] != field
     )
@@ -362,6 +403,8 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
         if conflict:
             blockers.append("The declared decision contract conflicts with the recorded schema or candidates.")
             changes.append("Reconcile the decision category, output schema and candidate catalogs.")
+        if question_problem:
+            blockers.append("The questions contract is malformed or contains multiple questions; map each decision separately.")
         if ambiguous_category:
             blockers.append("Recorded structure mixes tool-selection and next-step decision contracts; reconcile the decision category.")
         return finish(AdvisorFinding(
@@ -374,7 +417,7 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
         ))
     if not choices:
         weak = field is not None or (isinstance(output, str) and 0 < len(output.strip()) <= 80)
-        if descriptor.generation_required:
+        if descriptor.generation_required and not question_problem:
             return finish(AdvisorFinding(
                 category=category, status="unsupported", strategy="retain_llm",
                 signals=["declared_generation_requirement"],
@@ -382,12 +425,16 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
                 native_compatibility="not_applicable",
             ))
         return finish(AdvisorFinding(
-            category=category, status="needs_mapping" if weak or annotated else "unsupported",
+            category=category, status="needs_mapping" if weak or annotated or question_problem else "unsupported",
             strategy="retain_llm", signals=["observed_selection_hint"] if weak else [],
             reasons=["Observed output alone does not establish the complete set of valid choices."]
             if weak else ["No bounded selection contract was found."],
-            blockers=["A complete authored candidate set and evidence mapping are missing."],
+            blockers=["A complete authored candidate set and evidence mapping are missing."] + (
+                ["The questions contract is malformed or contains multiple questions; map each decision separately."]
+                if question_problem else []
+            ),
             required_changes=["Declare the decision contract before evaluating substitution."],
+            partial_substitution=mixed if question_problem else False,
             native_compatibility="not_applicable",
         ))
 
@@ -400,6 +447,10 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
     if conflict:
         blockers.append("The recorded candidate contracts disagree or have ambiguous enum fields.")
         changes.append("Reconcile the decision category, output schema, declared choices and candidate catalogs.")
+    if question_problem:
+        blockers.append("The questions contract is malformed or contains multiple questions; map each decision separately.")
+    elif question_conflict:
+        blockers.append("The named choice question conflicts with the recorded output field or decision category.")
     if category_conflict:
         blockers.append("The declared decision category conflicts with recorded tool or transition structure.")
     if ambiguous_category:
@@ -426,7 +477,7 @@ def inspect_step(task: Task, step: Step, result: StepResult, config: RunConfig) 
     else:
         text_evidence = descriptor.evidence_kind == "text" or any(
             isinstance(step.inputs.get(key), str) for key in ("text", "ticket", "document", "context")
-        )
+        ) or (bool(question_choices) and isinstance(step.inputs.get("prompt"), str))
         compatibility = "requires_text_adapter" if text_evidence else "requires_mapping"
         blockers.append("The current native bridge requires typed numeric observations and authored hypotheses.")
         changes.append("Design an explicit text-evidence adapter." if text_evidence else
