@@ -141,7 +141,9 @@ class PollardJevAdapter:
         worker = Path(__file__).with_name("_pollard_jev_worker.py")
         try:
             self._process = subprocess.Popen(
-                [str(Path(config.worker_python).resolve()), "-u", "-I", str(worker.resolve())],
+                # Preserve the venv executable path: resolving its symlink on
+                # POSIX would launch base Python without the worker packages.
+                [str(Path(config.worker_python).absolute()), "-u", "-I", str(worker.resolve())],
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                 text=True, encoding="utf-8", bufsize=1,
                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
