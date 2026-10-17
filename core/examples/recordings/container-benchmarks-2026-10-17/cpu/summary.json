@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-10-17T20:09:26.264153+00:00",
+  "advisor": {
+    "reports": 9,
+    "recommendations": 21,
+    "model_calls": 0
+  },
+  "source": "Committed actual hosted calls on invented sample data; offline reanalysis",
+  "governance": "Fresh synthetic Python executions; no model calls",
+  "communications": "Fresh codec/mailbox measurements of retained event payloads"
+}

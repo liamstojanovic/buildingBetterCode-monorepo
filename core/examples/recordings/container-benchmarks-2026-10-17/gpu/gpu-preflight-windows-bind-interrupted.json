@@ -1,0 +1,11 @@
+{
+  "format": "canopy-container-validation-note/v1",
+  "generated_at": "2026-10-17T19:55:19.144941+00:00",
+  "completed": false,
+  "reason": "Stopped only the validation preflight container while checkpoint loading from a Windows bind was progressing slowly; switched to the verified Linux named volume used by the runbook.",
+  "container_id": "5a493ac7073a",
+  "completed_case_progress_messages": 0,
+  "last_host_gpu_memory_used_mib": 6808,
+  "actual_model_calls": null,
+  "note": "No completed inference progress was emitted; preflight had not written its final receipt. This is an interruption note, not a capacity result."
+}

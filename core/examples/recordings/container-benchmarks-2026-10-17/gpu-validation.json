@@ -1,0 +1,43 @@
+{
+  "format": "canopy-container-validation-note/v1",
+  "generated_at": "2026-10-17T19:56:50.109653+00:00",
+  "image": "canopy-demo-jev:local",
+  "image_id": "sha256:1bb7667994c120a07dceeded6dfbba25d4e1c1997abb942a812f956d05af0b84",
+  "host_docker_desktop": "4.28.0.139021",
+  "host_nvidia_driver": "595.79",
+  "host_gpu": "NVIDIA GeForce RTX 4090 Laptop GPU",
+  "teammate_4080_12gb_tested": false,
+  "temporary_local_override": "Read-only bind of the installed host libnvdxgdmal.so.1 at its standard library and exact /usr/lib/wsl/drivers paths. This compensates for old Docker Desktop driver injection; no host files or Docker configuration were modified.",
+  "standard_current_docker_gpu_compose_tested": false,
+  "model_cache": "Docker named volume canopy-demo_openjev-model, read-only for inference; seeded by copying exactly five previously hash-verified pinned files from a dereferenced local cache, then verifying all destination SHA256 values.",
+  "new_weight_downloads": 0,
+  "new_hosted_model_calls": 0,
+  "complete_preflight_calls": 7,
+  "comparison_calls": 14,
+  "preflight_artifact": "gpu/gpu-preflight-validation-named-volume.json",
+  "comparison_artifact": "jev/comparison.json",
+  "journal": "jev/trials.jsonl",
+  "preserved_initial_failure": "gpu/device-validation.json",
+  "preserved_windows_bind_interruption": "gpu/gpu-preflight-windows-bind-interrupted.json",
+  "checks": {
+    "journal_completed": 14,
+    "journal_failed": 0,
+    "raw_expected_matches_all_trials": 14,
+    "accepted_expected_matches_all_trials": 12,
+    "all_raw_choices_repeat_identically": true,
+    "all_accepted_choices_repeat_identically": true,
+    "served_index.html": {
+      "status": 200,
+      "bytes": 72552
+    },
+    "served_comparison.json": {
+      "status": 200,
+      "bytes": 202244
+    },
+    "served_manifest.json": {
+      "status": 200,
+      "bytes": 372
+    }
+  },
+  "publication_note": "Only artifact paths were changed to resolve inside this portable bundle; measurements and original check results are unchanged."
+}

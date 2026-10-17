@@ -1,0 +1,4 @@
+# Apply after docker-compose.demo.yml for the optional live approval rehearsal.
+services:
+  api:
+    command: [python, deploy/demo/start_api.py, --db, /data/approval.sqlite3, --require-approval]

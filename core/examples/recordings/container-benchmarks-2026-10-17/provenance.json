@@ -1,0 +1,48 @@
+{
+  "format": "canopy-benchmark-publication/v1",
+  "published_at": "2026-10-17T20:11:22.426139+00:00",
+  "cpu_source_revision": "28a276b14bb5ce70ecef026955dcbdd5dff8d1c4",
+  "gpu_source_revision": "840600770afc6bf4ae5855a41157ce7e550dd7b6",
+  "unchanged_runtime_and_evaluator_trees": {
+    "core/src": {
+      "cpu_and_audit": "82a7e5f2d8c5040cd0d5e28493c02ce0f9d9fe7a",
+      "gpu_evaluation": "82a7e5f2d8c5040cd0d5e28493c02ce0f9d9fe7a"
+    },
+    "core/examples": {
+      "cpu_and_audit": "9b2980ae44cc751777a8d445c43b841da23ba6d2",
+      "gpu_evaluation": "9b2980ae44cc751777a8d445c43b841da23ba6d2"
+    }
+  },
+  "source_manifest_sha256": "1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0",
+  "cpu_image_id": "sha256:8c3982c9d9d236768aba51f20f50351f8c89d3fe02b301e1fbe8f98f8524c260",
+  "gpu_image_id": "sha256:1bb7667994c120a07dceeded6dfbba25d4e1c1997abb942a812f956d05af0b84",
+  "cpu_execution": {
+    "command": "docker compose -f docker-compose.demo.yml run --rm tools python deploy/demo/run_cpu_demo.py --output-dir /results/cpu-refresh-20261017-2009",
+    "network_mode": "none",
+    "new_hosted_calls": 0
+  },
+  "gpu_execution": {
+    "network_mode": "none",
+    "completed_capacity_calls": 7,
+    "completed_comparison_calls": 14,
+    "rerun_during_this_publication": false,
+    "new_hosted_calls": 0,
+    "model_storage": "Linux named volume; five pinned files SHA256-verified",
+    "compatibility_override": "Read-only bind of the installed host libnvdxgdmal.so.1 at its standard library and exact /usr/lib/wsl/drivers paths. This compensates for old Docker Desktop driver injection; no host files or Docker configuration were modified.",
+    "teammate_4080_12gb_tested": false
+  },
+  "publication_changes": [
+    "CPU HTML evidence backlink made relative for offline browsing.",
+    "CPU comms HTML protocol link adjusted to the deeper publication directory; its manifest updated.",
+    "gpu-validation.json artifact references made relative to this bundle.",
+    "All JSON measurements, trial journal entries, advisor findings, failures and original evidence timestamps preserved.",
+    "Text line endings normalized to the repository LF policy; JSON values and measurements are unchanged."
+  ],
+  "historical_recordings_preserved": true,
+  "limitations": [
+    "Seven invented cases, not a representative held-out benchmark.",
+    "Hosted recordings were not re-executed; current code and source integrity were audited.",
+    "Native, Docker, and historical hosted timings are different runs, not a controlled performance comparison.",
+    "This budget ledger covers incremental provider/API spending; local electricity and hardware costs were not measured."
+  ]
+}

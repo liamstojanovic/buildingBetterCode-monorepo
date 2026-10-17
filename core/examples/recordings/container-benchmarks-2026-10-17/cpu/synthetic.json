@@ -1,0 +1,730 @@
+{
+  "synthetic": true,
+  "description": "Local Python fixture; no live provider calls, tokens, cost, or energy claims.",
+  "runs": {
+    "baseline": {
+      "schema_version": "1",
+      "run_id": "b6bdb66d-756a-4246-8e6b-c11925162265",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "baseline",
+      "status": "completed",
+      "started_at": "2026-10-17T20:09:14.815481Z",
+      "finished_at": "2026-10-17T20:09:14.903106Z",
+      "output": {
+        "greeting": {
+          "message": "Hello, Canopy demo.",
+          "synthetic": true
+        },
+        "read_catalog": {
+          "amount_minor": 2400,
+          "currency": "USD",
+          "sku": "DEMO-001",
+          "source_version": "1",
+          "synthetic": true
+        },
+        "summarize_quote": {
+          "amount_minor": 2400,
+          "provider": "deterministic-python-fixture",
+          "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+          "synthetic": true
+        }
+      },
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 1,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.2659600004335516,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.21961699985695304,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "completed",
+          "output": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 1,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.214418000268779,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 1,
+        "tool_calls": 2,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 87.61270799959675,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": true,
+      "reason": null
+    },
+    "governed": {
+      "schema_version": "1",
+      "run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T20:09:14.912241Z",
+      "finished_at": "2026-10-17T20:09:15.011482Z",
+      "output": {
+        "greeting": {
+          "message": "Hello, Canopy demo.",
+          "synthetic": true
+        },
+        "read_catalog": {
+          "amount_minor": 2400,
+          "currency": "USD",
+          "sku": "DEMO-001",
+          "source_version": "1",
+          "synthetic": true
+        },
+        "summarize_quote": {
+          "amount_minor": 2400,
+          "provider": "deterministic-python-fixture",
+          "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+          "synthetic": true
+        }
+      },
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:06a7d33d50484defe264f7a754ee582f964b7f94df04ef12edb0997d8facfc84",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 1,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.23623800007044338,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:a8fac70d6f5a62f1797d111eaf3537cc71363297ab5653f0b194ed15a075c9b4",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.22737399967809324,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "completed",
+          "output": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:9bdd7bcbb5f07387695047f9bd6eab08a1a28f72cb1d8f9f55440ba560dcd84e",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 1,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.2457280002090556,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 1,
+        "tool_calls": 2,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 99.22600499976397,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": true,
+      "reason": null
+    },
+    "warm": {
+      "schema_version": "1",
+      "run_id": "c38d0f14-2f07-43dc-bf5e-a0651253561e",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T20:09:15.020983Z",
+      "finished_at": "2026-10-17T20:09:15.083533Z",
+      "output": {
+        "greeting": {
+          "message": "Hello, Canopy demo.",
+          "synthetic": true
+        },
+        "read_catalog": {
+          "amount_minor": 2400,
+          "currency": "USD",
+          "sku": "DEMO-001",
+          "source_version": "1",
+          "synthetic": true
+        },
+        "summarize_quote": {
+          "amount_minor": 2400,
+          "provider": "deterministic-python-fixture",
+          "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+          "synthetic": true
+        }
+      },
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "reused",
+          "output": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:06a7d33d50484defe264f7a754ee582f964b7f94df04ef12edb0997d8facfc84",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "reused",
+          "output": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:a8fac70d6f5a62f1797d111eaf3537cc71363297ab5653f0b194ed15a075c9b4",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "reused",
+          "output": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:9bdd7bcbb5f07387695047f9bd6eab08a1a28f72cb1d8f9f55440ba560dcd84e",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 62.53042699972866,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "1"
+      },
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": true,
+      "reason": null
+    },
+    "source_changed": {
+      "schema_version": "1",
+      "run_id": "377e370d-1e4c-49e3-8f3d-92f0c73b2a5f",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "governed",
+      "status": "completed",
+      "started_at": "2026-10-17T20:09:15.092800Z",
+      "finished_at": "2026-10-17T20:09:15.179450Z",
+      "output": {
+        "greeting": {
+          "message": "Hello, Canopy demo.",
+          "synthetic": true
+        },
+        "read_catalog": {
+          "amount_minor": 3100,
+          "currency": "USD",
+          "sku": "DEMO-001",
+          "source_version": "2",
+          "synthetic": true
+        },
+        "summarize_quote": {
+          "amount_minor": 3100,
+          "provider": "deterministic-python-fixture",
+          "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+          "synthetic": true
+        }
+      },
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "completed",
+          "output": {
+            "amount_minor": 3100,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "2",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:419227e745e3811348298d9c6f0dd6dea8c21d7ac19da841c019645b49309dc8",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 1,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.23559700002806494,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "completed",
+          "output": {
+            "amount_minor": 3100,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 3100 USD minor units.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:d2ed54b182ec70bcfc975fc8d53b939fe77d7e8e98a7d4037fdec52704b0a5c5",
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 1,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.31298500016418984,
+            "tokens_known": true,
+            "elapsed_known": true
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "reused",
+          "output": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:9bdd7bcbb5f07387695047f9bd6eab08a1a28f72cb1d8f9f55440ba560dcd84e",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 1,
+        "tool_calls": 1,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 86.64020600008371,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "2"
+      },
+      "reused_steps": 1,
+      "invalidated_steps": 2,
+      "replay_source_run_id": null,
+      "synthetic": true,
+      "reason": null
+    },
+    "budget_refused": {
+      "schema_version": "1",
+      "run_id": "b90297cd-d233-45b1-af3d-9789188d5c9b",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "governed",
+      "status": "blocked",
+      "started_at": "2026-10-17T20:09:15.188369Z",
+      "finished_at": "2026-10-17T20:09:15.226849Z",
+      "output": {},
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "blocked",
+          "output": null,
+          "reason": "steps budget has 0 remaining; requested 1",
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": false,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "blocked",
+          "output": null,
+          "reason": "dependencies did not complete: read_catalog",
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": false,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "blocked",
+          "output": null,
+          "reason": "steps budget has 0 remaining; requested 1",
+          "cache_key": null,
+          "source_run_id": null,
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": null,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": false,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 38.4665829997175,
+        "tokens_known": true,
+        "elapsed_known": true
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "2"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": null,
+      "synthetic": true,
+      "reason": "steps budget has 0 remaining; requested 1; dependencies did not complete: read_catalog; steps budget has 0 remaining; requested 1"
+    },
+    "replay": {
+      "schema_version": "1",
+      "run_id": "b8765b52-6cfa-4bd8-9dfc-5708372fda67",
+      "task_id": "synthetic-quote-task",
+      "tenant_id": "demo-tenant",
+      "mode": "replay",
+      "status": "completed",
+      "started_at": "2026-10-17T20:09:15.240760Z",
+      "finished_at": "2026-10-17T20:09:15.240760Z",
+      "output": {
+        "greeting": {
+          "message": "Hello, Canopy demo.",
+          "synthetic": true
+        },
+        "read_catalog": {
+          "amount_minor": 2400,
+          "currency": "USD",
+          "sku": "DEMO-001",
+          "source_version": "1",
+          "synthetic": true
+        },
+        "summarize_quote": {
+          "amount_minor": 2400,
+          "provider": "deterministic-python-fixture",
+          "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+          "synthetic": true
+        }
+      },
+      "steps": [
+        {
+          "step_id": "read_catalog",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "currency": "USD",
+            "sku": "DEMO-001",
+            "source_version": "1",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:06a7d33d50484defe264f7a754ee582f964b7f94df04ef12edb0997d8facfc84",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "summarize_quote",
+          "status": "completed",
+          "output": {
+            "amount_minor": 2400,
+            "provider": "deterministic-python-fixture",
+            "summary": "Synthetic quote for DEMO-001: 2400 USD minor units.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:a8fac70d6f5a62f1797d111eaf3537cc71363297ab5653f0b194ed15a075c9b4",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        },
+        {
+          "step_id": "greeting",
+          "status": "completed",
+          "output": {
+            "message": "Hello, Canopy demo.",
+            "synthetic": true
+          },
+          "reason": null,
+          "cache_key": "canopy-json-v1:9bdd7bcbb5f07387695047f9bd6eab08a1a28f72cb1d8f9f55440ba560dcd84e",
+          "source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+          "usage": {
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "provider_cached_input_tokens": 0,
+            "model_calls": 0,
+            "tool_calls": 0,
+            "cost_usd": 0.0,
+            "energy_j": null,
+            "elapsed_ms": 0.0,
+            "tokens_known": true,
+            "elapsed_known": false
+          }
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 0.0,
+        "tokens_known": true,
+        "elapsed_known": false
+      },
+      "policy_version": "1",
+      "evidence_versions": {
+        "synthetic-catalog": "1"
+      },
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "replay_source_run_id": "96454d12-d312-46dd-9f22-e35c0c99084e",
+      "synthetic": true,
+      "reason": null
+    }
+  }
+}

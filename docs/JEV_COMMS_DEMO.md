@@ -1,5 +1,30 @@
 # JEV evaluation and agent communication demo
 
+To rerun the complete demo in Docker on Windows/WSL2, use
+[demo_handoff.md](../demo_handoff.md). It includes the GPU image, explicit model
+download, complete-case capacity check and fresh results served beside this evidence.
+
+Start with the [current container results](../core/examples/recordings/container-benchmarks-2026-10-17/index.html)
+and [measurement notes](../core/examples/recordings/container-benchmarks-2026-10-17/README.md).
+The CPU rerun completed at **20:09:26 UTC on 17 October 2026** against `28a276b`;
+the bundle also retains the latest GPU rehearsal. No hosted calls were made for
+this refresh, so its provider spend was **$0**.
+
+| Current container evidence | Result |
+| --- | --- |
+| [Offline advisor and governance](../core/examples/recordings/container-benchmarks-2026-10-17/cpu/index.html) | Nine advisor reports, 21 groups, zero model calls |
+| [JEV comparison](../core/examples/recordings/container-benchmarks-2026-10-17/jev/index.html) | 14/14 raw matches, 12/14 accepted; business priority deferred twice; 301.87 ms warm median |
+| [Communication measurements](../core/examples/recordings/container-benchmarks-2026-10-17/cpu/comms/index.html) | 618 events / 36 batches; 771,411 JSON bytes → 356,491 shared-CBOR bytes, 53.79% smaller |
+| [GPU capacity check](../core/examples/recordings/container-benchmarks-2026-10-17/gpu/gpu-preflight-validation-named-volume.json) | Seven complete cases; peak PyTorch reservation 9,186 MiB on a 16 GB 4090 |
+
+The CPU rerun's whole-corpus median encode/decode times were **32.05 / 52.38 ms
+for JSON** and **38.24 / 72.39 ms for shared CBOR**. Its local mailbox samples
+were **1,219.06 ms individually / 219.77 ms batched**, one sample per path.
+These measure local codec and storage work, not network performance. The GPU
+rehearsal needed a temporary library bind for old Docker Desktop; neither that
+run nor its allocator ceiling establishes fit on the teammate's physical 12 GB
+4080. Preserve the limitations and use the complete capacity check there.
+
 Open [the demo start page](../core/examples/recordings/index.html) in a browser.
 The pages contain their data and styling locally. Viewing them needs no model
 credentials, GPU, database or network connection. The team's frontend stays in
@@ -14,7 +39,7 @@ For a local URL, run from the repository root:
 Then open `http://127.0.0.1:8765/examples/recordings/`. Stop the server with Ctrl+C
 after presenting.
 
-## Recorded JEV results
+## Historical native JEV results
 
 The [comparison page](../core/examples/recordings/jev-evaluation-2026-10-17/index.html)
 contains 14 actual local NLI calls: two passes over seven distinct sample cases.
@@ -39,7 +64,8 @@ contract and expected choice. JEV's first raw choices agree with 62 of those
 63 outputs. These are comparisons against repetitions of seven cases, not a
 63-case JEV benchmark. All three deterministic next-step rules also matched.
 
-The first local call took **37.36 s**, including **36.47 s** of model loading.
+In the earlier native Windows run, the first local call took **37.36 s**,
+including **36.47 s** of model loading.
 The 13 subsequent calls had a **491.20 ms median**, ranging from **251.10 to
 847.93 ms**, on an RTX 4090 Laptop GPU. Full phase timings, the exact runtime
 versions and checkpoint hashes are in the
@@ -74,8 +100,9 @@ current local GPU latency are not a controlled speed comparison.
 
 ## Present the communication workflow
 
-The [communication page](../core/examples/recordings/comms-efficiency-2026-10-17/index.html)
-contains these measurements over all 618 events in 36 recorded runs:
+The [historical native communication page](../core/examples/recordings/comms-efficiency-2026-10-17/index.html)
+contains these measurements over all 618 events in 36 recorded runs. The current
+container rerun linked above reproduced the same byte counts:
 
 | Encoding | Full body bytes |
 | --- | ---: |
@@ -89,7 +116,7 @@ The portable base64 payload alone is 475,376 bytes before its JSON wrapper; it
 must not be displayed as the measured binary wire size. The dense-float example
 selects JSON: 1,827 bytes versus 2,866 bytes of CBOR.
 
-An actual local SQLite FULL/WAL delivery sample took **872.85 ms** with 618
+The earlier native SQLite FULL/WAL delivery sample took **872.85 ms** with 618
 individual transactions and **204.52 ms** with 36 atomic batch transactions.
 This includes validation and insertion, but not frame construction,
 acknowledgement or network time. It is one sample per path, not a throughput

@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1
+FROM python:3.12.15-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+WORKDIR /app
+
+# Use the same exact dependency versions as core CI. The separate JEV image
+# owns torch/transformers and the incompatible Pollard-Jev dependency tree.
+COPY core/requirements.lock /tmp/requirements.lock
+RUN python -m pip install --no-cache-dir -r /tmp/requirements.lock
+COPY core/ /app/core/
+RUN python -m pip install --no-cache-dir --no-deps /app/core \
+    && python -m pip check
+COPY web/scripts/export-core-fixtures.py /app/web/scripts/export-core-fixtures.py
+COPY deploy/demo/ /app/deploy/demo/
+
+RUN mkdir -p /data /generated /demo-fixtures
+EXPOSE 8000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=6 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/runs', timeout=4).read()"
+CMD ["python", "deploy/demo/start_api.py", "--db", "/data/api.sqlite3"]

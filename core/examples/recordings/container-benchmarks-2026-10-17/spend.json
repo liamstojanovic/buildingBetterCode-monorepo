@@ -1,0 +1,12 @@
+{
+  "format": "canopy-benchmark-spend/v1",
+  "scope": "This audit, CPU refresh, and publication task only; earlier hosted calls are retained evidence.",
+  "authorized_limit_usd": 5.0,
+  "new_hosted_requests": 0,
+  "provider_api_spend_usd": 0.0,
+  "remaining_authorized_budget_usd": 5.0,
+  "basis": "All executed benchmark commands were local Docker tools with network_mode=none; no hosted-provider adapter was invoked.",
+  "historical_hosted_cost_usd": null,
+  "local_electricity_cost_usd": null,
+  "cost_savings_usd": null
+}

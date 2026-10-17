@@ -1,0 +1,27 @@
+# Only versioned demo inputs belong in images. In particular, never send local
+# provider keys, private run databases, virtual environments or model caches.
+**
+!core/
+!core/**
+!web/
+!web/**
+!deploy/
+!deploy/demo/
+!deploy/demo/**
+**/.env
+**/.env.*
+**/.canopy
+**/.venv*
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+**/node_modules
+**/dist
+**/build
+**/storybook-static
+**/*.sqlite3*
+**/*.db
+**/*.db-shm
+**/*.db-wal

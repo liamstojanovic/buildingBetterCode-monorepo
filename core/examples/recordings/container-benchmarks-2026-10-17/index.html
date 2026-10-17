@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canopy — current container benchmark evidence</title>
+<style>
+body{margin:0;background:#0c1c22;color:#e9f3f1;font:17px/1.6 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:44px 24px}a{color:#8cdec4}h1{font-size:clamp(32px,5vw,50px);line-height:1.15}h2{font-size:24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:28px 0}article{background:#142b32;border:1px solid #31515b;border-radius:14px;padding:24px}.metric{font-size:30px;font-weight:700;color:#8cdec4}.label{color:#bbd1d1;font-size:14px}.scope{border-left:3px solid #e4b665;padding:8px 20px;color:#d4e2df}td,th{padding:12px;text-align:left;border-bottom:1px solid #31515b}table{border-collapse:collapse;width:100%}.scroll{overflow:auto}footer{margin-top:32px;font-size:15px}
+</style>
+<main>
+<p><a href="../index.html">← All retained evidence</a></p>
+<p class="label">CANOPY / CONTAINER REHEARSAL / 17 OCTOBER 2026</p>
+<h1>Current results, with the costs and limits visible.</h1>
+<p>Fresh CPU measurements at 20:09 UTC, the latest completed local GPU evaluation at 19:56 UTC, and an integrity audit of the historical hosted recordings. <strong>$0 new provider spending</strong> against a $5 limit.</p>
+<div class="grid">
+<article><h2>Offline advisor</h2><p class="metric">21 groups / 0 calls</p><p>Nine fresh reports across business decisions, tool selection and next steps. Findings remain discovery records.</p><a href="cpu/index.html">Open CPU and advisor results →</a></article>
+<article><h2>Actual OpenJEV</h2><p class="metric">14 raw / 12 accepted</p><p>Two passes over seven cases. Business priority deferred twice; all tool and next-step choices accepted.</p><a href="jev/index.html">Inspect scores and gates →</a><p class="label">301.87 ms warm median; 6,469.67 ms first call including loading.</p></article>
+<article><h2>Agent messages</h2><p class="metric">53.79% fewer bytes</p><p>618 messages in 36 batches: 771,411 JSON bytes versus 356,491 CBOR bytes, with exact roundtrips.</p><a href="cpu/comms/index.html">Inspect communication results →</a><p class="label">CBOR encoding and decoding were slower than JSON. No network or token-saving claim.</p></article>
+</div>
+<p class="scope"><strong>GPU scope:</strong> 16 GB RTX 4090 Laptop, 9,186 MiB peak PyTorch reserved memory. This host's old Docker Desktop 4.28 required a temporary driver-library bind. The teammate's 12 GB 4080 and standard current-Docker GPU setup still require their own capacity check.</p>
+<h2>Keep the tradeoffs visible</h2>
+<div class="scroll"><table><thead><tr><th>Measurement</th><th>JSON / individual</th><th>Batched CBOR</th></tr></thead><tbody>
+<tr><td>Full body bytes</td><td>771,411</td><td>356,491</td></tr>
+<tr><td>Whole-corpus encode median, five repeats</td><td>32.05 ms</td><td>38.24 ms</td></tr>
+<tr><td>Whole-corpus decode median, five repeats</td><td>52.38 ms</td><td>72.39 ms</td></tr>
+<tr><td>Local SQLite delivery, one sample per path</td><td>1,219.06 ms / 618 transactions</td><td>219.77 ms / 36 transactions</td></tr>
+</tbody></table></div>
+<p>SQLite measurements exclude frame construction, acknowledgement and network time. Byte reduction does not establish model-token, dollar, energy or overall latency savings.</p>
+<p class="scope">Seven invented cases are a smoke evaluation, not an independent representative benchmark. Historical hosted inference was preserved, not rerun. Acceptance gates remain uncalibrated; business explanations remain separate work. No selected tool or transition is executed.</p>
+<h2>Inspect provenance and attempts</h2>
+<p><a href="README.md">Full findings and reproduction</a> · <a href="provenance.json">Revisions and image identities</a> · <a href="audit.json">Integrity audit</a> · <a href="spend.json">Spending record</a> · <a href="manifest.json">File hashes</a></p>
+<p><a href="gpu-validation.json">GPU validation context</a> · <a href="gpu/gpu-preflight-validation-named-volume.json">Complete capacity result</a> · <a href="gpu/device-validation.json">Initial CUDA failure</a> · <a href="gpu/gpu-preflight-windows-bind-interrupted.json">Interrupted Windows-cache attempt</a> · <a href="jev/trials.jsonl">All 14 completed JEV trials</a></p>
+<footer>Use the current frontend's Optimization report importer for <a href="cpu/advisor/openai-next-step.json">advisor JSON</a>. JEV and communication pages have separate report formats. Earlier evidence remains available from the combined index.</footer>
+</main></html>
