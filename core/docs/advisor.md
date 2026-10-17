@@ -91,8 +91,17 @@ inference usage again. An analysis fingerprint is never an execution-cache key.
 
 ## Optional declarations
 
-Automatic discovery uses recorded structure. Applications can declare their
-known decision contract under `Task.metadata.advisor.steps[step_id]`. For example,
+Automatic discovery uses recorded structure, including bounded enums/catalogs and
+a single named `questions` entry with `type: "choice"` and a nonempty `criteria`
+mapping. For example, `questions.priority.criteria` can declare `high` and `normal`
+with authored criteria text. Ambiguous or conflicting contracts still require
+mapping. Criteria prose is not automatically converted into native JEV evidence.
+Output inspection accepts strict JSON, including one complete standalone Markdown
+JSON fence; it does not extract JSON from surrounding prose or multiple fences.
+A choice accompanied by a generated reason remains a partial substitution.
+
+Applications can declare their known decision contract under
+`Task.metadata.advisor.steps[step_id]`. For example,
 this is a `Task.metadata` value, not a complete task:
 
 ```json
@@ -119,8 +128,9 @@ Here `ticket` must be a top-level input field containing instance data; instruct
 and tool definitions stay outside it. Template ID and version must be supplied
 together, and `instance_fields` requires that template declaration. Explicitly
 listed instance fields may vary while their shape remains part of the group.
-Unlisted inputs stay exact. Protected catalog/choice/schema/instruction fields,
-including `prompt`, `messages`, `system`, `system_prompt`, `developer` and
+Unlisted inputs stay exact. Protected catalogs and schema fields, including
+`questions`, and instruction-bearing inputs such as `prompt`, `messages`,
+`system`, `system_prompt`, `developer` and
 `developer_prompt`, cannot be stripped to force grouping. Keep ticket/text/state
 data separate from instructions; unknown monolithic prompts remain exact. Without
 declarations, grouping is conservative. Update versions when operation meaning
