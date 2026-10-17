@@ -261,7 +261,12 @@ export function mockRecording(
     }
     const usage = unknownUsage();
     usage.tokens_known = true;
+    // Deliberately invented demo values, never provider measurements.
+    usage.elapsed_known = true;
+    usage.elapsed_ms = reused ? 65 : 430;
     if (status === "completed" || status === "failed") {
+      usage.input_tokens = item.kind === "model" ? 1800 : 0;
+      usage.output_tokens = item.kind === "model" ? 600 : 0;
       usage.model_calls = Number(item.kind === "model");
       usage.tool_calls = Number(item.kind === "tool");
       modelCalls += usage.model_calls;
@@ -334,6 +339,16 @@ export function mockRecording(
     usage: {
       ...unknownUsage(),
       tokens_known: true,
+      input_tokens: results.reduce(
+        (sum, step) => sum + step.usage.input_tokens,
+        0,
+      ),
+      output_tokens: results.reduce(
+        (sum, step) => sum + step.usage.output_tokens,
+        0,
+      ),
+      elapsed_known: true,
+      elapsed_ms: offset,
       model_calls: modelCalls,
       tool_calls: toolCalls,
     },

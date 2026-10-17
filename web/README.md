@@ -4,6 +4,48 @@ Bun, React, TypeScript, Vite, React Flow, and Storybook. The frontend consumes
 version 1 core contracts and owns only `web/`. Use Node 22.12+ or 24 for the Vite
 and Storybook toolchain; Bun manages dependencies and scripts.
 
+## Guided comparison homepage
+
+The homepage opens with a completed **First encounter** mock: both execution
+paths do the same work. The introduction explains repeated agent tasks, then a
+four-step guided spotlight isolates the workflows, **Run again**, the comparison
+metrics and costs, and the workflow/tree toggle. The selected regions stay bright
+inside cyan outlines while a strong overlay dims the rest of the page. The guide
+tracks scrolling, resizing and layout changes; keyboard focus stays within its
+highlighted controls and guide card. Back, Next, Skip and Escape are supported.
+
+**Run again** selects the warm repeat automatically after a completed cold mock.
+The guide pauses during playback and resumes on the resulting metrics. **Take the
+tour** reopens it on demand. **Restart tutorial** replays the cold run and starts
+the guide again; dismissals are remembered for the browser session. Scenario selection still supports source changes and
+failure cases.
+
+Each lane displays completion time, tokens and tool calls on bars sharing the
+larger value as their scale. **Workflow / Tree view** changes only the rendering;
+results, metrics, additional dependency links and step inspection are preserved.
+The Miami Vice palette follows `prefers-color-scheme`; the terminal tree uses a
+separate green palette, and animations respect reduced motion.
+
+Mock tokens (9,600 on a full execution) and timing (3.01 s full / 455 ms reused)
+are invented UI examples, labeled **ILLUSTRATIVE**, not provider measurements.
+The mock pricing selector compares OpenAI GPT-6 Astra ($10 input / $50 output),
+Gemini 3.8 Flash ($0.75 / $3.75, promotional through December 31, 2026), and
+Claude Sonnet 5.5 ($2 / $10), in USD per million tokens. Rates were checked on
+October 17, 2026; links and the exact per-token prices are available in each
+lane’s **Rates & per-token deltas** disclosure.
+
+Canopy also models one JeV 1.13 decision per observed model task, at an assumed
+256 input and one output token per decision. Its $0.042 / free per-million rate
+adds $0.000043008 for four decisions. The Canopy token counters and input/output/
+total cost estimates include this overhead. Deltas are Canopy minus baseline;
+only completed pairs show savings. Reused tokens are not billed to the LLM.
+JeV appears only in the Canopy lane. The model does not make actual requests or
+claim JeV replacement quality; token usage and totals are illustrative.
+
+Recorded and live sources preserve their reported costs and unknown values.
+The mock price selector does not alter stored runtime results or enable provider
+requests. Independent quality remains unknown.
+
 ## Start the end-to-end demo
 
 The working end-to-end path is **React frontend → local Python API → real Canopy

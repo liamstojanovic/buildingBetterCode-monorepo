@@ -1,5 +1,5 @@
 import { projectImpact } from "../state/impact";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Activity,
   ArrowDownRight,
@@ -54,6 +54,14 @@ import {
   scenarioLabels,
   type Scenario,
 } from "../fixtures/cargo";
+import { DemoTour, type DemoTourStep } from "./DemoTour";
+import { MockTokenCosts } from "./MockTokenCosts";
+import {
+  swarmPrices,
+  modeledJevUsage,
+  type TokenPrice,
+} from "../fixtures/pricing";
+import { ExecutionTree } from "./ExecutionTree";
 import { ExecutionGraph, statusLabels } from "./ExecutionGraph";
 
 export type SourceMode = "mock" | "recorded" | "live";
@@ -75,7 +83,7 @@ export interface ConsoleProps {
   onCloseInspector: () => void;
   onScenario: (value: Scenario) => void;
   onSourceMode: (value: SourceMode) => void;
-  onRun: () => void;
+  onRun: (scenario?: Scenario) => void;
   onReset: () => void;
   onStop: () => void;
   onImport: (file: File) => void;
@@ -152,14 +160,43 @@ function RunLane({
   selected,
   onSelect,
   evaluations,
+  reference,
+  view,
+  illustrative,
+  price,
 }: {
+  price: TokenPrice;
+  reference: RunState;
+  view: "workflow" | "tree";
+  illustrative: boolean;
   state: RunState;
   variant: "baseline" | "canopy";
   selected?: string;
   onSelect: (id: string) => void;
   evaluations: Evaluation[];
 }) {
-  const usage = currentUsage(state);
+  const rawUsage = currentUsage(state);
+  const rawReference = currentUsage(reference);
+  const routing = modeledJevUsage(state);
+  const referenceRouting = modeledJevUsage(reference);
+  const usage =
+    illustrative && variant === "canopy"
+      ? {
+          ...rawUsage,
+          input_tokens: rawUsage.input_tokens + routing.input_tokens,
+          output_tokens: rawUsage.output_tokens + routing.output_tokens,
+        }
+      : rawUsage;
+  const referenceUsage =
+    illustrative && variant === "baseline"
+      ? {
+          ...rawReference,
+          input_tokens:
+            rawReference.input_tokens + referenceRouting.input_tokens,
+          output_tokens:
+            rawReference.output_tokens + referenceRouting.output_tokens,
+        }
+      : rawReference;
   const done = Object.values(state.steps).filter((step) =>
     ["completed", "reused"].includes(step.status),
   ).length;
@@ -180,7 +217,7 @@ function RunLane({
           <p>
             {variant === "canopy"
               ? "Validity-aware reuse"
-              : "Application cache off"}
+              : "Normal agent execution"}
           </p>
         </div>
         <span className={`run-status status-${state.status}`}>
@@ -188,25 +225,105 @@ function RunLane({
           {state.status.replaceAll("_", " ")}
         </span>
       </div>
-      <div className="lane-counters">
-        <span>
-          <Clock3 size={13} />
-          {formatDuration(usage)}
-        </span>
-        <span>
-          <Zap size={13} />
-          {usage.model_calls} model dispatches
-        </span>
-        <span>
-          <Database size={13} />
-          {reused} reused
-        </span>
+      <div
+        data-demo-focus="metrics"
+        className="lane-measurements"
+        aria-label={`${variant} usage${illustrative ? " (illustrative)" : ""}`}
+      >
+        <div className="lane-totals">
+          <strong>
+            {formatDuration(usage)}
+            <small>completion time</small>
+          </strong>
+          <strong>
+            {usage.tokens_known
+              ? (usage.input_tokens + usage.output_tokens).toLocaleString()
+              : "—"}
+            <small>
+              {illustrative && variant === "canopy"
+                ? "tokens incl. modeled JeV"
+                : "tokens used"}
+            </small>
+          </strong>
+          <span>{illustrative ? "ILLUSTRATIVE" : "REPORTED"}</span>
+        </div>
+        {(
+          [
+            [
+              "Time",
+              usage.elapsed_known ? usage.elapsed_ms : null,
+              referenceUsage.elapsed_known ? referenceUsage.elapsed_ms : null,
+              formatDuration(usage),
+            ],
+            [
+              "Tokens",
+              usage.tokens_known
+                ? usage.input_tokens + usage.output_tokens
+                : null,
+              referenceUsage.tokens_known
+                ? referenceUsage.input_tokens + referenceUsage.output_tokens
+                : null,
+              usage.tokens_known
+                ? (usage.input_tokens + usage.output_tokens).toLocaleString()
+                : "Unknown",
+            ],
+            [
+              "Tool calls",
+              state.status === "idle" ? null : usage.tool_calls,
+              reference.status === "idle" ? null : referenceUsage.tool_calls,
+              state.status === "idle" ? "—" : String(usage.tool_calls),
+            ],
+          ] as const
+        ).map(([label, value, base, formatted]) => {
+          const maximum = Math.max(base ?? 0, value ?? 0);
+          return (
+            <div className="comparison-measure" key={label}>
+              <span>{label}</span>
+              <div
+                className="measure-track"
+                role="meter"
+                aria-label={`${variant} ${label}`}
+                aria-valuemin={0}
+                aria-valuemax={maximum || 1}
+                aria-valuenow={value ?? undefined}
+                aria-valuetext={value === null ? "Unknown" : formatted}
+              >
+                <i
+                  style={{
+                    width: `${value === null || !maximum ? 0 : (value / maximum) * 100}%`,
+                  }}
+                />
+              </div>
+              <b>{formatted}</b>
+            </div>
+          );
+        })}
+        <div className="lane-dispatches">
+          {usage.model_calls} model dispatches <span>·</span> {reused} steps
+          reused
+        </div>
+        {illustrative && (
+          <MockTokenCosts
+            state={state}
+            baseline={variant === "baseline" ? state : reference}
+            variant={variant}
+            price={price}
+          />
+        )}
       </div>
-      <ExecutionGraph
-        state={state}
-        selectedStep={selected}
-        onSelect={onSelect}
-      />
+      {view === "tree" ? (
+        <ExecutionTree
+          state={state}
+          selectedStep={selected}
+          onSelect={onSelect}
+        />
+      ) : (
+        <ExecutionGraph
+          state={state}
+          selectedStep={selected}
+          onSelect={onSelect}
+        />
+      )}
       <div className="lane-footer">
         <div className="completion-track">
           <div
@@ -536,8 +653,59 @@ export function Console(props: ConsoleProps) {
   const isOptimization = props.activeWorkspace === "optimization";
   const [methodology, setMethodology] = useState(false);
   const [presentation, setPresentation] = useState(false);
+  const [view, setView] = useState<"workflow" | "tree">("workflow");
+  const [modelId, setModelId] = useState<string>(swarmPrices[0].id);
+  const mockPrice =
+    swarmPrices.find((price) => price.id === modelId) ?? swarmPrices[0];
+  const [tourDismissed, setTourDismissed] = useState(() => {
+    try {
+      return sessionStorage.getItem("canopy-demo-tour") === "seen";
+    } catch {
+      return false;
+    }
+  });
+  const [tourStep, setTourStep] = useState<DemoTourStep | null>(null);
+  const dismissTour = () => {
+    setTourStep(null);
+    setTourDismissed(true);
+    try {
+      sessionStorage.setItem("canopy-demo-tour", "seen");
+    } catch {
+      /* Storage is optional. */
+    }
+  };
+  const guideEligible =
+    sourceMode === "mock" &&
+    scenario === "cold" &&
+    !busy &&
+    !isOptimization &&
+    !presentation &&
+    !methodology;
+  useEffect(() => {
+    if (!guideEligible || tourDismissed || tourStep !== null) return;
+    const timer = window.setTimeout(() => setTourStep("workflow"), 4500);
+    return () => window.clearTimeout(timer);
+  }, [guideEligible, tourDismissed, tourStep]);
+  useEffect(() => {
+    if (sourceMode !== "mock") setTourStep(null);
+  }, [sourceMode]);
+  const runAgain = () => {
+    if (tourStep) setTourStep("savings");
+    else dismissTour();
+    setPresentation(true);
+    window.scrollTo({ top: 0 });
+    props.onRun(
+      sourceMode === "mock" &&
+        scenario === "cold" &&
+        baseline.status === "completed" &&
+        canopy.status === "completed"
+        ? "warm"
+        : scenario,
+    );
+  };
   const usage = currentUsage(canopy);
   const baselineUsage = currentUsage(baseline);
+  const modeledRouting = modeledJevUsage(canopy);
   const complete =
     baseline.status === "completed" && canopy.status === "completed";
   const reused = Object.values(canopy.steps).filter(
@@ -565,7 +733,7 @@ export function Console(props: ConsoleProps) {
       : null;
   return (
     <div
-      className={`app-shell${presentation && !isOptimization ? " presentation" : ""}${isOptimization ? " optimization-active" : ""}`}
+      className={`app-shell demo-mode${sourceMode === "mock" ? " mock-priced" : ""}${presentation && !isOptimization ? " presentation" : ""}${isOptimization ? " optimization-active" : ""}`}
     >
       <aside className="rail">
         <a className="brand-mark" href="#" aria-label="Canopy home">
@@ -638,7 +806,7 @@ export function Console(props: ConsoleProps) {
               {isOptimization
                 ? (props.advisorSourceLabel ?? "NO ADVISOR REPORT")
                 : sourceMode === "mock"
-                  ? "MOCK DATA"
+                  ? "Demo Mode"
                   : sourceMode === "recorded"
                     ? "RECORDED"
                     : "LIVE API"}
@@ -652,14 +820,31 @@ export function Console(props: ConsoleProps) {
                 <span className="tiny-line" /> VERIFIED WORK. REUSED.
               </div>
               <h1>
-                Same task.
+                New task. Same work.
                 <br />
-                <span>A smarter starting point.</span>
+                <span>Why pay twice?</span>
               </h1>
-              <p>
-                Watch the work happen. See what can be reused.
-                <br className="desktop-break" /> Recompute only what changed.
+              <p className="demo-preface">
+                Agent swarms split a job into smaller tasks. But they often
+                repeat similar—or identical—work, spending more tokens and more
+                time.
               </p>
+              <div className="demo-chapter">
+                <span>
+                  {scenario === "cold"
+                    ? "01 / FIRST ENCOUNTER"
+                    : "02 / THE REPEAT"}
+                </span>
+                <p>
+                  {scenario === "cold"
+                    ? complete
+                      ? "Novel agent tasks execute normally, using capable but expensive large language models. This first mock run is complete: both paths did the same work."
+                      : "Novel agent tasks execute normally, using capable but expensive large language models. Follow each step as both paths execute the work."
+                    : scenario === "warm" || scenario === "unrelated"
+                      ? "The same work returns. The baseline executes every step again. Canopy checks validity and reuses eligible results, avoiding repeat model and tool calls."
+                      : "When inputs or conditions change, Canopy checks which results are still valid. Inspect the steps to see what executes and what can be reused."}
+                </p>
+              </div>
             </div>
             <div className="shipment-card">
               <div className="shipment-eyebrow">
@@ -734,6 +919,19 @@ export function Console(props: ConsoleProps) {
                 <option value="recorded">Recorded runs</option>
                 <option value="live">Live API</option>
               </select>
+              {sourceMode === "mock" && (
+                <button
+                  className="secondary-button restart-demo"
+                  disabled={busy}
+                  onClick={() => {
+                    setTourDismissed(false);
+                    setTourStep(null);
+                    props.onRun("cold");
+                  }}
+                >
+                  Restart tutorial
+                </button>
+              )}
               <button
                 className="icon-button reset-button"
                 onClick={props.onReset}
@@ -748,17 +946,26 @@ export function Console(props: ConsoleProps) {
                   Stop watching
                 </button>
               ) : (
-                <button
-                  className="primary-button"
-                  onClick={() => {
-                    setPresentation(true);
-                    props.onRun();
-                  }}
-                >
-                  <Play size={14} fill="currentColor" />
-                  Run comparison
-                  <ArrowRight size={15} />
-                </button>
+                <div className="run-again-wrap">
+                  <button
+                    className="primary-button"
+                    data-demo-focus="repeat"
+                    aria-describedby={
+                      tourStep === "repeat"
+                        ? "demo-tour-description"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (sourceMode === "mock") runAgain();
+                      else {
+                        setPresentation(true);
+                        props.onRun();
+                      }
+                    }}
+                  >
+                    <RotateCcw size={15} /> Run again <ArrowRight size={15} />
+                  </button>
+                </div>
               )}
             </div>
           </section>
@@ -796,7 +1003,9 @@ export function Console(props: ConsoleProps) {
               value={formatDuration(usage)}
               detail={
                 usage.elapsed_known
-                  ? "Server-measured execution time"
+                  ? sourceMode === "mock"
+                    ? "Illustrative mock execution time"
+                    : "Server-measured execution time"
                   : "Awaiting a measured run"
               }
             />
@@ -810,6 +1019,31 @@ export function Console(props: ConsoleProps) {
               }
             />
           </section>
+          {sourceMode === "mock" && complete && scenario !== "cold" && (
+            <div className="repeat-result" role="status">
+              <Sparkles size={18} />
+              <strong>
+                {reused} of {canopy.task.steps.length} steps reused.
+              </strong>
+              <span>
+                {Math.round(
+                  (1 -
+                    usage.elapsed_ms / Math.max(1, baselineUsage.elapsed_ms)) *
+                    100,
+                )}
+                % less time ·{" "}
+                {(
+                  baselineUsage.input_tokens +
+                  baselineUsage.output_tokens -
+                  usage.input_tokens -
+                  usage.output_tokens -
+                  modeledRouting.input_tokens -
+                  modeledRouting.output_tokens
+                ).toLocaleString()}{" "}
+                fewer tokens in this illustrative run.
+              </span>
+            </div>
+          )}
           <section className="execution-section" id="execution">
             <div className="section-heading">
               <div>
@@ -820,6 +1054,53 @@ export function Console(props: ConsoleProps) {
                 </h2>
               </div>
               <div className="graph-heading-actions">
+                {sourceMode === "mock" && (
+                  <button
+                    className="secondary-button take-demo-tour"
+                    disabled={busy}
+                    onClick={() => {
+                      setTourDismissed(false);
+                      setTourStep("workflow");
+                    }}
+                  >
+                    Take the tour
+                  </button>
+                )}
+                {sourceMode === "mock" && (
+                  <label className="mock-model-picker">
+                    <span>MOCK SWARM MODEL</span>
+                    <select
+                      aria-label="Mock swarm model"
+                      value={modelId}
+                      onChange={(event) => setModelId(event.target.value)}
+                    >
+                      {swarmPrices.map((model) => (
+                        <option key={model.id} value={model.id}>
+                          {model.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <div
+                  className="view-toggle"
+                  role="group"
+                  aria-label="Execution view"
+                  data-demo-focus="view"
+                >
+                  <button
+                    aria-pressed={view === "workflow"}
+                    onClick={() => setView("workflow")}
+                  >
+                    <GitBranch size={14} /> Workflow
+                  </button>
+                  <button
+                    aria-pressed={view === "tree"}
+                    onClick={() => setView("tree")}
+                  >
+                    <Code2 size={14} /> Tree view
+                  </button>
+                </div>
                 {presentation && (
                   <>
                     <select
@@ -851,10 +1132,11 @@ export function Console(props: ConsoleProps) {
                     </span>
                     <button
                       className="primary-button"
-                      onClick={busy ? props.onStop : props.onRun}
+                      data-demo-focus="repeat"
+                      onClick={busy ? props.onStop : runAgain}
                     >
                       {busy ? <Square size={12} /> : <Play size={12} />}
-                      {busy ? "Stop watching" : "Run comparison"}
+                      {busy ? "Stop watching" : "Run again"}
                     </button>
                   </>
                 )}
@@ -894,6 +1176,10 @@ export function Console(props: ConsoleProps) {
             <div className="comparison-grid">
               <RunLane
                 state={baseline}
+                reference={canopy}
+                view={view}
+                illustrative={sourceMode === "mock"}
+                price={mockPrice}
                 variant="baseline"
                 selected={
                   selected?.lane === "baseline" ? selected.stepId : undefined
@@ -903,6 +1189,10 @@ export function Console(props: ConsoleProps) {
               />
               <RunLane
                 state={canopy}
+                reference={baseline}
+                view={view}
+                illustrative={sourceMode === "mock"}
+                price={mockPrice}
                 variant="canopy"
                 selected={
                   selected?.lane === "canopy" ? selected.stepId : undefined
@@ -917,7 +1207,7 @@ export function Console(props: ConsoleProps) {
                 {connectionLabel(canopy.connection)}
                 <span className="separator">/</span>
                 {sourceMode === "mock"
-                  ? "Illustrative timing · no benchmark"
+                  ? "Illustrative metrics · shared bar scales · no benchmark"
                   : "Ordered events · sequential dispatch"}
               </span>
               <span>
@@ -975,7 +1265,11 @@ export function Console(props: ConsoleProps) {
                 <strong>Usage boundary</strong>
               </div>
               <dl>
-                <dt>New model tokens</dt>
+                <dt>
+                  {sourceMode === "mock"
+                    ? "New LLM tokens (excluding modeled JeV)"
+                    : "New model tokens"}
+                </dt>
                 <dd>
                   {usage.tokens_known
                     ? (
@@ -1102,6 +1396,19 @@ export function Console(props: ConsoleProps) {
           onLoadApproval={props.onLoadApproval}
         />
       )}
+      {tourStep &&
+        sourceMode === "mock" &&
+        !isOptimization &&
+        !methodology &&
+        !selected &&
+        !busy && (
+          <DemoTour
+            step={tourStep}
+            onStep={setTourStep}
+            onRun={runAgain}
+            onClose={dismissTour}
+          />
+        )}
       {!isOptimization && methodology && (
         <div className="modal-backdrop" onClick={() => setMethodology(false)}>
           <section

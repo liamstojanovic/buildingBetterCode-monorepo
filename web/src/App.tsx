@@ -102,6 +102,17 @@ function observer(dispatch: React.Dispatch<RunAction>): RunObserver {
   };
 }
 
+function firstEncounter(mode: "baseline" | "governed") {
+  const recording = mockRecording(mode, "cold");
+  return runReducer(
+    runReducer(initialRun(recording.task), {
+      type: "events",
+      events: recording.events,
+    }),
+    { type: "result", result: recording.result },
+  );
+}
+
 export default function App() {
   const [workspace, setWorkspace] = useState<"execution" | "optimization">(
     "execution",
@@ -116,18 +127,14 @@ export default function App() {
   const [advisorError, setAdvisorError] = useState<string | null>(null);
   const advisorEpoch = useRef(0);
   const advisorController = useRef<AbortController | null>(null);
-  const [baseline, dispatchBaseline] = useReducer(
-    runReducer,
-    cargoTask,
-    initialRun,
+  const [baseline, dispatchBaseline] = useReducer(runReducer, cargoTask, () =>
+    firstEncounter("baseline"),
   );
-  const [canopy, dispatchCanopy] = useReducer(
-    runReducer,
-    cargoTask,
-    initialRun,
+  const [canopy, dispatchCanopy] = useReducer(runReducer, cargoTask, () =>
+    firstEncounter("governed"),
   );
   const [sourceMode, setSourceMode] = useState<SourceMode>("mock");
-  const [scenario, setScenario] = useState<Scenario>("warm");
+  const [scenario, setScenario] = useState<Scenario>("cold");
   const [bundle, setBundle] = useState<ComparisonBundle | null>(mockBundle);
   const [liveTask, setLiveTask] = useState<Task | null>(null);
   const [busy, setBusy] = useState(false);
@@ -166,7 +173,8 @@ export default function App() {
   );
   useEffect(() => {
     const handle = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && workspace === "execution") setSelected(null);
+      if (event.key === "Escape" && workspace === "execution")
+        setSelected(null);
     };
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
@@ -276,7 +284,8 @@ export default function App() {
     } else if (liveTask) reset(scenarioTask(liveTask, value));
   };
 
-  const runPair = async () => {
+  const runPair = async (nextScenario: Scenario = scenario) => {
+    setScenario(nextScenario);
     const epoch = ++requestEpoch.current;
     const abort = new AbortController();
     controller.current = abort;
@@ -289,8 +298,8 @@ export default function App() {
       let leftTask: Task;
       let rightTask: Task;
       if (sourceMode === "mock") {
-        const baselineRecording = mockRecording("baseline", scenario);
-        const canopyRecording = mockRecording("governed", scenario);
+        const baselineRecording = mockRecording("baseline", nextScenario);
+        const canopyRecording = mockRecording("governed", nextScenario);
         leftTask = baselineRecording.task;
         rightTask = canopyRecording.task;
         left = new RecordedRunClient(baselineRecording, 1, "mock");
@@ -298,9 +307,9 @@ export default function App() {
       } else if (sourceMode === "recorded") {
         const leftRecording =
           bundle?.recordings[
-            scenario === "warm" ? "baseline" : `baseline_${scenario}`
+            nextScenario === "warm" ? "baseline" : `baseline_${nextScenario}`
           ];
-        const rightRecording = bundle?.recordings[scenario];
+        const rightRecording = bundle?.recordings[nextScenario];
         if (!leftRecording || !rightRecording)
           throw new Error(
             "This scenario needs a matching baseline and governed recording. Import the complete comparison bundle.",
@@ -312,7 +321,7 @@ export default function App() {
       } else {
         if (!liveTask)
           throw new Error("Load or import the runtime’s task first.");
-        if (scenario !== "cold" && !primed.current) {
+        if (nextScenario !== "cold" && !primed.current) {
           setNotice(
             "Live API · Preparing the cache with a real cold governed execution before comparison…",
           );
@@ -353,8 +362,8 @@ export default function App() {
           };
           primed.current = true;
         }
-        const task = scenarioTask(liveTask, scenario);
-        if (scenario === "cold")
+        const task = scenarioTask(liveTask, nextScenario);
+        if (nextScenario === "cold")
           task.workflow_id = `${liveTask.workflow_id}:cold-${crypto.randomUUID()}`;
         leftTask = { ...structuredClone(task), task_id: crypto.randomUUID() };
         rightTask = { ...structuredClone(task), task_id: crypto.randomUUID() };
@@ -654,7 +663,7 @@ export default function App() {
       onCloseInspector={() => setSelected(null)}
       onScenario={changeScenario}
       onSourceMode={changeMode}
-      onRun={() => void runPair()}
+      onRun={(next) => void runPair(next)}
       onReset={() => reset(canopy.task)}
       onStop={stop}
       onImport={(file) => void importRecording(file)}

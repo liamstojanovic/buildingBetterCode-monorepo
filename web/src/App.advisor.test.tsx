@@ -62,7 +62,7 @@ describe("advisor workspace integration", () => {
     expect(screen.getByText("advisor-demo")).toBeVisible();
     expect(fetcher).not.toHaveBeenCalled();
     openExecution();
-    expect(screen.getByText("MOCK DATA")).toBeVisible();
+    expect(screen.getByText("Demo Mode")).toBeVisible();
     openAdvisor();
     expect(screen.getByText("advisor-demo")).toBeVisible();
   });
@@ -134,7 +134,7 @@ describe("advisor workspace integration", () => {
         target: { value: "recorded" },
       }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Run comparison" }));
+    fireEvent.click(screen.getByRole("button", { name: "Run again" }));
     await act(async () => {
       await vi.runAllTimersAsync();
     });
@@ -196,7 +196,7 @@ describe("advisor workspace integration", () => {
         target: { value: "live" },
       }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Run comparison" }));
+    fireEvent.click(screen.getByRole("button", { name: "Run again" }));
     fireEvent.click(screen.getByRole("button", { name: "Exit focus view" }));
     expect(execute).toHaveBeenCalledTimes(1);
     openAdvisor();
@@ -277,7 +277,7 @@ describe("advisor workspace integration", () => {
       }),
     );
     await act(async () =>
-      fireEvent.click(screen.getByRole("button", { name: "Run comparison" })),
+      fireEvent.click(screen.getByRole("button", { name: "Run again" })),
     );
     fireEvent.click(screen.getByRole("button", { name: "Exit focus view" }));
     fireEvent.click(

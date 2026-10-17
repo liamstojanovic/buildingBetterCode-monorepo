@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef } from "react";
 import {
   ReactFlow,
   Background,
@@ -129,13 +129,40 @@ export function ExecutionGraph({
       }),
     );
   }, [state.task.steps]);
+  const fitContainer = useCallback(() => {
+    const element = container.current;
+    if (
+      !element ||
+      !instance.current ||
+      !element.clientHeight ||
+      !element.clientWidth
+    )
+      return;
+    const positions = Object.values(layout);
+    if (!positions.length) return;
+    const minX = Math.min(...positions.map((point) => point.x));
+    const minY = Math.min(...positions.map((point) => point.y));
+    const width = Math.max(...positions.map((point) => point.x)) + 170 - minX;
+    const height = Math.max(...positions.map((point) => point.y)) + 82 - minY;
+    const zoom = Math.max(
+      0.1,
+      Math.min(
+        1.2,
+        (element.clientWidth - 32) / width,
+        (element.clientHeight - 32) / height,
+      ),
+    );
+    void instance.current.setViewport({
+      x: (element.clientWidth - width * zoom) / 2 - minX * zoom,
+      y: (element.clientHeight - height * zoom) / 2 - minY * zoom,
+      zoom,
+    });
+  }, [layout]);
   useEffect(() => {
     let frame = 0;
     const fit = () => {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(
-        () => void instance.current?.fitView({ padding: 0.13 }),
-      );
+      frame = requestAnimationFrame(fitContainer);
     };
     const observer = new ResizeObserver(fit);
     if (container.current) observer.observe(container.current);
@@ -144,7 +171,7 @@ export function ExecutionGraph({
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [layout]);
+  }, [fitContainer]);
   const nodes: ExecutionNode[] = state.task.steps.map((step) => ({
     id: step.step_id,
     type: "execution",
@@ -189,17 +216,21 @@ export function ExecutionGraph({
         type: MarkerType.ArrowClosed,
         width: 12,
         height: 12,
-        color: "#425348",
+        color: "var(--line)",
       },
     })),
   );
   return (
-    <div className="execution-canvas" ref={container}>
+    <div
+      className="execution-canvas"
+      ref={container}
+      data-demo-focus="workflow"
+    >
       <ReactFlow
         nodes={nodes}
         onInit={(value) => {
           instance.current = value;
-          void value.fitView({ padding: 0.13 });
+          fitContainer();
         }}
         edges={edges}
         nodeTypes={nodeTypes}
@@ -209,7 +240,7 @@ export function ExecutionGraph({
         nodesConnectable={false}
         nodesFocusable={false}
         edgesFocusable={false}
-        minZoom={0.45}
+        minZoom={0.1}
         maxZoom={1.2}
         panOnDrag
         zoomOnDoubleClick={false}
@@ -220,7 +251,7 @@ export function ExecutionGraph({
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
-          color="#2b3931"
+          color="var(--line)"
         />
       </ReactFlow>
     </div>
