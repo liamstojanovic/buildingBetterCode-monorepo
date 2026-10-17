@@ -5,6 +5,7 @@ The synthetic handlers below do no network I/O and do not generate LLM tokens.
 """
 
 from collections.abc import Callable
+from copy import deepcopy
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from inspect import isasyncgenfunction, iscoroutinefunction, isgeneratorfunction
@@ -36,6 +37,28 @@ class HandlerContext:
     config: RunConfig
     inputs: dict[str, Any]
     dependencies: dict[str, Any]
+
+
+class HandlerExecutionError(RuntimeError):
+    """A failed dispatch with optional measured usage and safe diagnostics.
+
+    Trusted handlers can report provider-rejected or incomplete responses without
+    losing usage already incurred. ``output`` must be safe to persist as JSON;
+    it is recorded on the failed step, never exposed as a successful dependency
+    or cached result. Omitted usage remains unknown, not measured zero.
+    """
+
+    def __init__(
+        self, message: str, *, usage: Usage | None = None, output: Any = None,
+    ) -> None:
+        super().__init__(message)
+        if usage is not None and not isinstance(usage, Usage):
+            raise TypeError("usage must be Usage or None")
+        self.usage = (
+            None if usage is None
+            else Usage.model_validate(usage.model_dump(exclude_unset=True)).model_copy(deep=True)
+        )
+        self.output = deepcopy(output)
 
 
 @dataclass(frozen=True)

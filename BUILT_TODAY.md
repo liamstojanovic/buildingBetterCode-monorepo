@@ -11,6 +11,9 @@ are dependencies, not code claimed as newly written at the hackathon.
   compact agent messages, action approval and policy conformance monitoring.
 - Runtime and local HTTP integration surface for the separately built frontend
   and benchmark, plus synthetic examples and component/integration tests.
+- Live model handlers for OpenAI Responses, compatible Chat Completions,
+  Anthropic Messages, Gemini generateContent and TypeSafe JEV decisions; an
+  isolated baseline/governed comparison runner with provider usage reporting.
 - Packaging, reproducible environment, CI and integration documentation.
 
 ## Existing dependencies

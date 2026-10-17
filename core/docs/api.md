@@ -59,8 +59,10 @@ reused outputs have the same types (aware timestamps become strings).
 handlers. Custom applications should inject a runtime and close it after requests
 finish. Runtime closes recording, cache and approval stores; an externally supplied
 drift monitor remains owned by its caller. No packages or credentials are needed
-beyond the core dependencies. No live provider adapter is included; registered
-application callables can supply one.
+beyond the core dependencies for synthetic handlers. The optional `models` extra
+adds [live provider adapters](live_models.md) through `register_model_handler`.
+The local HTTP example remains explicitly synthetic; applications can inject a
+registry containing live handlers into `create_app`.
 
 Every task is validated as a whole before dispatch. Independent ready steps run
 sequentially in deterministic DAG order. Failed/blocked dependencies block their
@@ -78,6 +80,11 @@ are counted, and missing measurements remain unknown. Actual overrun or unknown
 capped usage makes the outcome unsuccessful and contains later admissions.
 Task-supplied estimates cannot guarantee consumption or cancel arbitrary Python
 code; providers must enforce their own hard limits/timeouts.
+
+Handlers may raise `HandlerExecutionError(message, usage=measured_usage,
+output=safe_diagnostics)` to preserve usage from an incomplete or refused provider
+response. The runtime settles those measurements and records a failed step;
+diagnostics never become successful dependency inputs or reusable cache entries.
 
 Handlers supply measured tokens, provider-cached input tokens, cost and energy.
 Runtime measures dispatch duration, preserves reported nested call counts, and

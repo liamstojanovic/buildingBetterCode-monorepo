@@ -25,6 +25,13 @@ separately. Never commit credentials or run databases.
 
 ## Benchmark boundary
 
+Real provider adapters and a ready comparison runner are documented in
+[`core/docs/live_models.md`](../core/docs/live_models.md). Install `core[models]`,
+select an explicit provider/model, and run `core/examples/live_comparison.py`.
+Its `--task-file` accepts your Task JSON; Python `run_comparison()` accepts a
+custom registry for mixed model/tool workloads. Every comparison starts separate
+empty stores and saves full outputs plus provider-reported token usage.
+
 Keep the same workload, tool implementations, model configuration and task data
 across compared adapters. Register workload handlers through the runtime API.
 The benchmark owns correctness scoring independently of the core. Compare cold

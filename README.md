@@ -34,6 +34,18 @@ containment, compact messages and duplicate delivery. The second prints the full
 run records for baseline, cold/warm reuse, source change, budget refusal and replay.
 Both use synthetic Python handlers and make zero live provider requests.
 
+For real inference, install `python -m pip install -e "core[models]"`, set the
+selected provider's key in the environment, then run:
+
+```sh
+python core/examples/live_comparison.py --provider openai --model YOUR_MODEL_ID --output-dir .canopy/comparisons
+```
+
+The same runner supports `anthropic`, `gemini`, `jev` (TypeSafe System One), and
+`openai-compatible` endpoints. Supply `--task-file` for your own task DAG. See
+[live model setup and benchmark integration](core/docs/live_models.md) for keys,
+typed JEV questions, actual usage reporting, and cold/warm comparison semantics.
+
 Start the local API with `python core/examples/local_api.py`, then open
 `http://127.0.0.1:8000/docs`. It binds to loopback and uses a fixed demo principal;
 production authentication is an application integration responsibility.

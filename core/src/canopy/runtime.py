@@ -22,7 +22,7 @@ from .budgets import BudgetController, BudgetRefused
 from .cache import CacheIntegrityError, ResultCache
 from .contracts import Evidence, HandlerResult, RunConfig, RunResult, StepResult, Task, Usage, utcnow
 from .governance import ApprovalStore, ExecutionContext, PolicyGate
-from .handlers import HandlerContext, HandlerRegistry, synthetic_registry
+from .handlers import HandlerContext, HandlerExecutionError, HandlerRegistry, synthetic_registry
 from .recording import ExecutionStore, canonical_json
 from .temporal import (
     TemporalValidator,
@@ -291,6 +291,18 @@ class Runtime:
                 # dependents (for example aware timestamps normalize to strings).
                 output = json.loads(canonical_json(returned.output))
                 reason, status = None, "completed"
+            except HandlerExecutionError as exc:
+                if exc.usage is not None:
+                    measured = Usage.model_validate(exc.usage.model_dump(exclude_unset=True))
+                status = "failed"
+                reason = f"handler failed ({type(exc).__name__}): {exc}"
+                try:
+                    output = json.loads(canonical_json(exc.output))
+                except (TypeError, ValueError):
+                    output = None
+                    reason += "; diagnostic output could not be recorded as JSON"
+                if step.side_effect:
+                    reason += "; external side-effect outcome may be unknown; no automatic retry"
             except Exception as exc:
                 output, status = None, "failed"
                 reason = f"handler failed ({type(exc).__name__}): {exc}"
