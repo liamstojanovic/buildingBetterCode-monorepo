@@ -58,6 +58,18 @@ class MessageCodec:
     def json_bytes(self, envelope: MessageEnvelope) -> bytes: ...
     def measure(self, envelope: MessageEnvelope) -> SizeMeasurement: ...
 
+class MessageBatch:
+    content_type: str
+    data: bytes
+
+class MessageBatchCodec:
+    def __init__(self, *, max_bytes: int = 1_048_576,
+                 max_messages: int = 128, max_expanded_bytes: int = 4_194_304): ...
+    def encode(self, messages: Sequence[MessageEnvelope], *,
+               encoding: Literal["auto", "cbor", "json"] = "auto") -> MessageBatch: ...
+    def decode(self, packet: MessageBatch, *, tenant_id: str,
+               recipient_id: str | None = None) -> tuple[MessageEnvelope, ...]: ...
+
 class DeliveryReceipt:
     message_id: str
     inserted: bool  # False for an identical redelivery
@@ -67,6 +79,9 @@ class Mailbox:
     def __init__(self, path: str | Path, *, tenant_id: str,
                  recipient_id: str, codec: MessageCodec | None = None): ...
     def deliver(self, message: MessageEnvelope | bytes) -> DeliveryReceipt: ...
+    def deliver_batch(self, messages: MessageBatch | Sequence[MessageEnvelope], *,
+                      batch_codec: MessageBatchCodec | None = None
+                      ) -> tuple[DeliveryReceipt, ...]: ...
     def pending(self, *, limit: int = 100) -> list[MessageEnvelope]: ...
     def acknowledge(self, message_id: str, *, sender_id: str,
                     workflow_id: str, stream_id: str) -> bool: ...
@@ -231,4 +246,144 @@ Run focused checks from the root:
 ```powershell
 .venv\Scripts\python.exe -m pytest core/tests/test_messaging.py -q
 .venv\Scripts\python.exe -m ruff check core/src/canopy/messaging.py core/tests/test_messaging.py
+```
+
+## Shared context batching and atomic delivery
+
+`MessageBatchCodec` is an opt-in transport layer around the unchanged schema-1
+envelope. A batch has one tenant and recipient; it may contain several streams,
+senders, policies or workflows. It preserves every application field. The batch
+is self-contained: a receiver can decode the second frame without ever seeing
+the first. Changed actor or policy values are carried in the new frame. There
+is no remote context lookup, stateful delta chain or uncounted session setup.
+
+The binary profile has four context-compressed header keys: `version` (0),
+`shared` (1), `fields` (2), and `rows` (3), plus the standard non-authoritative
+cbor-ld-ex annotation. `shared` maps envelope field indexes to values identical
+across all messages. `fields` gives the varying indexes; `rows` carries their
+per-message values in that order. Shared-value comparison uses CBOR bytes so
+`True`, `1`, `1.0`, negative zero and positive zero remain distinct. Nested
+keys and values are retained exactly; no numeric quantization is introduced.
+
+`encode(..., encoding="auto")` actually constructs both candidate payloads and
+selects the smaller. The fallback is a compact UTF-8 JSON array of complete
+envelopes, with no whitespace padding or synthetic annotation. Dense float
+payloads can be smaller in JSON. Both paths retain full validation and scope
+checks. Carry `packet.content_type` together with `packet.data`:
+
+- `application/vnd.canopy.message-batch+cbor;version=1`
+- `application/vnd.canopy.message-batch+json;version=1`
+
+The strict decoder rejects malformed dictionaries, duplicate or unknown keys,
+alternate encodings, invalid annotations, incompatible scope and truncated
+frames. Defaults bound the wire to 1 MiB, message count to 128 and reconstructed
+compact-JSON size to 4 MiB. The expansion limit is checked before materializing
+repeated shared values. Do not silently split an oversized frame; select an
+application-appropriate bounded flush size and maximum wait. Waiting to fill a
+batch adds latency and is excluded from the measured codec CPU times.
+
+`Mailbox.deliver_batch()` fully validates the frame, prepares all independent
+schema-1 stored messages, and inserts them under one SQLite transaction. A
+conflicting message ID or sequence rolls back every new insert in that batch.
+Identical redelivery still returns `inserted=False`, including after
+acknowledgement. The existing ordering, scope checks and durable deduplication
+continue to apply. This atomic local insertion does not make external effects
+atomic. Acknowledgement remains per message. Existing single-message API and
+database rows need no migration.
+
+```python
+from canopy.messaging import Mailbox, MessageBatchCodec
+
+codec = MessageBatchCodec(max_messages=32)
+packet = codec.encode(messages)  # list of validated MessageEnvelope objects
+# Your transport carries packet.content_type and packet.data together.
+with Mailbox("mailbox.sqlite", tenant_id="sample-tenant",
+             recipient_id="sample-demo-orchestrator") as mailbox:
+    receipts = mailbox.deliver_batch(packet, batch_codec=codec)
+```
+
+These codecs and local mailboxes are usable primitives. The runtime does not
+automatically send its events through a distributed agent transport. Integration
+must choose batch flush rules and an authenticated transport separately.
+
+## Recorded-event efficiency demo
+
+Open [the standalone offline demo](../examples/recordings/comms-efficiency-2026-10-17/index.html),
+or inspect [the measured JSON report](../examples/recordings/comms-efficiency-2026-10-17/report.json).
+No frontend build, model weights, API keys or network calls are required. The page
+shows exact byte totals, a provider/category/run selector, a complete example
+message, lossless/fallback checks, CPU medians and local mailbox timings.
+
+The source is all **618 retained runtime events from 36 runs / nine provider
+comparisons**, covering business decisions, tool selection and next steps. Their
+original event bodies are wrapped into **new local inter-agent replay envelopes**;
+these are not historical network captures. Hosted calls were real; the business
+scenarios and new transport identities are marked sample data. Full event
+payloads, references, authorization, timestamps and provenance survive every
+roundtrip. SHA-256 source and output inventories accompany the report.
+
+| Representation, same complete envelopes | Actual payload bytes |
+| --- | ---: |
+| Compact UTF-8 JSON arrays | 771,411 |
+| Existing CBOR, one independent message at a time | 585,595 |
+| Shared-context cbor-ld-ex batches | 356,491 |
+| Adaptive selection | 356,491 |
+
+The binary batches save **414,920 bytes (53.79%)** against compact JSON, and
+**39.12%** against independent CBOR envelopes on this corpus. All 36 frames chose
+CBOR. The separate dense-float counterexample needs **2,866 CBOR bytes vs 1,827
+JSON bytes**, so automatic selection chooses JSON. A fresh receiver successfully
+decodes changed policy/actor context without previous frames; wrong-tenant and
+truncated frames are rejected. Every original event was delivered in reverse
+order to the actual local SQLite mailbox, then acknowledged in stream order;
+36 identical redeliveries were suppressed.
+
+The raw binary count includes complete batch context and annotations but excludes
+transport headers. `frames.json` carries base64 for portability: those base64
+strings alone total **475,376 bytes**, before the surrounding JSON. Sending that
+file does not get the raw binary byte count. Each frame declares its content type
+and payload SHA-256; it can be decoded with the real batch codec.
+
+This Windows/Python 3.12.2 sample used cbor-ld-ex 0.2.1 and cbor2 6.1.5. Median
+whole-corpus codec times over five repetitions were:
+
+| Profile | Encode ms | Decode ms |
+| --- | ---: | ---: |
+| Compact JSON | 24.29 | 40.74 |
+| Independent CBOR | 29.75 | 65.00 |
+| Shared-context CBOR | 32.87 | 54.86 |
+| Adaptive selection | 30.91 | 53.84 |
+
+JSON is cheaper in this local CPU measurement; batching primarily reduces wire
+repetition. Timings include validation but exclude input loading, SQLite,
+network and time waiting for a batch. The separate local mailbox sample took
+**872.85 ms for 618 individual transactions** and **204.52 ms for 36 atomic batch
+transactions**, with SQLite FULL synchronous/WAL in both. It includes validation
+and commits, excluding frame construction, database creation and acknowledgements.
+That is one sample per path on separate fresh databases, not a production
+throughput result. Neither byte reduction nor local time establishes LLM token,
+cost, energy or network-latency savings.
+
+Reproduce with a new output directory; the runner never overwrites an existing
+report and never calls a provider:
+
+```powershell
+.venv\Scripts\python.exe core/examples/messaging_demo.py --output-dir .canopy/comms-recheck --repeats 5
+.venv\Scripts\python.exe -m pytest core/tests/test_messaging.py core/tests/test_messaging_batch.py core/tests/test_messaging_demo.py -q
+```
+
+To decode an exported frame offline:
+
+```python
+import base64
+import json
+from pathlib import Path
+from canopy.messaging import MessageBatch, MessageBatchCodec
+
+frame = json.loads(Path("core/examples/recordings/comms-efficiency-2026-10-17/frames.json")
+                   .read_text(encoding="utf-8"))["frames"][0]
+messages = MessageBatchCodec().decode(
+    MessageBatch(frame["content_type"], base64.b64decode(frame["data_base64"])),
+    tenant_id="sample-tenant", recipient_id="sample-demo-orchestrator",
+)
 ```

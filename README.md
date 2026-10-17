@@ -11,6 +11,7 @@ in `web/`. The benchmark is independently owned by another teammate.
 - [Team setup and integration handoff](docs/TEAM_HANDOFF.md)
 - [Frontend integration and demo guide](docs/FRONTEND_HANDOFF.md)
 - [Benchmark teammate guide](docs/BENCHMARK_HANDOFF.md)
+- [JEV evaluation and compact-communications demo](docs/JEV_COMMS_DEMO.md)
 - [Offline workflow optimization advisor](core/docs/advisor.md)
 - [Advisor design and future evaluation/routing](docs/ADVISOR_DESIGN.md)
 - [Core component ownership and execution semantics](docs/CORE_BUILD_PLAN.md)
@@ -49,8 +50,9 @@ python -m canopy.advisor_cli --db YOUR_RECORDINGS.sqlite3 --tenant-id YOUR_TENAN
 The demo produces actual synthetic recordings and an importable advisor report.
 The advisor reads records offline, groups recurring operations, and explains
 candidate substitutions, mapping gaps, deterministic alternatives and retained
-generation. Recommendations are unevaluated; quality, savings, text-evidence
-conversion and automatic routing remain separate work. See the
+generation. Discovery recommendations remain unevaluated; explicit mappings and
+retrospective JEV results are supplied separately in the demo guide above.
+Production qualification and automatic routing remain separate work. See the
 [advisor guide](core/docs/advisor.md) for supported inputs, grouping hints, limits
 and the frontend report schema.
 

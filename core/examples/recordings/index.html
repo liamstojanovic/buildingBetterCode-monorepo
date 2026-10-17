@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canopy — evidence for the demo</title>
+<style>
+body{margin:0;background:#0c1c22;color:#e9f3f1;font:17px/1.6 system-ui,sans-serif}
+main{max-width:1040px;margin:auto;padding:56px 24px}h1{font-size:clamp(32px,5vw,58px);line-height:1.12;max-width:800px}
+.eyebrow{color:#8cdec4;font-size:13px;letter-spacing:.16em}a{color:#8cdec4}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin:36px 0}
+article{padding:26px;background:#142b32;border:1px solid #31515b;border-radius:16px}
+h2{font-size:25px;line-height:1.2}article a{display:inline-block;margin:8px 0;font-weight:650}
+.label{font-size:13px;color:#b8d0d1}.scope{border-left:3px solid #e4b665;padding:8px 22px;color:#c6d9da}
+code{font-size:14px;overflow-wrap:anywhere}footer{margin-top:40px;color:#a9c3c5}
+</style>
+<main>
+<p class="eyebrow">CANOPY / RECORDED EVIDENCE</p>
+<h1>Use models where they help.<br>Move less data between agents.</h1>
+<p>Three connected demos, with retained inputs, outputs and measurements. These pages run offline and make no model calls.</p>
+<div class="grid">
+<article><p class="label">01 / DISCOVER</p><h2>Find finite decisions</h2>
+<p>Hosted OpenAI, Anthropic and Gemini recordings cover business priority, tool choice and the next workflow step.</p>
+<a href="advisor-live-2026-10-17/advisor-report.json">Inspect 21 advisor findings →</a><br>
+<a href="advisor-live-2026-10-17/openai-next-step/frontend-comparison.json">Get a frontend playback bundle</a>
+<p class="label">Import the bundle in the team's frontend. Advisor JSON uses its own report contract.</p></article>
+<article><p class="label">02 / EVALUATE</p><h2>Try actual OpenJEV</h2>
+<p>Compare local classifier choices with the recorded hosted calls. Inspect scores, abstentions and the deterministic next-step baseline.</p>
+<a href="jev-evaluation-2026-10-17/index.html">Open JEV comparison →</a>
+<p class="label">Seven distinct sample cases. Selection and generated explanations are separate work.</p></article>
+<article><p class="label">03 / COMMUNICATE</p><h2>Batch agent messages</h2>
+<p>Replay recorded workflow events through the local mailbox. Compare compact JSON, CBOR-LD and batches with shared context.</p>
+<a href="comms-efficiency-2026-10-17/index.html">Open communication measurements →</a>
+<p class="label">Full message bytes, lossless roundtrips and an expansion fallback. No network speed or token-saving estimate.</p></article>
+</div>
+<p class="scope">The business inputs are invented samples; model inference is real. Communication measurements replay those events locally. Neither evaluation activates a replacement backend or executes a selected tool.</p>
+<footer>Canopy hackathon demo · October 17, 2026 · Detailed commands and teammate integration notes: <code>docs/JEV_COMMS_DEMO.md</code></footer>
+</main></html>

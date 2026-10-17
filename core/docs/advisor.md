@@ -5,6 +5,11 @@ decisions, tool selection and authored next-step choices that could merit OpenJE
 evaluation. It reports structural evidence and remaining work. It does not run a
 model, evaluate accuracy, switch a backend or execute a tool.
 
+The [JEV evaluation and communication demo](../../docs/JEV_COMMS_DEMO.md) is the
+next step after discovery: explicit mappings, actual local classifier results,
+and measured message batching. Those artifacts have separate formats and do not
+change the original advisor report or activate a backend replacement.
+
 ## Run it
 
 After installing `core`, run from the repository root:

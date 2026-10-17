@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Literal, Self
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 
 import cbor2
 from cbor_ld_ex import codec as cbor_ld_codec
@@ -352,6 +352,194 @@ class MessageCodec:
         return SizeMeasurement(cbor_size, json_size, saved, saved / json_size)
 
 
+_BATCH_CBOR = "application/vnd.canopy.message-batch+cbor;version=1"
+_BATCH_JSON = "application/vnd.canopy.message-batch+json;version=1"
+_BATCH_REGISTRY = cbor_ld_codec.ContextRegistry(
+    {"version": 0, "shared": 1, "fields": 2, "rows": 3}
+)
+
+
+@dataclass(frozen=True)
+class MessageBatch:
+    """A self-contained transport frame; content_type must travel with data."""
+
+    content_type: str
+    data: bytes
+
+
+class MessageBatchCodec:
+    """Lossless, bounded batches with shared context and actual-size fallback.
+
+    Every frame carries its own context. Receivers need no prior frame, session,
+    remote registry, or cache. Changed policies/identities are encoded in full.
+    The codec does not itself deliver messages or provide a network transport.
+    """
+
+    def __init__(self, *, max_bytes: int = 1_048_576, max_messages: int = 128,
+                 max_expanded_bytes: int = 4_194_304):
+        self._codec = MessageCodec(max_bytes=max_bytes)
+        if type(max_messages) is not int or not 1 <= max_messages <= 1024:
+            raise ValueError("max_messages must be an integer from 1 to 1024")
+        if type(max_expanded_bytes) is not int or max_expanded_bytes < 1:
+            raise ValueError("max_expanded_bytes must be a positive integer")
+        self.max_bytes = max_bytes
+        self.max_messages = max_messages
+        self.max_expanded_bytes = max_expanded_bytes
+
+    @staticmethod
+    def _json(documents: list[dict[str, Any]]) -> bytes:
+        return json.dumps(
+            documents, ensure_ascii=False, allow_nan=False, separators=(",", ":")
+        ).encode("utf-8")
+
+    @staticmethod
+    def _cbor(documents: list[dict[str, Any]]) -> bytes:
+        # Compare encoded values: Python equality conflates bool/int and signed
+        # zero. The key-only registry never value-maps authorization or numbers.
+        shared = {}
+        fields = []
+        for index, key in enumerate(_KEYS):
+            first = cbor2.dumps(documents[0][key])
+            if all(cbor2.dumps(doc[key]) == first for doc in documents[1:]):
+                shared[index] = documents[0][key]
+            else:
+                fields.append(index)
+        rows = [[doc[_KEYS[index]] for index in fields] for doc in documents]
+        return cbor_ld_codec.encode(
+            {"version": "1", "shared": shared, "fields": fields, "rows": rows},
+            _annotation(), context_registry=_BATCH_REGISTRY,
+        )
+
+    def encode(
+        self, messages: Sequence[MessageEnvelope], *,
+        encoding: Literal["auto", "cbor", "json"] = "auto",
+    ) -> MessageBatch:
+        if encoding not in ("auto", "cbor", "json"):
+            raise ValueError("encoding must be auto, cbor or json")
+        if not isinstance(messages, Sequence) or not 1 <= len(messages) <= self.max_messages:
+            raise MessageError("batch message count is outside configured limits")
+        try:
+            documents = [self._codec._document(message) for message in messages]
+            scope = (documents[0]["tenant_id"], documents[0]["recipient_id"])
+            if any((doc["tenant_id"], doc["recipient_id"]) != scope for doc in documents):
+                raise ScopeMismatch("a batch must have one tenant and recipient")
+            compact_json = self._json(documents)
+            if len(compact_json) > self.max_expanded_bytes:
+                raise MessageError("expanded batch exceeds max_expanded_bytes")
+            cbor = self._cbor(documents) if encoding != "json" else None
+            if encoding == "json" or (encoding == "auto" and len(compact_json) < len(cbor)):
+                packet = MessageBatch(_BATCH_JSON, compact_json)
+            else:
+                packet = MessageBatch(_BATCH_CBOR, cbor)
+            if len(packet.data) > self.max_bytes:
+                raise MessageError("encoded batch exceeds max_bytes")
+            return packet
+        except MessageError:
+            raise
+        except (ValueError, TypeError, OverflowError, UnicodeError, RecursionError) as exc:
+            raise MessageError("batch cannot be encoded") from exc
+
+    def _cbor_documents(self, data: bytes) -> list[dict[str, Any]]:
+        stream = io.BytesIO(data)
+        raw = cbor2.CBORDecoder(
+            stream, max_depth=36, allow_indefinite=False, allow_duplicate_keys=False
+        ).decode()
+        if stream.read(1) or type(raw) is not dict or any(type(key) is not int for key in raw):
+            raise MessageError("invalid batch frame")
+        if set(raw) != {0, 1, 2, 3, _ANNOTATION_ID} or raw[0] != "1":
+            raise MessageError("unsupported batch profile")
+        ann = raw[_ANNOTATION_ID]
+        if (not isinstance(ann, cbor2.CBORTag) or ann.tag != _ANNOTATION_ID
+                or type(ann.value) is not bytes or ann.value != _ANNOTATION_BYTES):
+            raise MessageError("unsupported batch annotation")
+        shared, fields, rows = raw[1], raw[2], raw[3]
+        if type(shared) is not dict or type(fields) is not list or type(rows) is not list:
+            raise MessageError("invalid batch context or rows")
+        if (any(type(key) is not int for key in shared)
+                or any(type(key) is not int for key in fields)
+                or len(set(fields)) != len(fields) or set(shared) & set(fields)
+                or set(shared) | set(fields) != set(range(len(_KEYS)))):
+            raise MessageError("batch fields must partition the envelope dictionary")
+        if not 1 <= len(rows) <= self.max_messages:
+            raise MessageError("batch message count is outside configured limits")
+        for value in shared.values():
+            _json_tree(value)
+        for row in rows:
+            if type(row) is not list or len(row) != len(fields):
+                raise MessageError("batch row does not match field dictionary")
+            for value in row:
+                _json_tree(value)
+        # Account for repeated shared values BEFORE constructing full envelopes.
+        # A small shared body repeated many times must not evade expansion bounds.
+        def value_bytes(value):
+            return len(json.dumps(value, ensure_ascii=False, allow_nan=False,
+                                  separators=(",", ":")).encode("utf-8"))
+
+        field_overhead = sum(value_bytes(key) + 1 for key in _KEYS) + len(_KEYS) + 1
+        shared_bytes = sum(value_bytes(value) for value in shared.values())
+        expanded = (1 + len(rows) + len(rows) * (field_overhead + shared_bytes)
+                    + sum(value_bytes(value) for row in rows for value in row))
+        if expanded > self.max_expanded_bytes:
+            raise MessageError("expanded batch exceeds max_expanded_bytes")
+        # The real dependency decoder handles the versioned header dictionary
+        # and annotation after structural validation of the untrusted frame.
+        doc, annotation = cbor_ld_codec.decode(data, context_registry=_BATCH_REGISTRY)
+        if annotation != _annotation():
+            raise MessageError("unsupported batch annotation")
+        return [
+            {_KEYS[index]: value for index, value in
+             sorted({**doc["shared"], **dict(zip(doc["fields"], row, strict=True))}.items())}
+            for row in doc["rows"]
+        ]
+
+    def decode(
+        self, packet: MessageBatch, *, tenant_id: str, recipient_id: str | None = None,
+    ) -> tuple[MessageEnvelope, ...]:
+        _scope_string(tenant_id, "tenant_id")
+        if recipient_id is not None:
+            _scope_string(recipient_id, "recipient_id")
+        if (not isinstance(packet, MessageBatch) or type(packet.data) is not bytes
+                or not packet.data or len(packet.data) > self.max_bytes):
+            raise MessageError("batch must contain nonempty bytes within max_bytes")
+        try:
+            if packet.content_type == _BATCH_CBOR:
+                documents = self._cbor_documents(packet.data)
+            elif packet.content_type == _BATCH_JSON:
+                if len(packet.data) > self.max_expanded_bytes:
+                    raise MessageError("expanded batch exceeds max_expanded_bytes")
+                def unique_object(pairs):
+                    result = {}
+                    for key, value in pairs:
+                        if key in result:
+                            raise MessageError("duplicate JSON object key")
+                        result[key] = value
+                    return result
+
+                documents = json.loads(packet.data, object_pairs_hook=unique_object)
+                if type(documents) is not list or not 1 <= len(documents) <= self.max_messages:
+                    raise MessageError("batch message count is outside configured limits")
+            else:
+                raise MessageError("unsupported batch content type")
+            messages = tuple(MessageEnvelope.model_validate(doc) for doc in documents)
+            canonical = [self._codec._document(message) for message in messages]
+            restored = self._cbor(canonical) if packet.content_type == _BATCH_CBOR else self._json(
+                canonical
+            )
+            if restored != packet.data:
+                raise MessageError("batch is not the deterministic profile encoding")
+            recipients = {message.recipient_id for message in messages}
+            if len(recipients) != 1 or any(message.tenant_id != tenant_id for message in messages):
+                raise ScopeMismatch("batch tenant or recipient scope differs")
+            if recipient_id is not None and recipients != {recipient_id}:
+                raise ScopeMismatch("batch recipient differs from expected recipient")
+            return messages
+        except MessageError:
+            raise
+        except (cbor2.CBORDecodeError, ValueError, TypeError, OverflowError, RecursionError,
+                EOFError, UnicodeError) as exc:
+            raise MessageError("malformed message batch") from exc
+
+
 def _scope_string(value: Any, field: str) -> str:
     if type(value) is not str or not value:
         raise ValueError(f"{field} must be a nonempty string")
@@ -429,6 +617,30 @@ class Mailbox:
     def deliver(self, message: MessageEnvelope | bytes) -> DeliveryReceipt:
         wire = message if type(message) is bytes else self.codec.encode(message)
         envelope = self.codec.decode(wire, tenant_id=self.tenant_id, recipient_id=self.recipient_id)
+        with self._transaction() as db:
+            return self._insert_message(db, envelope, wire)
+
+    def deliver_batch(
+        self, messages: MessageBatch | Sequence[MessageEnvelope], *,
+        batch_codec: MessageBatchCodec | None = None,
+    ) -> tuple[DeliveryReceipt, ...]:
+        """Validate a bounded frame, then atomically insert it in one transaction.
+
+        A duplicate/sequence conflict rolls back all new inserts in this batch.
+        Existing records and stream acknowledgement positions stay unchanged.
+        Stored messages retain the existing independent schema-1 wire format.
+        """
+        codec = batch_codec if batch_codec is not None else MessageBatchCodec()
+        packet = messages if isinstance(messages, MessageBatch) else codec.encode(messages)
+        envelopes = codec.decode(packet, tenant_id=self.tenant_id, recipient_id=self.recipient_id)
+        # Prepare and validate every persistent message before beginning writes.
+        prepared = [(envelope, self.codec.encode(envelope)) for envelope in envelopes]
+        with self._transaction() as db:
+            return tuple(self._insert_message(db, envelope, wire) for envelope, wire in prepared)
+
+    def _insert_message(
+        self, db: sqlite3.Connection, envelope: MessageEnvelope, wire: bytes,
+    ) -> DeliveryReceipt:
         scope = (
             self.tenant_id,
             self.recipient_id,
@@ -436,44 +648,43 @@ class Mailbox:
             envelope.workflow_id,
             envelope.stream_id,
         )
-        with self._transaction() as db:
-            existing = db.execute(
-                """
-                SELECT wire FROM canopy_mailbox_messages
-                WHERE tenant_id=? AND recipient_id=? AND sender_id=?
-                  AND workflow_id=? AND stream_id=? AND message_id=?
+        existing = db.execute(
+            """
+            SELECT wire FROM canopy_mailbox_messages
+            WHERE tenant_id=? AND recipient_id=? AND sender_id=?
+              AND workflow_id=? AND stream_id=? AND message_id=?
             """,
-                (*scope, envelope.message_id),
-            ).fetchone()
-            if existing is not None:
-                if existing[0] != wire:
-                    raise DuplicateMessageConflict("message ID already has different contents")
-                return DeliveryReceipt(envelope.message_id, False, envelope.sequence)
-            occupied = db.execute(
-                """
-                SELECT 1 FROM canopy_mailbox_messages
-                WHERE tenant_id=? AND recipient_id=? AND sender_id=?
-                  AND workflow_id=? AND stream_id=? AND sequence=?
+            (*scope, envelope.message_id),
+        ).fetchone()
+        if existing is not None:
+            if existing[0] != wire:
+                raise DuplicateMessageConflict("message ID already has different contents")
+            return DeliveryReceipt(envelope.message_id, False, envelope.sequence)
+        occupied = db.execute(
+            """
+            SELECT 1 FROM canopy_mailbox_messages
+            WHERE tenant_id=? AND recipient_id=? AND sender_id=?
+              AND workflow_id=? AND stream_id=? AND sequence=?
             """,
-                (*scope, envelope.sequence),
-            ).fetchone()
-            if occupied is not None:
-                raise SequenceConflict("stream sequence already belongs to another message")
-            db.execute(
-                """
-                INSERT OR IGNORE INTO canopy_mailbox_streams
-                (tenant_id, recipient_id, sender_id, workflow_id, stream_id) VALUES (?, ?, ?, ?, ?)
+            (*scope, envelope.sequence),
+        ).fetchone()
+        if occupied is not None:
+            raise SequenceConflict("stream sequence already belongs to another message")
+        db.execute(
+            """
+            INSERT OR IGNORE INTO canopy_mailbox_streams
+            (tenant_id, recipient_id, sender_id, workflow_id, stream_id) VALUES (?, ?, ?, ?, ?)
             """,
-                scope,
-            )
-            db.execute(
-                """
-                INSERT INTO canopy_mailbox_messages
-                (tenant_id, recipient_id, sender_id, workflow_id, stream_id,
-                 message_id, sequence, wire) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            scope,
+        )
+        db.execute(
+            """
+            INSERT INTO canopy_mailbox_messages
+            (tenant_id, recipient_id, sender_id, workflow_id, stream_id,
+             message_id, sequence, wire) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
-                (*scope, envelope.message_id, envelope.sequence, wire),
-            )
+            (*scope, envelope.message_id, envelope.sequence, wire),
+        )
         return DeliveryReceipt(envelope.message_id, True, envelope.sequence)
 
     def pending(self, *, limit: int = 100) -> list[MessageEnvelope]:

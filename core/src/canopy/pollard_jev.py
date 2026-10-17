@@ -1,7 +1,8 @@
 """Pollard-Jev's real provider interface, isolated from Canopy's Pollard version.
 
-Only native DecisionRequest data crosses the worker boundary. Robotics policy,
-DecisionLoop and simulated actions are not part of this adapter.
+Native numeric DecisionRequest data and explicit versioned text-evaluation
+envelopes cross the worker boundary. Robotics policy, DecisionLoop and simulated
+actions are not part of this adapter.
 """
 
 from copy import deepcopy
@@ -15,6 +16,7 @@ from threading import Lock, Thread
 
 from pydantic import AwareDatetime, TypeAdapter
 
+from ._pollard_jev_worker import _text_request
 from .contracts import Evidence, HandlerResult, RunConfig, Step, Task, Usage, utcnow
 from .handlers import HandlerExecutionError
 from .models import ModelConfig, ModelRequest, POLLARD_JEV_MODEL
@@ -26,17 +28,24 @@ _MODEL_REVISION = "552759daad712f1af6c4c13dabcb1e047886fc9c"
 _MAX_LINE_BYTES = 8 * 1024 * 1024
 
 
-def _native_request(step: Step) -> dict:
-    request = step.inputs.get("decision_request")
+def _request_data(inputs: dict) -> tuple[str, dict]:
+    if "jev_text_request" in inputs:
+        if "decision_request" in inputs:
+            raise ValueError("Pollard-Jev accepts exactly one request representation")
+        try:
+            return "jev_text_request", _text_request(inputs["jev_text_request"])
+        except (TypeError, ValueError):
+            raise ValueError("Invalid versioned JEV text-evaluation request") from None
+    request = inputs.get("decision_request")
     if not isinstance(request, dict):
-        raise ValueError("Pollard-Jev requires inputs.decision_request with native typed observations and choices")
-    return request
+        raise ValueError("Pollard-Jev requires a native decision_request or versioned jev_text_request")
+    return "decision_request", request
 
 
 def _validity_evidence(step: Step, tenant_id: str) -> Evidence:
-    request = _native_request(step)
-    observations = request.get("observations")
-    if not isinstance(observations, list) or not observations:
+    key, request = _request_data(step.inputs)
+    observations = request.get("observations", [])
+    if key == "decision_request" and (not isinstance(observations, list) or not observations):
         raise ValueError("Pollard-Jev requires at least one explicit numeric observation")
     try:
         starts = [_DATETIME.validate_python(request["created_at"])]
@@ -51,18 +60,19 @@ def _validity_evidence(step: Step, tenant_id: str) -> Evidence:
         raise ValueError("Pollard-Jev request and observations need a shared, aware validity interval") from None
     return Evidence(
         evidence_id=f"pollard-jev:{step.step_id}", tenant_id=tenant_id,
-        source="pollard-jev://decision-request",
+        source=f"pollard-jev://{key.replace('_', '-')}",
         version=sha256(canonical_json(request).encode()).hexdigest(),
-        observed_at=observed, expires_at=expires, data={"decision_request": deepcopy(request)},
+        observed_at=observed, expires_at=expires, data={key: deepcopy(request)},
     )
 
 
 def bind_pollard_jev_task(task: Task, version: str) -> Task:
-    """Bind handler revision and native validity to ordinary Canopy evidence.
+    """Bind handler revision and exact request validity to ordinary Canopy evidence.
 
     The CLI uses this before either comparison arm. Python applications can use
     it on a model-only task, or reproduce the same exact evidence binding when
-    building a mixed registry task.
+    building a mixed registry task. Numeric and text-evaluation requests both
+    retain their complete payload in the bound evidence.
     """
     task = task.model_copy(deep=True)
     generated = []
@@ -114,7 +124,7 @@ def pollard_jev_sample_task() -> Task:
 class PollardJevAdapter:
     """One persistent, serialized local worker; model weights load once per instance."""
 
-    revision = "pollard-jev-0.13-openjev-json-v1-552759daad712f1af6c4c13dabcb1e047886fc9c"
+    revision = "pollard-jev-0.13-openjev-json-and-text-v1-552759daad712f1af6c4c13dabcb1e047886fc9c"
 
     def __init__(self) -> None:
         self._lock = Lock()
@@ -220,13 +230,15 @@ class PollardJevAdapter:
         with self._lock:
             if self._config is not None and config != self._config:
                 raise HandlerExecutionError("A Pollard-Jev worker cannot change provider settings")
+            request_key, native = _request_data(request.inputs)
             if self._process is None:
                 inspected = self._exchange({"op": "inspect"}, config)
                 if not inspected["ok"] or inspected.get("package_versions") != _VERSIONS:
                     self._stop()
                     raise HandlerExecutionError("Worker needs pollard-jev==0.13 and pollard==1.6.0")
             response = self._exchange({
-                "op": "infer", "request": deepcopy(request.inputs.get("decision_request")),
+                "op": "infer_text" if request_key == "jev_text_request" else "infer",
+                "request": deepcopy(native),
                 "options": {"cache_dir": config.model_cache_dir, "device": config.device,
                             "max_length": config.max_context_tokens},
             }, config)
@@ -248,7 +260,6 @@ class PollardJevAdapter:
                 raise HandlerExecutionError(f"Pollard-Jev failed: {safe_code}", usage=usage)
             result = response.get("result")
             identity = result.get("identity") if isinstance(result, dict) else None
-            native = request.inputs.get("decision_request", {})
             if (not isinstance(identity, dict) or identity.get("synthetic") is not False
                     or identity.get("model") != POLLARD_JEV_MODEL
                     or identity.get("provider") != "alexwortega-openjev"
@@ -257,10 +268,18 @@ class PollardJevAdapter:
                     or result.get("request_id") != native.get("request_id")
                     or response.get("package_versions") != _VERSIONS):
                 raise HandlerExecutionError("Pollard-Jev returned inconsistent result provenance", usage=usage)
+            if request_key == "jev_text_request":
+                settings = identity.get("settings", {})
+                if (settings.get("input_representation") != "canopy-text-v1"
+                        or any(settings.get(key) != native[key]
+                               for key in ("mapping_id", "mapping_version", "source_sha256"))):
+                    raise HandlerExecutionError("Pollard-Jev returned inconsistent text mapping provenance", usage=usage)
             return HandlerResult(output={
                 "provider": "pollard-jev", "model": identity.get("model"),
                 "decision": result, "package_versions": response["package_versions"],
                 "measurement_basis": response.get("measurement_basis"),
+                "measurements": response.get("measurements", []),
+                "phase_timings_ms": response.get("phase_timings_ms"),
             }, usage=usage)
 
     def close(self) -> None:
