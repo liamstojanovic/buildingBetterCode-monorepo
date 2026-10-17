@@ -3,10 +3,9 @@
 The codec and local mailbox are implemented. All types below live in
 `canopy.messaging`; no shared contract changes are required.
 
-**Coordinator dependency follow-up:** declare `cbor2>=6.1.5,<7` directly in
-`core/pyproject.toml`. Installed `cbor2==6.1.5` provides the strict decoder options
-used here; `cbor-ld-ex==0.2.1` alone permits older cbor2 versions. No packages were
-installed or shared metadata edited by this component.
+`core/pyproject.toml` declares `cbor2>=6.1.5,<7` directly for the strict decoder
+options. The reproducible environment pins `cbor2==6.1.5`;
+`cbor-ld-ex==0.2.1` alone permits older cbor2 versions.
 
 ```python
 class EvidenceReference:

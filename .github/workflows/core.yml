@@ -28,3 +28,4 @@ jobs:
       - run: python -m pip check
       - run: python -m ruff check core
       - run: python -m pytest core/tests -q
+      - run: python core/scripts/component_smoke.py

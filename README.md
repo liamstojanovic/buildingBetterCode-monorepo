@@ -22,7 +22,33 @@ python -m pip install -e "core[dev]"
 python -m pytest core/tests -q
 ```
 
-Core components are being integrated in parallel. Component documentation under
-`core/docs/` records implemented interfaces and limitations. Credentials and local
-run databases are excluded from version control. Synthetic examples and measured
-results must remain clearly distinguished.
+Run the credential-free integration demo:
+
+```sh
+python core/scripts/component_smoke.py
+python core/examples/synthetic_demo.py
+```
+
+The first command exercises all adapters, including fixed policy probes, controlled
+containment, compact messages and duplicate delivery. The second prints the full
+run records for baseline, cold/warm reuse, source change, budget refusal and replay.
+Both use synthetic Python handlers and make zero live provider requests.
+
+Start the local API with `python core/examples/local_api.py`, then open
+`http://127.0.0.1:8000/docs`. It binds to loopback and uses a fixed demo principal;
+production authentication is an application integration responsibility.
+
+- [Runtime and HTTP API](core/docs/api.md)
+- [Recording, replay and cache](core/docs/recording.md)
+- [Budgets and metering](core/docs/budgets.md)
+- [Temporal validity](core/docs/temporal.md)
+- [Policy controls and drift](core/docs/governance.md)
+- [Agent messages and local mailbox](core/docs/messaging.md)
+- [Build provenance and existing dependencies](BUILT_TODAY.md)
+
+Component documentation records implemented interfaces and limitations. Credentials
+and local run databases are excluded from version control. The local adapters are
+not a production identity service, distributed scheduler, or compliance certification.
+External effects require service-owned idempotency; arbitrary Python computation
+cannot be cancelled by an accounting limit. Benchmark savings must be measured
+independently on successful equivalent tasks.
