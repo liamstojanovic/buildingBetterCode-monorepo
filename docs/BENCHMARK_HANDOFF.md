@@ -104,8 +104,9 @@ Their outputs select an identity from a declared finite set. No tool is executed
 no arguments are generated and no selected next step changes the static DAG.
 The existing business-priority case also generates a reason; account for retained
 explanation work when considering a partial substitution.
-The next-step policy is an explicit ordered rule over supplied state, so include
-a deterministic transition-rule baseline before investing in a JEV mapping.
+The next-step policy is an explicit ordered rule over supplied state. The new
+mapping evaluation includes `next_step_rule` as a deterministic baseline; these
+Boolean cases do not establish a need for any model call.
 
 The combined advisor report retains 21 provider-specific groups over seven cases:
 three business, nine tool-selection and nine next-step groups. Every group is
@@ -118,14 +119,16 @@ Repeated baseline/cold/warm observations are repeated execution of the same
 cases, not extra independent test cases. Authored expected choices are useful
 fixture checks, not a held-out, independently labeled business-quality benchmark.
 The fixed provider/run order is not a fair latency comparison; provider costs
-remain unknown where no price was recorded. All JEV findings are unevaluated and
-the demo performs no native OpenJEV inference or backend substitution.
+remain unknown where no price was recorded. The saved advisor findings remain
+unevaluated discovery records. A separate actual JEV evaluation now links to the
+same recorded inputs without rewriting their provenance or activating a backend.
 
 The retained OpenAI `baseline_first` / `choose_retrieval` result chose `respond`
 despite missing approved evidence; its authored expected choice is `retrieve`.
 Keep this failure when reproducing the smoke study. Later choices differ, but
-there is no runtime transition-eligibility check and no evidence that governance
-caused a quality improvement. The fixture-check report separates normalized
+those historical runs had no transition-eligibility check and provide no evidence
+that governance caused a quality improvement. The new JEV gate checks eligibility
+while retaining the raw choice. The fixture-check report separates normalized
 choice matching from bare-JSON compliance: Markdown-fenced JSON can match the
 choice while violating the requested output format. Keep the original text;
 normalization must not erase those format failures. Frontend `evaluations` remain
@@ -172,9 +175,12 @@ Native inputs must carry `inputs.decision_request`, including numeric
 observations with units, validity and explicit choices/hypotheses. The CLI binds
 these facts into Canopy evidence. The bridge does not turn arbitrary support
 tickets, prose documents or dependency outputs into native observations.
-General text classification or tool-selection evaluations need a designed
-mapping or a future text-premise adapter; merely choosing `--provider jev` does
-not make those tasks compatible.
+The reviewed text mappings now use `inputs.jev_text_request` and the explicit
+`infer_text` worker operation. They supply actual text premises and hypotheses to
+the package-loaded OpenJEV encoder, preserving complete NLI rows and provenance.
+See the [mapping guide](../core/docs/jev-mappings.md). Arbitrary classification
+tasks still need reviewed mappings; choosing `--provider jev` alone does not
+convert their input or output contracts.
 
 Native output is a decision object with independent entailment scores and a
 proposal. It is not generated prose or authorization. The package proposes an
@@ -182,11 +188,110 @@ argmax even for weak/tied scores, and its `evidence: "sufficient"` field is not 
 validated acceptance rule. A future route needs independently calibrated
 acceptance/abstention logic, not the package's robotics-policy defaults.
 
-Real OpenJev model inference has **not** been verified in this workspace. Package
-integration tests exercise actual contracts/provider/context checks with
-explicitly synthetic encoders. Hosted smoke calls have verified connectivity
-and accounting for selected OpenAI, Anthropic and Gemini models; they do not
-establish comparative quality. Keep these claims distinct in the demo.
+The separate actual local JEV study uses the pinned checkpoint, not a synthetic
+encoder. Package tests continue to inject explicitly synthetic encoders so CI
+needs no weights or GPU. Preserve that distinction, and distinguish the small
+retrospective study from representative comparative quality.
+
+## Retrospective JEV mapping evaluation
+
+Use the [presentation and reproduction guide](JEV_COMMS_DEMO.md), the
+[offline comparison](../core/examples/recordings/jev-evaluation-2026-10-17/index.html)
+and [full results](../core/examples/recordings/jev-evaluation-2026-10-17/comparison.json).
+The runner is [jev_recorded_comparison.py](../core/examples/jev_recorded_comparison.py).
+It deduplicates the retained inputs to seven cases, keeps all 63 hosted calls for
+comparison, excludes 21 hosted warm reuses, and performs repeated actual local
+classifier calls. Repetition is not an increase in independent sample size.
+
+The retained execution completed 14 actual local calls, two per distinct case,
+and made zero new hosted calls. The first seven raw choices all matched their
+fixture expectations; six passed the gate. The repeat had identical choices and
+dispositions. Tool selections were 3/3 correct and accepted, next steps 3/3 correct
+and accepted, and business priority 1/1 correct but deferred. The business scores
+were 0.9915139 (`high`) and 0.8764946 (`normal`), so the 0.1150193 margin failed the
+preselected 0.15 threshold. Keep both deferrals and the original threshold.
+
+The 63 hosted calls had 62 normalized expected choices, 29 bare JSON outputs and
+28 strict-contract matches. First-trial raw JEV choices agree with 62/63 hosted
+calls; accepted choices agree with 53/63 after nine business calls are excluded
+by the deferral and the original wrong next-step choice remains a disagreement.
+These are repeated-call comparisons, not extra independent JEV observations.
+
+Measured warm local end-to-end latency had median 491.20 ms over 13 calls
+(251.10–847.93 ms). The first call took 37,362.06 ms, including 36,469.99 ms of
+model loading. Keep those cold costs visible. The retained hosted latency came
+from an earlier run under different conditions; this is not a controlled speed
+comparison, and cost/energy savings remain null.
+
+The result format is `canopy-jev-recorded-comparison/v1`. Each case retains the
+versioned mapping, historical source evidence, `text_request` premise/hypotheses,
+`jev_trials[].result.output.decision` with all NLI scores, and the separate
+`projection`. The adapter reports complete unpadded pair-token measurements and
+separate model-load/inference timings. Hosted generative tokens and local NLI
+pair tokens must not be subtracted as if they were interchangeable billing units.
+
+`projection.raw_choice` remains the actual argmax. `accepted_choice` is null on
+defer; never count that as a correct automatic replacement. The demo thresholds
+were fixed at entailment 0.8 and margin 0.15 before evaluation and are explicitly
+uncalibrated. Next-step eligibility adds a deterministic check. The raw proposal
+is not overwritten with the rule answer. `remaining_fields=["reason"]` keeps
+business explanation work visible, and `action_executed` remains false.
+
+Inputs are explicitly marked historical re-evaluation. Original source validity
+is preserved; the separate evaluation window does not renew operational evidence
+or authorize tool execution. The comparison runner invokes the metered adapter
+directly; it is not a new four-arm runtime cache experiment. Registry/runtime
+integration has separate tests for exact evidence binding and warm reuse.
+
+For the next study, keep these discovery/demo cases outside a held-out test set.
+Add unresolved ambiguity, no supported option, unavailable tools, unknown facts,
+conflicting evidence, multi-step dependencies, explanation scoring and operational
+fallback costs. Compare conditional accuracy, coverage, incorrect accepted choices
+and end-to-end task success, not only raw argmax accuracy. Retain any failed trial
+journal and report incomplete evaluations honestly. No automatic route activation,
+calibrated safety claim, or cost/energy saving follows from this smoke study.
+
+## Communication efficiency measurement
+
+The [communication demo](../core/examples/recordings/comms-efficiency-2026-10-17/index.html)
+and [report](../core/examples/recordings/comms-efficiency-2026-10-17/report.json)
+replay retained workflow events as inter-agent messages through the actual
+`cbor-ld-ex` codec and SQLite mailbox. Measure complete compact JSON bodies,
+individual CBOR-LD envelopes and self-contained shared-context batches. Include
+the context and wrapper bytes in every comparison; exclude neither setup nor
+validation costs when measuring CPU or end-to-end delivery.
+
+`MessageBatchCodec` can select the smaller CBOR or JSON representation.
+`Mailbox.deliver_batch` preserves idempotent inserts, detects conflicting
+identities and handles a batch in one transaction. Roundtrip equality, context
+changes, duplicate suppression and a JSON-favorable dense-float case remain
+visible in the demo. These are local transport measurements on replayed records,
+not measured production agent traffic, distributed synchronization or network
+latency. Report batch size and flush policy for a real integration; batching
+latency can matter even when total bytes decrease.
+
+The retained replay contains 618 messages in 36 batches from nine source bundles.
+Full compact JSON bodies total 771,411 B, individual CBOR envelopes 585,595 B, and
+shared-context CBOR batches 356,491 B. The selected batches save 414,920 B versus
+JSON (53.79%) and 39.12% versus individual CBOR. The 475,376 B base64 data is an
+inspection/export representation; its JSON wrapper is additional and neither is
+the binary wire size. The dense-float challenge correctly selects JSON
+(1,827 B) over CBOR (2,866 B).
+
+All 618 messages were delivered and acknowledged, 36 duplicate redeliveries
+were suppressed, and reverse delivery and independent refreshed contexts were
+verified. Atomic batch insertion prevalidates all messages and rolls back on
+identity conflict. One measured local delivery sample on separate fresh SQLite
+stores used 618 transactions / 872.85 ms individually versus 36 transactions /
+204.52 ms in batches, with FULL synchronous WAL. It includes validation and
+commits; frame construction, store creation and acknowledgements are excluded.
+
+Over five repetitions of the full 618-message codec corpus, median JSON
+encode/decode was 24.29/40.74 ms; shared CBOR was 32.87/54.86 ms and adaptive
+selection 30.91/53.84 ms. JSON therefore had lower encode/decode CPU cost in this
+measurement. Codec timing excludes source I/O, mailbox writes, network and batch
+accumulation. Preserve this tradeoff alongside byte savings and report broader
+payloads/concurrency before claiming general throughput improvements.
 
 ## Implemented offline advisor; evaluation owned by the benchmark
 
@@ -209,8 +314,9 @@ A credential-free example executes synthetic handlers and analyzes their records
 Output follows [AdvisorReport.schema.json](../core/schemas/AdvisorReport.schema.json).
 States are `candidate`, `needs_mapping`, `unsupported`; each recommendation is
 `not_evaluated`. Quality/savings are null and synthetic observations are counted.
-No text adapter, replacement evaluation, calibrated abstention, backend switching
-or fallback was added.
+The separate versioned text mappings and retrospective evaluation do not change
+these discovery enums or populate their null quality/savings fields. Calibrated
+abstention, production backend switching and fallback remain future work.
 
 Discovery uses choices, enum schemas, catalogs, transitions and output clues.
 Optional [DecisionDescriptor](../core/schemas/DecisionDescriptor.schema.json)

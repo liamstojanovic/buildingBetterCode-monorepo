@@ -23,15 +23,18 @@ never authorize execution, validate quality or change a workflow.
   estimated savings remain null.
 
 Not implemented: an advisor HTTP endpoint, background scheduler, semantic LLM
-analyzer, persisted recommendation cache, replacement evaluation, general text
+analyzer, persisted recommendation cache, production qualification, general text
 adapter, automatic backend switching, fallback route or adaptive agent loop.
 Saving a report retains a snapshot; reruns recompute bounded heuristics. Report
 retention does not implement automatic invalidation or drift monitoring.
 
 The native bridge uses pollard-jev 0.13, pollard 1.6.0 and a pinned OpenJEV v2
-checkpoint. It accepts numeric observations and explicit hypotheses. Text-based
-recommendations identify an adapter gap. Real local OpenJEV inference remains
-unverified here; synthetic-encoder tests cover integration, not task accuracy.
+checkpoint. It accepts numeric observations and explicit hypotheses. Separate
+[versioned support-case mappings](../core/docs/jev-mappings.md) now provide a
+text-premise path for the three retained decision categories. The
+[JEV evaluation and communication demo](JEV_COMMS_DEMO.md) reports actual local
+inference separately from discovery. Historical advisor findings keep their
+original `not_evaluated` status; they are not rewritten as production approvals.
 See [live models](../core/docs/live_models.md).
 
 ## Detection without a per-call analysis model
@@ -146,6 +149,8 @@ recommendations unevaluated.
 - Frontend teammate: report import, opportunities, reasons/blockers, provenance,
   metric handling and existing execution/approval/replay screens.
 
-Next design work includes text-evidence mapping, labeled substitution workloads,
-acceptance criteria and explicit activation. Future monitoring must bind evaluated
+The separate [JEV and communication demo](JEV_COMMS_DEMO.md) now includes explicit
+text mappings and actual local inference for the retained hosted support cases.
+Next design work includes broader mappings, independently labeled substitution
+workloads, calibrated acceptance criteria and explicit activation. Future monitoring must bind evaluated
 recommendations to revisions and observed workload changes.

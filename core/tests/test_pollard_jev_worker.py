@@ -279,3 +279,120 @@ def test_process_protocol_works_without_core_or_model_dependencies(package_pytho
     assert responses[0]["package_versions"]["pollard-jev"] == "0.13"
     assert responses[0]["package_versions"]["pollard"] == "1.6.0"
     assert responses[1]["error_code"] == "invalid_json"
+
+
+TEXT_SCENARIO = r'''
+import importlib.util
+import json
+import sys
+from datetime import datetime, timezone
+spec = importlib.util.spec_from_file_location("canopy_isolated_worker", sys.argv[1])
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+from pollard_jev.providers.openjev import OpenJevProvider
+scenario = sys.argv[2]
+payload = json.load(sys.stdin)
+state = {"loads": 0, "calls": 0, "premises": [], "hypotheses": []}
+class Encoder:
+    template = "{premise} / {hypothesis}"
+    max_len = 3 if scenario == "overflow" else 4096
+    def tok(self, text, **kwargs):
+        assert kwargs == {"truncation": False, "padding": False}
+        return {"input_ids": [1, 2, 3, 4]}
+    def predict_hypotheses(self, premise, hypotheses):
+        state["calls"] += 1
+        state["premises"].append(premise)
+        state["hypotheses"].append(hypotheses)
+        if scenario == "failure":
+            raise RuntimeError("private-failure")
+        if scenario == "invalid_scores":
+            return [[0.1, float("nan"), 0.2] for _ in hypotheses]
+        return [[0.05, 0.9, 0.05] if i == 0 else [0.2, 0.7, 0.1]
+                for i, _ in enumerate(hypotheses)]
+def factory(**options):
+    state["loads"] += 1
+    assert options["representation"] == "json-v1"
+    return OpenJevProvider(Encoder(), model="unit-test-encoder", model_version="test-v1", synthetic=True)
+worker = module.Worker(provider_factory=factory)
+first = worker.handle({"op": "infer_text", "request": payload["text"], "options": {}})
+second = None
+third = None
+if scenario == "mixed":
+    second = worker.handle({"op": "infer", "request": payload["native"], "options": {}})
+    third = worker.handle({"op": "infer_text", "request": payload["text"], "options": {}})
+print(json.dumps({"first": first, "second": second, "third": third, "state": state}))
+'''
+
+
+def text_payload():
+    from canopy.contracts import Task
+    from canopy.jev_mappings import map_recorded_step
+    from canopy.pollard_jev import pollard_jev_sample_task
+
+    source = Path(__file__).parents[1] / "examples/recordings/advisor-live-2026-10-17/openai-business-decision/comparison.json"
+    task = Task.model_validate(json.loads(source.read_text(encoding="utf-8"))["task"])
+    return {"text": map_recorded_step(task, task.steps[0]).text_request,
+            "native": pollard_jev_sample_task().steps[0].inputs["decision_request"]}
+
+
+def run_text_scenario(package_python, scenario, payload=None):
+    run = subprocess.run(
+        [package_python, "-I", "-c", TEXT_SCENARIO, str(WORKER_PATH), scenario],
+        input=json.dumps(payload or text_payload()),
+        text=True, encoding="utf-8", capture_output=True, check=True, timeout=30,
+    )
+    assert "private-failure" not in run.stdout
+    return json.loads(run.stdout)
+
+
+def test_text_bridge_forwards_actual_text_and_keeps_native_identity_separate(package_python):
+    payload = text_payload()
+    observed = run_text_scenario(package_python, "mixed", payload)
+    first, second, third = (observed[name] for name in ("first", "second", "third"))
+    assert first["ok"] is second["ok"] is third["ok"] is True
+    assert observed["state"]["loads"] == 1 and observed["state"]["calls"] == 3
+    assert observed["state"]["premises"][0] == payload["text"]["premise"]
+    assert observed["state"]["hypotheses"][0] == [item["hypothesis"] for item in payload["text"]["choices"]]
+    assert first["result"]["scores"] == {"high": 0.9, "normal": 0.7}
+    assert first["result"]["nli_scores"]["high"]["contradiction"] == 0.05
+    assert first["result"]["identity"]["settings"]["input_representation"] == "canopy-text-v1"
+    assert first["result"]["identity"]["settings"]["source_sha256"] == payload["text"]["source_sha256"]
+    assert second["result"]["identity"]["settings"] == {"input_representation": "json-v1"}
+    assert first["usage"]["input_tokens"] == 8 and first["usage"]["model_calls"] == 1
+    assert first["phase_timings_ms"]["model_load"] >= 0
+    assert second["phase_timings_ms"]["model_load"] == 0
+
+
+@pytest.mark.parametrize("scenario,code,calls", [
+    ("overflow", "context_limit_exceeded", 0), ("failure", "inference_failed", 1),
+    ("invalid_scores", "inference_failed", 1),
+])
+def test_text_bridge_failure_and_context_boundaries(package_python, scenario, code, calls):
+    observed = run_text_scenario(package_python, scenario)
+    assert observed["first"]["ok"] is False
+    assert observed["first"]["error_code"] == code
+    assert observed["first"]["usage"]["model_calls"] == calls
+    assert "result" not in observed["first"]
+
+
+@pytest.mark.parametrize("change", ["schema", "version", "mapping", "source", "duplicate", "numeric", "naive"])
+def test_text_envelope_rejects_unversioned_or_untyped_inputs_before_loading(package_python, change):
+    payload = text_payload()
+    request = payload["text"]
+    if change == "schema":
+        request["schema_version"] = "future"
+    elif change == "version":
+        request["mapping_version"] = "2"
+    elif change == "mapping":
+        request["mapping_id"] = "unknown-code-factory"
+    elif change == "source":
+        request["source_sha256"] = "not-a-hash"
+    elif change == "duplicate":
+        request["choices"][1]["name"] = request["choices"][0]["name"]
+    elif change == "numeric":
+        request["premise"] = 42
+    else:
+        request["created_at"] = "2026-10-17T00:00:00"
+    observed = run_text_scenario(package_python, "invalid", payload)
+    assert observed["first"]["error_code"] == "invalid_request"
+    assert observed["state"]["loads"] == observed["state"]["calls"] == 0

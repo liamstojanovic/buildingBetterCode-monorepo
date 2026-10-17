@@ -1,7 +1,9 @@
 # Frontend integration and demo handoff
 
 The frontend teammate owns `web/`. This guide separates live HTTP features,
-importable offline advisor reports, and future backend routing.
+offline discovery, recorded JEV evaluation, communication measurements and future
+backend routing. The [demo guide](JEV_COMMS_DEMO.md) links standalone pages that
+work before dedicated frontend views are implemented.
 Start with the [team handoff](TEAM_HANDOFF.md), [HTTP API](../core/docs/api.md),
 and [live model guide](../core/docs/live_models.md).
 
@@ -16,6 +18,8 @@ and [live model guide](../core/docs/live_models.md).
 | Hosted models and native Pollard-Jev | Python registry and comparison CLI | Import actual comparison report; custom service wiring needed for live HTTP execution |
 | Drift containment and compact messaging | Component APIs and smoke report | Imported component report, clearly labeled synthetic |
 | Optimization advisor | Implemented offline discovery and strict JSON report | Import generated report; findings are unevaluated; no live advisor routes |
+| JEV mapping evaluation | Actual local NLI comparison across three sample categories | Dedicated comparison format; use offline HTML until its view is implemented |
+| Shared-context communication | `MessageBatchCodec`, `Mailbox.deliver_batch`, measured replay | Dedicated communication report or offline HTML; no mailbox HTTP endpoint |
 
 The runtime executes a predefined DAG sequentially in deterministic order. It
 does not dynamically select tools or generate next steps. The local HTTP example
@@ -34,6 +38,8 @@ Suggested screen priority:
    from the component smoke report.
 5. **Offline advisor:** business decisions, tool selection, and next-step findings
    with reasons, required changes and evaluation gaps, imported from actual analysis.
+6. **Evaluation and communication:** raw/gated JEV outcomes and measured wire bytes,
+   with their source records, limitations and complete outputs available.
 
 ## Local service and runnable inputs
 
@@ -103,8 +109,9 @@ and tenant. Hosted sample inputs are invented support-ticket data.
 Anthropic, Gemini, OpenAI-compatible endpoints, and native `pollard-jev`/`jev`
 are documented in the live model guide. Native Pollard-Jev needs a separate
 Python environment and prepared model weights; its sample is a numeric inventory
-decision. Actual local OpenJEV inference has not yet been verified here. Contract
-tests using a synthetic encoder must never appear as a real inference demo.
+decision. The separate text-mapping comparison now records actual local OpenJEV
+inference on all three sample categories. Contract tests using synthetic encoders
+remain separate from those retained real model outputs.
 
 ## Retained hosted demo: all three advisor categories
 
@@ -136,8 +143,9 @@ comparison. Inspect `choose_retrieval` in the baseline lane (`baseline_cold` in
 the bundle, `baseline_first` in the core export): the model chose `respond`
 although the recorded state had no approved evidence and the authored expectation
 was `retrieve`. Preserve this result in the demo. Different choices in later runs
-do not show governance fixing decision quality; the runtime does not enforce
-transition eligibility. The committed fixture checks separately assess normalized
+do not show governance fixing decision quality; those historical runs did not
+enforce transition eligibility. The new JEV evaluation shows its eligibility gate
+separately. The committed fixture checks separately assess normalized
 choice and requested bare-JSON format; fenced JSON can satisfy the former while
 failing the latter. Those checks are not an independent quality benchmark, and
 the frontend bundles' `evaluations` remain empty.
@@ -163,8 +171,10 @@ handler made actual model calls. Warm results reuse those real outputs. None of
 the tool names was executed and the next-step choices did not modify the static
 DAG. These are hosted selection recordings, not an autonomous agent trajectory.
 The support-priority result also includes a generated explanation; replacing its
-selection alone would leave that explanation work. All JEV recommendations still
-need mapping and independent replacement evaluation.
+selection alone would leave that explanation work. The historical discovery
+snapshot remains unevaluated; link the explicit mapping evaluation below without
+changing its original findings. Representative independent evaluation remains
+future work.
 
 To export a new retained comparison for the current frontend, use its existing
 converter while the original SQLite stores and events are available:
@@ -180,6 +190,97 @@ committed demo bundles already include the recorded events and need no database.
 The sanitized comparison JSON alone cannot reconstruct those events through this
 converter. Reanalyze a comparison with the advisor CLI instead, as shown in the
 demo guide.
+
+## Actual JEV mapping evaluation: a separate view
+
+Open the [offline JEV comparison](../core/examples/recordings/jev-evaluation-2026-10-17/index.html)
+or [full JSON](../core/examples/recordings/jev-evaluation-2026-10-17/comparison.json).
+It records 14 actual local calls: two trials of seven distinct cases. The first
+trial matched all seven expected selections; the gate accepted six. The repeat
+had the same choices and dispositions. All three tool selections and all three
+next-step choices were accepted. Business priority selected `high` correctly but
+deferred because its margin was only `0.1150`, below the fixed `0.15` threshold.
+Show that abstention; do not lower a threshold to make the card green.
+
+The actual business entailments were about `0.9915` for `high` and `0.8765` for
+`normal`. These are independent entailments, not a categorical distribution over
+actions, so both can be high. The business explanation is still required. The
+three Boolean next-step cases also have a deterministic rule answer with no model
+call. No tool or transition was executed and no route was activated.
+
+The comparison contains all 63 retained hosted calls, with 62 normalized expected
+choices. It excludes 21 warm reuses from that count. JEV agrees with 62 of the 63
+hosted raw choices; that agreement is separate from fixture accuracy. Keep the
+known OpenAI `respond`/`retrieve` error visible. Within all 63 hosted calls, 29
+were bare JSON and 28 met the strict output contract; the earlier 54-call selector
+table intentionally excludes business results.
+
+Create a dedicated importer keyed by
+`format: "canopy-jev-recorded-comparison/v1"`. This is neither `AdvisorReport`,
+`RunResult`, nor `canopy-comparison/v1`, and `parseBundle` must not accept it by
+casting. There is no generated JSON Schema for this example report; implement
+strict runtime validation for its versioned shape before rendering external
+imports. Unknown formats or incomplete trials should produce a clear import
+error. Until then, link the standalone page, which embeds the saved result.
+
+| Evaluation field | Frontend treatment |
+| --- | --- |
+| `evaluation_kind`, `sample_data`, `synthetic`, `automatic_activation` | Historical sample evaluation / actual model inference / no activation banner |
+| `configuration`, `source_manifest_sha256`, `source_files`, `expectations_sha256` | Model/settings and original data provenance |
+| `cases[].category`, `step_id`, `mapping_id`, `mapping_version` | Category filter and exact evaluated mapping identity |
+| `cases[].text_request` | Inspect the actual premise, candidate hypotheses and evaluation window |
+| `cases[].jev_trials[].result.output.decision` | Raw proposal plus every candidate's entailment and complete NLI row |
+| `cases[].jev_trials[].projection` | Raw choice beside accepted choice or abstention; thresholds, reasons and required remaining fields |
+| `cases[].rule_baseline` | Deterministic next-step answer; do not count it as a model prediction |
+| `cases[].jev_trials[].result.output.phase_timings_ms` | Model loading and inference separately |
+| `cases[].jev_trials[].end_to_end_elapsed_ms`, `worker_cold` | Cold versus warm worker timing, not application-cache reuse |
+| `hosted_calls[]` | Preserve original output text, normalized choice, strict-format result and recorded usage |
+| `summary`, `limitations` | Counts, conditional acceptance and measurement limits; cost/energy savings remain null |
+
+The first call took about 37.36 seconds including 36.47 seconds of model loading.
+The other 13 calls had median end-to-end latency 491.20 ms on the recorded GPU
+setup. Historical hosted latency is a different measurement under different
+conditions; do not present a controlled speedup percentage. NLI input-pair tokens
+are not hosted generative billing units. Loading an offline page makes no calls.
+
+## Communication efficiency: a separate measured report
+
+Open the [offline communication demo](../core/examples/recordings/comms-efficiency-2026-10-17/index.html)
+or its [report JSON](../core/examples/recordings/comms-efficiency-2026-10-17/report.json).
+It wraps retained events as local inter-agent messages and compares complete
+compact JSON bodies, individual CBOR-LD messages, and self-contained
+shared-context batches through the actual `cbor-ld-ex` codec. It verifies exact
+roundtrips, persistent mailbox delivery, duplicate suppression and context changes.
+The dense-float example shows JSON winning; the adaptive codec selects the smaller
+representation without hiding that result.
+
+The saved replay has 618 messages in 36 batches. Compact JSON uses 771,411 B,
+individual CBOR messages 585,595 B, and shared-context CBOR batches 356,491 B
+(53.79% fewer bytes than JSON; 39.12% fewer than individual CBOR). All 618 messages
+were delivered and acknowledged, and 36 duplicate redeliveries were suppressed.
+The dense-float case selects 1,827 B JSON over 2,866 B CBOR.
+
+Show CPU costs beside byte reduction: over the entire corpus, five-repetition
+median JSON encode/decode was 24.29/40.74 ms, compared with 32.87/54.86 ms for
+batched CBOR. JSON was cheaper to encode and decode here. Atomic batch delivery
+used 36 SQLite transactions instead of 618; the separate one-sample local timing
+was 204.52 ms versus 872.85 ms. That delivery comparison includes validation and
+commits but excludes frame creation, acknowledgements and network. Do not turn it
+into a production throughput claim.
+
+Its discriminator is `format: "canopy-messaging-demo/v1"`; the downloadable wire
+inventory has `format: "canopy-message-frames/v1"`. Give these separate runtime
+validation and UI state. Suggested panels are totals, per-run frame selector,
+first complete message, roundtrip/deduplication checks, and measured CPU/mailbox
+timings. `frames.json` carries base64 for inspectability; compare raw frame bytes
+for wire savings, not the larger JSON/base64 artifact download size. Every CBOR
+batch includes its context, so prior frames are not needed for decoding.
+
+This is a local replay of recorded sample workflow events, not a production
+network capture or distributed-agent throughput benchmark. The HTTP API remains
+JSON; no binary browser transport or live mailbox stream has been added. Byte
+savings are not evidence of token, dollar or energy savings. Use the
+[presentation guide](JEV_COMMS_DEMO.md) for a ready demo and reproduction commands.
 
 ## HTTP integration details
 
@@ -360,7 +461,7 @@ import. These are the concrete places to extend in the frontend teammate's work:
    task. Preserve the existing import size/error treatment and display the parsed
    report's provenance and limits in the advisor view.
 
-These three JSON formats are distinct; none is interchangeable merely because
+These JSON formats are distinct; none is interchangeable merely because
 it contains Canopy results:
 
 | Artifact | Discriminator / structure | Current consumer |
@@ -368,6 +469,8 @@ it contains Canopy results:
 | Frontend session/core fixture bundle | `format: "canopy-comparison/v1"`, `recordings` with task/result/events | Frontend `parseBundle` |
 | Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; `scripts/import-comparison.py` converts retained reports plus databases/events for the frontend |
 | Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | New frontend advisor import to implement |
+| Actual JEV mapping comparison | `format: "canopy-jev-recorded-comparison/v1"`, cases/trials/hosted_calls | Standalone HTML now; dedicated frontend adapter to implement |
+| Communication replay report | `format: "canopy-messaging-demo/v1"`, totals/frames/scenarios/timings | Standalone HTML now; dedicated frontend adapter to implement |
 
 The frontend's `exportSession()` and `fixtures:core` bundle are **not** accepted by
 the advisor CLI's `--report` option. Analyze their underlying Canopy database with
@@ -432,15 +535,17 @@ exhaustion. Present “Limit reached; report may be partial,” not a definite c
 that extra records were skipped.
 
 Tool choice is separate from generating arguments and execution. Next-step
-selection is separate from inventing or executing a plan. Text leads need a
-future adapter: native Pollard-Jev currently accepts numeric observations and
-explicit hypotheses. Even `native_request_shape` is structural compatibility,
-not proven inference quality or authorization.
+selection is separate from inventing or executing a plan. Reviewed text mappings
+now exist for the seven retained support cases; arbitrary text leads still need
+an explicit mapping. The native numeric contract remains distinct from the
+versioned text-evaluation bridge. Even `native_request_shape` is structural
+compatibility, not proven inference quality or authorization.
 
 No enable-route, evaluation-run or server-refresh control is wired up. The current
 release has no advisor HTTP endpoint, scheduler, automatic report cache,
-replacement evaluation, dynamic backend selection or fallback. Retaining two
-reports permits comparison; it does not provide automatic validity monitoring.
+production backend selection or fallback. The separate retrospective evaluation
+does not add those controls. Retaining two reports permits comparison; it does
+not provide automatic validity monitoring.
 `evaluating`, `validated` and `not_beneficial` are future concepts, not current enums.
 See [advisor design](ADVISOR_DESIGN.md) and [benchmark handoff](BENCHMARK_HANDOFF.md).
 
@@ -455,11 +560,13 @@ and say nothing by themselves about tokens, energy, or latency.
 
 Finish with the retained hosted bundles above, then review their combined offline
 advisor report in the advisor view when implemented, or as saved JSON. Open a
-business, tool and next-step finding and show each missing mapping/evaluation.
-Use the separate synthetic advisor demo to contrast retained generation with a
-deterministic alternative. Explain the next independent replacement experiment.
-The analyzer works now; neither the recorded selections nor the generic catalog
-fixture implement adaptive agent routes.
+business, tool and next-step finding, then open the actual JEV comparison and
+inspect its raw choices, accepted choices and business abstention. Show the
+deterministic next-step baseline and retained explanation requirement. Open the
+communication page for full-body byte counts, exact decode, mailbox delivery,
+duplicate suppression and the JSON-favorable fallback example. Use the synthetic
+advisor demo for broader detector coverage. Explain the next independent
+replacement experiment; none of these pages implements adaptive agent routes.
 
 Before demo day: check API/proxy connectivity, fresh evidence, matching tenant,
 unknown metric labels, reuse provenance, approval rejection/consumption, and

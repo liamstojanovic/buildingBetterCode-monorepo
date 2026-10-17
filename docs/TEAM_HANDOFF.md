@@ -17,15 +17,17 @@ Updated October 17, 2026. Start with the role-specific guides:
   decisions, tool selection and next-step choices, with a strict JSON report.
 - [Advisor design](ADVISOR_DESIGN.md): implemented discovery and later evaluation
   and activation boundaries.
+- [JEV and communication demo](JEV_COMMS_DEMO.md): offline presentation, actual
+  local classifier comparisons, shared-context batches and reproduction commands.
 
 ## Capability checkpoint
 
 | Capability | Current availability | Demo source |
 | --- | --- | --- |
 | Recording, cache/replay, budgets, freshness, policy/approvals | Integrated runtime and local HTTP API | Synthetic API or Python workload; live handlers require server registration |
-| Drift probes/containment and compact messaging/deduplication | Python components and smoke example | `core/scripts/component_smoke.py`; no dedicated HTTP dashboard endpoints |
+| Drift probes/containment and compact messaging/deduplication | Python components, CBOR-LD batches and persistent mailbox | Component smoke example plus measured communication replay; no dedicated HTTP dashboard endpoints |
 | OpenAI, compatible endpoints, Anthropic, Gemini | Implemented live handlers | Explicit provider/model and credentials; `live_comparison.py` |
-| Pollard-Jev/OpenJEV | Implemented isolated native worker | Separate environment and cached pinned weights required; actual local inference unverified here |
+| Pollard-Jev/OpenJEV | Isolated native worker plus explicit text mappings for all three sample categories | Actual local classifier comparison and offline HTML; separate environment and cached pinned weights needed only to rerun inference |
 | Business/tool/next-step optimization advisor | Offline Python/CLI discovery and JSON report | [Retained hosted recordings](../core/examples/recordings/advisor-live-2026-10-17/README.md) across three providers; `core/examples/advisor_demo.py` for synthetic coverage; no advisor HTTP endpoint |
 | Automatic backend switching or dynamic agent loop | Not implemented | No production control or success claims in the demo |
 
@@ -49,29 +51,67 @@ fixture checks show 53 expected choices after normalization, but only 24 choices
 also met the requested bare-JSON contract. Warm reuses and the old business case
 are excluded from that check; it is not an independent quality benchmark.
 
-The advisor reports 21 provider-specific groups: three business, nine tool
-selection and nine next step. All suggest OpenJEV evaluation and require mapping;
+The historical advisor report has 21 provider-specific groups: three business,
+nine tool selection and nine next step. Its saved findings suggest OpenJEV evaluation and require mapping;
 only the business groups are partial substitutions because their calls also
-generate explanations. None has been evaluated for replacement quality.
+generate explanations. Keep that discovery snapshot unchanged and link the new
+explicit mapping evaluation beside it.
 
 The inputs are invented sample data and the inference is real: preserve both
 `sample_data: true` and `synthetic: false` in the explanation. Tool names were
 selected without execution, and next steps were selected from authored choices
 without changing the runtime DAG. The findings identify opportunities to evaluate;
 they do not establish successful JEV replacement, measured savings or independent
-business accuracy. Native OpenJEV inference remains unverified here.
+business accuracy. The separate local JEV report evaluates these same sample
+inputs and retains its raw predictions and gate outcomes.
 
 Include the retained OpenAI next-step error in the demo: `choose_retrieval` chose
 `respond` in its first baseline despite missing approved evidence. The fixture
 checks also distinguish normalized choice matches from bare-JSON compliance.
 These outcomes remain visible; subsequent answer variation is not evidence that
-governance corrected quality, and the runtime has no transition-eligibility gate.
+governance corrected quality. Those historical runs had no transition-eligibility
+gate; the new JEV mapping applies an explicit gate without changing raw results.
 
 The frontend can import the supplied comparison bundles now. Its separate advisor
 report view still needs the integration described in the frontend handoff; use
 the saved advisor JSON until it is built. The benchmark teammate can reanalyze
 the full comparison exports and extend the cases with independently labeled
 outcomes. The artifact guide includes fresh-task and reanalysis commands.
+
+## Actual JEV evaluation and communication demo
+
+Open the [demo start page](../core/examples/recordings/index.html) and follow the
+[presenter guide](JEV_COMMS_DEMO.md). The separate JEV page compares the seven
+distinct recorded cases with actual local OpenJEV outputs. Inspect original
+source hashes, text premises, hypotheses, full NLI scores, raw choices and
+acceptance outcomes. The reviewed mappings do not execute tools or transitions.
+Business priority still needs its reason; deterministic rules already solve the
+explicit Boolean next-step cases without a model call. No route is activated.
+
+The actual run made 14 local classifier calls (two trials per case) and no new
+hosted calls. Both trials selected all seven expected answers; the gate accepted
+six per trial. Business priority correctly chose `high` but deferred because its
+0.1150 margin was below the fixed 0.15 threshold. All three tool and three
+next-step selections were accepted. Present the abstention as part of the result,
+not as a failed demo to hide. There are seven distinct cases, not 14 independent
+examples, and these outcomes do not validate production replacement.
+
+The communication page measures retained workflow events replayed through the
+actual `cbor-ld-ex` codec and SQLite mailbox. `MessageBatchCodec` shares repeated
+context inside each self-contained batch; `Mailbox.deliver_batch` handles
+idempotent delivery. It is a measured local transport replay, not evidence of
+distributed network throughput or reduced model-token consumption. Show byte
+counts, roundtrip integrity, duplicate suppression and serialization/delivery
+timings separately. The smaller-representation fallback remains visible when
+JSON beats CBOR for a payload.
+
+For 618 retained events in 36 batches, the measured full bodies were 771,411 B
+as compact JSON, 585,595 B as individual CBOR messages and 356,491 B as shared
+CBOR batches: 53.79% fewer bytes than JSON and 39.12% fewer than individual CBOR.
+All 618 messages were delivered and acknowledged; 36 duplicate redeliveries were
+suppressed. One local SQLite sample reduced commits from 618 to 36 and delivery
+from 872.85 ms to 204.52 ms. JSON encoding/decoding remained cheaper in CPU time
+than batched CBOR, so present size and CPU as separate tradeoffs.
 
 ## Local development
 
@@ -113,9 +153,11 @@ refresh costs where incurred; missing cost/energy stays null, not zero.
 
 For proposed JEV substitution, use equivalent business inputs and a shared outcome
 contract across backends, allowing the explicitly recorded backend/mapping change.
-The current runner compares reuse within one selected backend; it does not yet
-measure cross-backend quality. Keep selection, argument generation, explanation,
-and tool execution costs visible. The benchmark guide specifies the new study.
+`live_comparison.py` compares reuse within one selected backend. The separate
+`jev_recorded_comparison.py` now evaluates explicit mappings against retained
+hosted outputs on seven sample cases. This smoke evaluation does not replace the
+benchmark teammate's held-out study. Keep selection, argument generation,
+explanation and tool execution costs visible.
 
 ## Frontend boundary
 
@@ -124,8 +166,10 @@ The implemented offline advisor has an importable
 demo with `python core/examples/advisor_demo.py --output-dir .canopy/advisor-demo`.
 Display actual findings, observed usage, provenance, limits and missing evaluation.
 Current states are `candidate`, `needs_mapping`, `unsupported`; every finding is
-unevaluated. No live advisor endpoint, activation, automatic routing or text
-adapter was added. See the frontend guide for its report adapter.
+unevaluated in that discovery contract. Explicit text mappings and a separate
+evaluation report now exist; no live advisor endpoint, activation or automatic
+routing was added. See the frontend guide for the distinct report adapters and
+offline HTML fallback.
 
 Render the current run status and ordered `RunEvent` records. The server supplies
 usage and status; the browser must not invent successful operations or metrics.
@@ -158,11 +202,12 @@ invented inputs. Keep those origins distinct.
 
 For the expanded demo, show run comparison and controls, then review the generated
 offline advisor report: business classification, choosing a known tool, and
-choosing an authored next step. Show reasons, required mappings and missing
-evaluation. Use the hosted bundles for real inference and the separate synthetic
-advisor demo for broader detector cases. OpenJEV replacement quality/savings
-remain unevaluated. Tool/next-step detection does not implement a dynamic agent
-loop.
+choosing an authored next step. Show why each finding was suggested, then open
+the separate actual JEV evaluation and its raw versus gated outcomes. Show the
+communication replay's measured full-body byte counts and delivery checks.
+Use the synthetic advisor demo for broader detector cases. Representative
+replacement quality and dollar/energy savings remain unmeasured. Neither the
+advisor nor the mappings implement a dynamic agent loop.
 
 ## Team ownership and coordination
 

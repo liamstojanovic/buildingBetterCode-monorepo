@@ -162,6 +162,15 @@ actual output shape; the text adapters do not enforce a JSON output schema.
 `--max-output-tokens` is irrelevant to native entailment scoring and is not used
 as a generation limit. Native temperature configuration is rejected.
 
+For the retained business-priority, tool-selection and next-step cases, use the
+separate [versioned text mappings](jev-mappings.md) and
+[JEV comparison demo](../../docs/JEV_COMMS_DEMO.md). Mapped tasks carry
+`inputs.jev_text_request`; the same registered handler and isolated worker call
+the package-loaded OpenJEV encoder on a text premise and explicit hypotheses.
+This is a Canopy text bridge, not a numeric package `DecisionRequest`. It keeps
+mapping identity and source hashes in the result. It does not automatically
+translate arbitrary prompts or deploy a new workflow route.
+
 ## Read the results fairly
 
 - `baseline_first` and `baseline_repeat` disable Canopy result caching. Policy

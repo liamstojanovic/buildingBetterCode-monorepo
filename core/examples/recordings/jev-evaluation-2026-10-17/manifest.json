@@ -1,0 +1,13 @@
+{
+  "format": "canopy-jev-demo/v1",
+  "sample_data": true,
+  "synthetic": false,
+  "files": {
+    "comparison.json": "b8ddfb0e636ac2179b2bf9b1295e11fb9244554cf6677c6c9a07fb1e59229a18",
+    "environment.json": "74a372fc4b3f77a2042b8b7ad51ecddbfd9b6945d5a33a02139384c7d35a90a7",
+    "index.html": "4ad5cc31fada8804988bfb9f592f2d96f8ef97b8cf324d25118cfca25b760d1d",
+    "model-manifest.json": "258768022733ca7bee4f5eb2dcaf7589fe5a7ad0619e722925335ef58b452975",
+    "README.md": "3f1d1a320e795d006ccb18fcfe9d941ef4864d6fd072840e3d63aa2d63d57fe2"
+  },
+  "source_manifest_sha256": "1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0"
+}

@@ -1,0 +1,1150 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canopy · JEV vs recorded LLM decisions</title><style>
+:root{color-scheme:dark}body{font:16px/1.55 system-ui,sans-serif;background:#101b20;color:#ecf4f3;
+margin:0 auto;padding:32px;max-width:1380px}h1{line-height:1.15;font-size:clamp(28px,4vw,46px)}
+a{color:#81dfbd}small,.muted{color:#b2c7c8}.cards{display:flex;flex-wrap:wrap;gap:16px;margin:24px 0}
+.card{background:#1b3035;border:1px solid #38545a;border-radius:12px;padding:18px;min-width:200px}
+.card strong{font-size:30px;display:block}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;
+margin:16px 0}th,td{text-align:left;vertical-align:top;border-bottom:1px solid #38545a;padding:12px}
+th{color:#81dfbd}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;max-width:900px}
+details{padding:16px;background:#15272c;border:1px solid #38545a;border-radius:8px;margin:14px 0}
+summary{cursor:pointer;font-weight:650}li{margin:8px 0}.notice{border-left:4px solid #e4b665;padding:12px 20px}
+</style><main><p><a href="../index.html">← Back to the combined demo</a></p>
+<p class="muted">CANOPY / RETROSPECTIVE LOCAL INFERENCE</p>
+<h1>Which decisions can JEV take over?</h1>
+<p>Actual local OpenJEV inference compared with retained calls from OpenAI, Anthropic and Gemini.
+Seven invented cases cover business priority, tool selection and next-step selection.</p>
+<p><a href="comparison.json">Download full results JSON</a></p><div class='cards'><div class='card'><strong>7</strong>distinct sample cases</div><div class='card'><strong>63</strong>retained hosted calls</div><div class='card'><strong>7/7</strong>JEV raw choices match</div><div class='card'><strong>6/7</strong>gate-accepted choices match</div></div><p class='notice'>Selection accuracy is separate from safe replacement. Raw scores, gate abstentions, business explanations and the deterministic next-step baseline remain visible. Nothing is activated.</p><h2>First JEV trial per distinct case</h2><div class='scroll'><table><thead><tr><th>Category</th><th>Case</th><th>Expected</th><th>Raw JEV</th><th>Accepted JEV</th><th>Disposition</th><th>Hosted matches</th></tr></thead><tbody><tr><td>business decision</td><td>classify_ticket</td><td>high</td><td>high</td><td>abstain</td><td>Deferred</td><td>9/9</td></tr><tr><td>next step</td><td>choose_clarification</td><td>clarify</td><td>clarify</td><td>clarify</td><td>Accepted selection</td><td>9/9</td></tr><tr><td>next step</td><td>choose_retrieval</td><td>retrieve</td><td>retrieve</td><td>retrieve</td><td>Accepted selection</td><td>8/9</td></tr><tr><td>next step</td><td>choose_stop</td><td>stop</td><td>stop</td><td>stop</td><td>Accepted selection</td><td>9/9</td></tr><tr><td>tool selection</td><td>choose_knowledge_tool</td><td>knowledge_search</td><td>knowledge_search</td><td>knowledge_search</td><td>Accepted selection</td><td>9/9</td></tr><tr><td>tool selection</td><td>choose_incident_tool</td><td>incident_lookup</td><td>incident_lookup</td><td>incident_lookup</td><td>Accepted selection</td><td>9/9</td></tr><tr><td>tool selection</td><td>choose_ticket_tool</td><td>ticket_lookup</td><td>ticket_lookup</td><td>ticket_lookup</td><td>Accepted selection</td><td>9/9</td></tr></tbody></table></div><h2>Inspect scores, gates and original responses</h2><details><summary>classify_ticket · canopy-support-business-decision-v1</summary><p>Authored smoke expectation from the recorded policy: export workflow is blocked and the stated deadline is tomorrow (within 48 hours). This expectation was declared for this evaluation, not supplied to JEV, and is not an independent held-out human annotation.</p><p>Explanation still required: True. Rule baseline: not applicable.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-business-decision-v1:a02ab91d5ab31baa&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-business-decision-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;a02ab91d5ab31baa28cc8a32f96ed4e32cfedbf5a15f4a086304ea55501ca705&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;Customer ticket: Invented sample ticket: Our twelve-person team cannot export the quarterly report. The export button returns error EX-104. Reading existing reports still works. We need the export tomorrow. Please help us resolve this.\nSupplied policy evidence: [{\&quot;export_errors\&quot;:\&quot;Ask for the report identifier and error timestamp.\&quot;,\&quot;fixture\&quot;:true,\&quot;priorities\&quot;:{\&quot;high\&quot;:\&quot;A business workflow is blocked with a deadline within 48 hours.\&quot;,\&quot;normal\&quot;:\&quot;A workaround is available and no near-term deadline exists.\&quot;},\&quot;promises\&quot;:\&quot;Do not guarantee a resolution time.\&quot;}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;high&quot;,
+      &quot;hypothesis&quot;: &quot;A workflow is blocked with a deadline within 48 hours.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;normal&quot;,
+      &quot;hypothesis&quot;: &quot;A workaround exists without a near-term deadline.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: true,
+  &quot;end_to_end_elapsed_ms&quot;: 37362.063799999305,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-business-decision-v1:a02ab91d5ab31baa&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-business-decision-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;a02ab91d5ab31baa28cc8a32f96ed4e32cfedbf5a15f4a086304ea55501ca705&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;high&quot;: 0.9915139079093933,
+          &quot;normal&quot;: 0.8764945864677429
+        },
+        &quot;proposed_action&quot;: &quot;high&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;high&quot;: {
+            &quot;contradiction&quot;: 0.007493073120713234,
+            &quot;entailment&quot;: 0.9915139079093933,
+            &quot;neutral&quot;: 0.0009930075611919165
+          },
+          &quot;normal&quot;: {
+            &quot;contradiction&quot;: 0.10674702376127243,
+            &quot;entailment&quot;: 0.8764945864677429,
+            &quot;neutral&quot;: 0.016758393496274948
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            135,
+            131
+          ],
+          &quot;unshared_input_tokens&quot;: 266,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 36469.988199998625,
+        &quot;inference&quot;: 621.6275000006135
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 266,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;high&quot;,
+    &quot;projected_output&quot;: {
+      &quot;priority&quot;: &quot;high&quot;
+    },
+    &quot;accepted_choice&quot;: null,
+    &quot;disposition&quot;: &quot;defer&quot;,
+    &quot;reasons&quot;: [
+      &quot;entailment_margin_below_threshold&quot;
+    ],
+    &quot;selected_entailment&quot;: 0.9915139079093933,
+    &quot;entailment_margin&quot;: 0.11501932144165039,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: null,
+    &quot;remaining_fields&quot;: [
+      &quot;reason&quot;
+    ],
+    &quot;prebound_arguments&quot;: null,
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: false
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>high</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The ticket meets the &#x27;high&#x27; priority criteria: a business workflow (quarterly report export) is blocked with a deadline within 48 hours (needed tomorrow). While reading existing reports still works as a partial workaround, the core export functionality is non-functional and a near-term deadline exists.&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>high</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The ticket describes a blocked business workflow (export functionality is unavailable) with a near-term deadline (needed tomorrow, which is within 48 hours). While reading existing reports works as a workaround, the export capability itself is blocked and the team has an explicit time constraint matching the high-priority criteria.&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>high</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The ticket describes a blocked business workflow (export functionality is unavailable) with a near-term deadline (needed tomorrow, within 48 hours). While reading existing reports works as a partial workaround, the core export requirement cannot be fulfilled, and the time constraint meets the high-priority threshold per the support policy.&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>high</td><td>match</td><td>bare JSON</td><td><pre>{&quot;priority&quot;:&quot;high&quot;,&quot;reason&quot;:&quot;The team cannot export the quarterly report and needs it tomorrow, which falls within 48 hours.&quot;}</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>high</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;A business workflow is blocked with a deadline within 48 hours.&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>high</td><td>match</td><td>bare JSON</td><td><pre>{&quot;priority&quot;:&quot;high&quot;,&quot;reason&quot;:&quot;The team cannot export the quarterly report, which is needed tomorrow, indicating a blocked workflow with a deadline within 48 hours.&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>high</td><td>match</td><td>bare JSON</td><td><pre>{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The team&#x27;s business workflow is blocked due to the export error and they have a deadline within 48 hours.&quot;
+}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>high</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The export functionality is blocked with a deadline within 48 hours, preventing the team from exporting the quarterly report needed by tomorrow.&quot;
+}
+```</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>high</td><td>match</td><td>bare JSON</td><td><pre>{
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;reason&quot;: &quot;The ticket describes a blocked business workflow (exporting the quarterly report) with a deadline within 48 hours.&quot;
+}</pre></td></tr></tbody></table></div></details><details><summary>choose_clarification · canopy-support-next-step-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: clarify.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-next-step-v1:7882a927132120c6&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;7882a927132120c6651d14b963d5952edd169364c138bd1fb77771c77b1938f9&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;The workflow is unresolved. A human specialist is not required. Missing required fields: report_id. Approved evidence is not available.\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\&quot;,\&quot;sample_data\&quot;:true}]\nOrdered transition catalog: [{\&quot;eligibility\&quot;:\&quot;The customer has confirmed resolution; the workflow is complete.\&quot;,\&quot;name\&quot;:\&quot;stop\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state explicitly requires a human specialist.\&quot;,\&quot;name\&quot;:\&quot;escalate\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state is missing one or more required fields.\&quot;,\&quot;name\&quot;:\&quot;clarify\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields but lacks approved evidence.\&quot;,\&quot;name\&quot;:\&quot;retrieve\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields and approved evidence.\&quot;,\&quot;name\&quot;:\&quot;respond\&quot;}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;stop&quot;,
+      &quot;hypothesis&quot;: &quot;The customer has confirmed resolution, so the workflow is complete and should stop.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;escalate&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved and requires a human specialist, so it should escalate.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;clarify&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;retrieve&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;respond&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 496.14090000068245,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-next-step-v1:7882a927132120c6&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;7882a927132120c6651d14b963d5952edd169364c138bd1fb77771c77b1938f9&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;stop&quot;: 0.04079298675060272,
+          &quot;escalate&quot;: 0.1760057508945465,
+          &quot;clarify&quot;: 0.9749968647956848,
+          &quot;retrieve&quot;: 0.5152284502983093,
+          &quot;respond&quot;: 0.06885361671447754
+        },
+        &quot;proposed_action&quot;: &quot;clarify&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;stop&quot;: {
+            &quot;contradiction&quot;: 0.9579160809516907,
+            &quot;entailment&quot;: 0.04079298675060272,
+            &quot;neutral&quot;: 0.0012909588403999805
+          },
+          &quot;escalate&quot;: {
+            &quot;contradiction&quot;: 0.8202253580093384,
+            &quot;entailment&quot;: 0.1760057508945465,
+            &quot;neutral&quot;: 0.003768837545067072
+          },
+          &quot;clarify&quot;: {
+            &quot;contradiction&quot;: 0.01577475294470787,
+            &quot;entailment&quot;: 0.9749968647956848,
+            &quot;neutral&quot;: 0.009228330105543137
+          },
+          &quot;retrieve&quot;: {
+            &quot;contradiction&quot;: 0.4765084385871887,
+            &quot;entailment&quot;: 0.5152284502983093,
+            &quot;neutral&quot;: 0.008263085037469864
+          },
+          &quot;respond&quot;: {
+            &quot;contradiction&quot;: 0.9284766316413879,
+            &quot;entailment&quot;: 0.06885361671447754,
+            &quot;neutral&quot;: 0.002669744426384568
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            204,
+            204,
+            216,
+            217,
+            217
+          ],
+          &quot;unshared_input_tokens&quot;: 1058,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 492.8173999996943
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 1058,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;clarify&quot;,
+    &quot;projected_output&quot;: {
+      &quot;next_step&quot;: &quot;clarify&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;clarify&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9749968647956848,
+    &quot;entailment_margin&quot;: 0.4597684144973755,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: &quot;clarify&quot;,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: null,
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>clarify</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;clarify&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>clarify</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;clarify&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>clarify</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;clarify&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>clarify</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;: &quot;clarify&quot;}</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>clarify</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;clarify&quot;}
+```</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>clarify</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;clarify&quot;}
+```</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>clarify</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;clarify&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>clarify</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;clarify&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>clarify</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;clarify&quot;}</pre></td></tr></tbody></table></div></details><details><summary>choose_retrieval · canopy-support-next-step-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: retrieve.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-next-step-v1:fb0db0cbb542c93d&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;fb0db0cbb542c93d11bfa3968b5ab485e256ff87a979f63d1d51a0ddce7125da&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;The workflow is unresolved. A human specialist is not required. All required fields are available. Approved evidence is not available.\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\&quot;,\&quot;sample_data\&quot;:true}]\nOrdered transition catalog: [{\&quot;eligibility\&quot;:\&quot;The customer has confirmed resolution; the workflow is complete.\&quot;,\&quot;name\&quot;:\&quot;stop\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state explicitly requires a human specialist.\&quot;,\&quot;name\&quot;:\&quot;escalate\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state is missing one or more required fields.\&quot;,\&quot;name\&quot;:\&quot;clarify\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields but lacks approved evidence.\&quot;,\&quot;name\&quot;:\&quot;retrieve\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields and approved evidence.\&quot;,\&quot;name\&quot;:\&quot;respond\&quot;}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;stop&quot;,
+      &quot;hypothesis&quot;: &quot;The customer has confirmed resolution, so the workflow is complete and should stop.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;escalate&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved and requires a human specialist, so it should escalate.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;clarify&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;retrieve&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;respond&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 541.6203000004316,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-next-step-v1:fb0db0cbb542c93d&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;fb0db0cbb542c93d11bfa3968b5ab485e256ff87a979f63d1d51a0ddce7125da&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;stop&quot;: 0.15565283596515656,
+          &quot;escalate&quot;: 0.2589517831802368,
+          &quot;clarify&quot;: 0.47545042634010315,
+          &quot;retrieve&quot;: 0.9962911605834961,
+          &quot;respond&quot;: 0.632193386554718
+        },
+        &quot;proposed_action&quot;: &quot;retrieve&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;stop&quot;: {
+            &quot;contradiction&quot;: 0.8414512872695923,
+            &quot;entailment&quot;: 0.15565283596515656,
+            &quot;neutral&quot;: 0.0028957759495824575
+          },
+          &quot;escalate&quot;: {
+            &quot;contradiction&quot;: 0.737684965133667,
+            &quot;entailment&quot;: 0.2589517831802368,
+            &quot;neutral&quot;: 0.003363196272403002
+          },
+          &quot;clarify&quot;: {
+            &quot;contradiction&quot;: 0.5061143636703491,
+            &quot;entailment&quot;: 0.47545042634010315,
+            &quot;neutral&quot;: 0.018435213714838028
+          },
+          &quot;retrieve&quot;: {
+            &quot;contradiction&quot;: 0.002955674659460783,
+            &quot;entailment&quot;: 0.9962911605834961,
+            &quot;neutral&quot;: 0.0007531729061156511
+          },
+          &quot;respond&quot;: {
+            &quot;contradiction&quot;: 0.36021289229393005,
+            &quot;entailment&quot;: 0.632193386554718,
+            &quot;neutral&quot;: 0.007593710441142321
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            203,
+            203,
+            215,
+            216,
+            216
+          ],
+          &quot;unshared_input_tokens&quot;: 1053,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 538.435099999333
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 1053,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;retrieve&quot;,
+    &quot;projected_output&quot;: {
+      &quot;next_step&quot;: &quot;retrieve&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;retrieve&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9962911605834961,
+    &quot;entailment_margin&quot;: 0.3640977740287781,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: &quot;retrieve&quot;,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: null,
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;retrieve&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;retrieve&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;retrieve&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;retrieve&quot;}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;retrieve&quot;}
+```</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>retrieve</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;retrieve&quot;}
+```</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>respond</td><td>MISMATCH</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;respond&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>retrieve</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;retrieve&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>retrieve</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;retrieve&quot;}</pre></td></tr></tbody></table></div></details><details><summary>choose_stop · canopy-support-next-step-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: stop.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-next-step-v1:f9ab4871272f1ac4&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;f9ab4871272f1ac4bafe9d26eb52df22e8b52f57e534aec25b3e100721e13f82&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;The workflow is resolved. A human specialist is not required. All required fields are available. Approved evidence is available.\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\&quot;,\&quot;sample_data\&quot;:true}]\nOrdered transition catalog: [{\&quot;eligibility\&quot;:\&quot;The customer has confirmed resolution; the workflow is complete.\&quot;,\&quot;name\&quot;:\&quot;stop\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state explicitly requires a human specialist.\&quot;,\&quot;name\&quot;:\&quot;escalate\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state is missing one or more required fields.\&quot;,\&quot;name\&quot;:\&quot;clarify\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields but lacks approved evidence.\&quot;,\&quot;name\&quot;:\&quot;retrieve\&quot;},{\&quot;eligibility\&quot;:\&quot;Unresolved state has required fields and approved evidence.\&quot;,\&quot;name\&quot;:\&quot;respond\&quot;}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;stop&quot;,
+      &quot;hypothesis&quot;: &quot;The customer has confirmed resolution, so the workflow is complete and should stop.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;escalate&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved and requires a human specialist, so it should escalate.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;clarify&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;retrieve&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;respond&quot;,
+      &quot;hypothesis&quot;: &quot;The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 847.9265999994823,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-next-step-v1:f9ab4871272f1ac4&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-next-step-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;f9ab4871272f1ac4bafe9d26eb52df22e8b52f57e534aec25b3e100721e13f82&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;stop&quot;: 0.9976713061332703,
+          &quot;escalate&quot;: 0.0013675526715815067,
+          &quot;clarify&quot;: 0.005643927026540041,
+          &quot;retrieve&quot;: 0.01010143756866455,
+          &quot;respond&quot;: 0.02711586467921734
+        },
+        &quot;proposed_action&quot;: &quot;stop&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;stop&quot;: {
+            &quot;contradiction&quot;: 0.001123401802033186,
+            &quot;entailment&quot;: 0.9976713061332703,
+            &quot;neutral&quot;: 0.0012052342062816024
+          },
+          &quot;escalate&quot;: {
+            &quot;contradiction&quot;: 0.9985302686691284,
+            &quot;entailment&quot;: 0.0013675526715815067,
+            &quot;neutral&quot;: 0.00010215995280304924
+          },
+          &quot;clarify&quot;: {
+            &quot;contradiction&quot;: 0.9937428832054138,
+            &quot;entailment&quot;: 0.005643927026540041,
+            &quot;neutral&quot;: 0.0006131494883447886
+          },
+          &quot;retrieve&quot;: {
+            &quot;contradiction&quot;: 0.9889681935310364,
+            &quot;entailment&quot;: 0.01010143756866455,
+            &quot;neutral&quot;: 0.0009304492268711329
+          },
+          &quot;respond&quot;: {
+            &quot;contradiction&quot;: 0.9709199070930481,
+            &quot;entailment&quot;: 0.02711586467921734,
+            &quot;neutral&quot;: 0.0019642666447907686
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            202,
+            202,
+            214,
+            215,
+            215
+          ],
+          &quot;unshared_input_tokens&quot;: 1048,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 844.669400001294
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 1048,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;stop&quot;,
+    &quot;projected_output&quot;: {
+      &quot;next_step&quot;: &quot;stop&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;stop&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9976713061332703,
+    &quot;entailment_margin&quot;: 0.9705554414540529,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: &quot;stop&quot;,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: null,
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;stop&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;stop&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;stop&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;stop&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;next_step&quot;: &quot;stop&quot;}
+```</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>stop</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;next_step&quot;: &quot;stop&quot;
+}
+```</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>stop</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;stop&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>stop</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;stop&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>stop</td><td>match</td><td>bare JSON</td><td><pre>{&quot;next_step&quot;:&quot;stop&quot;}</pre></td></tr></tbody></table></div></details><details><summary>choose_knowledge_tool · canopy-support-tool-selection-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: not applicable.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:185bb01761cda5ea&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;185bb01761cda5ea8f557979eb94d2a85a357fd88bbfa005ad259824b9eeae0a&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;Customer request: Please find the troubleshooting instructions for export error EX-104.\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Choose the one read-only tool matching the customer&#x27;s explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\&quot;,\&quot;sample_data\&quot;:true}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;knowledge_search&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to find troubleshooting instructions.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;incident_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read current service incident status.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;ticket_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read an existing support ticket status.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 488.54260000007343,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:185bb01761cda5ea&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;185bb01761cda5ea8f557979eb94d2a85a357fd88bbfa005ad259824b9eeae0a&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;knowledge_search&quot;: 0.9968298077583313,
+          &quot;incident_lookup&quot;: 0.003628015983849764,
+          &quot;ticket_lookup&quot;: 0.006323966197669506
+        },
+        &quot;proposed_action&quot;: &quot;knowledge_search&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;knowledge_search&quot;: {
+            &quot;contradiction&quot;: 0.002569323405623436,
+            &quot;entailment&quot;: 0.9968298077583313,
+            &quot;neutral&quot;: 0.000600806437432766
+          },
+          &quot;incident_lookup&quot;: {
+            &quot;contradiction&quot;: 0.9961724877357483,
+            &quot;entailment&quot;: 0.003628015983849764,
+            &quot;neutral&quot;: 0.00019954718300141394
+          },
+          &quot;ticket_lookup&quot;: {
+            &quot;contradiction&quot;: 0.9932548403739929,
+            &quot;entailment&quot;: 0.006323966197669506,
+            &quot;neutral&quot;: 0.0004212041094433516
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            95,
+            97,
+            98
+          ],
+          &quot;unshared_input_tokens&quot;: 290,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 485.4679000000033
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 290,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;knowledge_search&quot;,
+    &quot;projected_output&quot;: {
+      &quot;tool&quot;: &quot;knowledge_search&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;knowledge_search&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9968298077583313,
+    &quot;entailment_margin&quot;: 0.9905058415606618,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: null,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: {
+      &quot;query&quot;: &quot;export error EX-104&quot;
+    },
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>knowledge_search</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;knowledge_search&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>knowledge_search</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;knowledge_search&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>knowledge_search</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;knowledge_search&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>knowledge_search</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;tool&quot;: &quot;knowledge_search&quot;}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>knowledge_search</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;knowledge_search&quot;}</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>knowledge_search</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;tool&quot;: &quot;knowledge_search&quot;}
+```</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>knowledge_search</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;knowledge_search&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>knowledge_search</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;knowledge_search&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>knowledge_search</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;knowledge_search&quot;}</pre></td></tr></tbody></table></div></details><details><summary>choose_incident_tool · canopy-support-tool-selection-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: not applicable.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:e12275f203a9f6b1&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;e12275f203a9f6b1dbe77d00480598f19a39ae13c4c630c31b76bff41bf155af&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;Customer request: Is the reports service currently experiencing a widespread incident?\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Choose the one read-only tool matching the customer&#x27;s explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\&quot;,\&quot;sample_data\&quot;:true}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;knowledge_search&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to find troubleshooting instructions.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;incident_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read current service incident status.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;ticket_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read an existing support ticket status.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 700.8310000001075,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:e12275f203a9f6b1&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;e12275f203a9f6b1dbe77d00480598f19a39ae13c4c630c31b76bff41bf155af&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;knowledge_search&quot;: 0.015405644662678242,
+          &quot;incident_lookup&quot;: 0.9852345585823059,
+          &quot;ticket_lookup&quot;: 0.02542811445891857
+        },
+        &quot;proposed_action&quot;: &quot;incident_lookup&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;knowledge_search&quot;: {
+            &quot;contradiction&quot;: 0.9833685755729675,
+            &quot;entailment&quot;: 0.015405644662678242,
+            &quot;neutral&quot;: 0.0012256656773388386
+          },
+          &quot;incident_lookup&quot;: {
+            &quot;contradiction&quot;: 0.012245817109942436,
+            &quot;entailment&quot;: 0.9852345585823059,
+            &quot;neutral&quot;: 0.002519674366340041
+          },
+          &quot;ticket_lookup&quot;: {
+            &quot;contradiction&quot;: 0.973002552986145,
+            &quot;entailment&quot;: 0.02542811445891857,
+            &quot;neutral&quot;: 0.0015694090398028493
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            91,
+            93,
+            94
+          ],
+          &quot;unshared_input_tokens&quot;: 278,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 697.1054000005097
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 278,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;incident_lookup&quot;,
+    &quot;projected_output&quot;: {
+      &quot;tool&quot;: &quot;incident_lookup&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;incident_lookup&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9852345585823059,
+    &quot;entailment_margin&quot;: 0.9598064441233873,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: null,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: {
+      &quot;service&quot;: &quot;reports&quot;
+    },
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>incident_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;incident_lookup&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>incident_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;incident_lookup&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>incident_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;incident_lookup&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>incident_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;incident_lookup&quot;}</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>incident_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;: &quot;incident_lookup&quot;}</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>incident_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{&quot;tool&quot;: &quot;incident_lookup&quot;}
+```</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>incident_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;incident_lookup&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>incident_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;incident_lookup&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>incident_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;incident_lookup&quot;}</pre></td></tr></tbody></table></div></details><details><summary>choose_ticket_tool · canopy-support-tool-selection-v1</summary><p>Preauthored selector fixture expectation in expected-choices.json.</p><p>Explanation still required: False. Rule baseline: not applicable.</p><details><summary>Mapped model input · premise, hypotheses and source hash</summary><p>The mapping supplies historical facts and candidate hypotheses. The new validity interval applies to this retrospective evaluation only.</p><pre>{
+  &quot;schema_version&quot;: &quot;canopy-jev-text/v1&quot;,
+  &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:6bb8084f9f06491f&quot;,
+  &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+  &quot;mapping_version&quot;: &quot;1&quot;,
+  &quot;source_sha256&quot;: &quot;6bb8084f9f06491fa64ecfdfb883d81926be778b9b3d057b7579be3d523b0d56&quot;,
+  &quot;evaluation_mode&quot;: &quot;historical_re_evaluation&quot;,
+  &quot;created_at&quot;: &quot;2026-10-17T19:17:01.940187+00:00&quot;,
+  &quot;valid_until&quot;: &quot;2026-10-17T20:17:01.940187+00:00&quot;,
+  &quot;premise&quot;: &quot;Customer request: Please check the latest status of my existing support ticket T-7003.\nSupplied policy evidence: [{\&quot;policy\&quot;:\&quot;Choose the one read-only tool matching the customer&#x27;s explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\&quot;,\&quot;sample_data\&quot;:true}]&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;name&quot;: &quot;knowledge_search&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to find troubleshooting instructions.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;incident_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read current service incident status.&quot;
+    },
+    {
+      &quot;name&quot;: &quot;ticket_lookup&quot;,
+      &quot;hypothesis&quot;: &quot;The customer&#x27;s request is to read an existing support ticket status.&quot;
+    }
+  ]
+}</pre></details><h3>Actual JEV result and gate</h3><pre>{
+  &quot;trial&quot;: 1,
+  &quot;worker_cold&quot;: false,
+  &quot;end_to_end_elapsed_ms&quot;: 538.6054999999033,
+  &quot;result&quot;: {
+    &quot;output&quot;: {
+      &quot;provider&quot;: &quot;pollard-jev&quot;,
+      &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+      &quot;decision&quot;: {
+        &quot;request_id&quot;: &quot;canopy-support-tool-selection-v1:6bb8084f9f06491f&quot;,
+        &quot;identity&quot;: {
+          &quot;provider&quot;: &quot;alexwortega-openjev&quot;,
+          &quot;provider_version&quot;: &quot;openjev-nli-adapter-v1&quot;,
+          &quot;model&quot;: &quot;AlexWortega/openjev/qwen3.5-4b-nli-v2&quot;,
+          &quot;model_version&quot;: &quot;552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=4096;dtype=bfloat16;device=cuda&quot;,
+          &quot;synthetic&quot;: false,
+          &quot;settings&quot;: {
+            &quot;input_representation&quot;: &quot;canopy-text-v1&quot;,
+            &quot;mapping_id&quot;: &quot;canopy-support-tool-selection-v1&quot;,
+            &quot;mapping_version&quot;: &quot;1&quot;,
+            &quot;source_sha256&quot;: &quot;6bb8084f9f06491fa64ecfdfb883d81926be778b9b3d057b7579be3d523b0d56&quot;
+          }
+        },
+        &quot;semantics&quot;: &quot;independent_entailment&quot;,
+        &quot;scores&quot;: {
+          &quot;knowledge_search&quot;: 0.0009715299820527434,
+          &quot;incident_lookup&quot;: 0.0011368124978616834,
+          &quot;ticket_lookup&quot;: 0.9916180968284607
+        },
+        &quot;proposed_action&quot;: &quot;ticket_lookup&quot;,
+        &quot;parameters&quot;: {},
+        &quot;evidence&quot;: &quot;sufficient&quot;,
+        &quot;nli_scores&quot;: {
+          &quot;knowledge_search&quot;: {
+            &quot;contradiction&quot;: 0.9989089965820312,
+            &quot;entailment&quot;: 0.0009715299820527434,
+            &quot;neutral&quot;: 0.0001194823780679144
+          },
+          &quot;incident_lookup&quot;: {
+            &quot;contradiction&quot;: 0.9987939596176147,
+            &quot;entailment&quot;: 0.0011368124978616834,
+            &quot;neutral&quot;: 6.914313416928053e-05
+          },
+          &quot;ticket_lookup&quot;: {
+            &quot;contradiction&quot;: 0.007750641088932753,
+            &quot;entailment&quot;: 0.9916180968284607,
+            &quot;neutral&quot;: 0.0006312602781690657
+          }
+        }
+      },
+      &quot;package_versions&quot;: {
+        &quot;pollard-jev&quot;: &quot;0.13&quot;,
+        &quot;pollard&quot;: &quot;1.6.0&quot;
+      },
+      &quot;measurement_basis&quot;: &quot;complete_unpadded_pairs&quot;,
+      &quot;measurements&quot;: [
+        {
+          &quot;tokenized_pair_lengths&quot;: [
+            98,
+            100,
+            101
+          ],
+          &quot;unshared_input_tokens&quot;: 299,
+          &quot;maximum_context_tokens&quot;: 4096,
+          &quot;input_context_truncated&quot;: false,
+          &quot;context_limit_exceeded&quot;: false,
+          &quot;tokenization_basis&quot;: &quot;complete_unpadded_pairs&quot;
+        }
+      ],
+      &quot;phase_timings_ms&quot;: {
+        &quot;model_load&quot;: 0.0,
+        &quot;inference&quot;: 533.5287999987486
+      }
+    },
+    &quot;usage&quot;: {
+      &quot;input_tokens&quot;: 299,
+      &quot;output_tokens&quot;: 0,
+      &quot;provider_cached_input_tokens&quot;: 0,
+      &quot;model_calls&quot;: 1,
+      &quot;tool_calls&quot;: 0,
+      &quot;cost_usd&quot;: null,
+      &quot;energy_j&quot;: null,
+      &quot;elapsed_ms&quot;: 0.0,
+      &quot;tokens_known&quot;: true,
+      &quot;elapsed_known&quot;: false
+    }
+  },
+  &quot;projection&quot;: {
+    &quot;raw_choice&quot;: &quot;ticket_lookup&quot;,
+    &quot;projected_output&quot;: {
+      &quot;tool&quot;: &quot;ticket_lookup&quot;
+    },
+    &quot;accepted_choice&quot;: &quot;ticket_lookup&quot;,
+    &quot;disposition&quot;: &quot;accept_selection&quot;,
+    &quot;reasons&quot;: [],
+    &quot;selected_entailment&quot;: 0.9916180968284607,
+    &quot;entailment_margin&quot;: 0.990481284330599,
+    &quot;minimum_entailment&quot;: 0.8,
+    &quot;minimum_margin&quot;: 0.15,
+    &quot;threshold_basis&quot;: &quot;uncalibrated_demo_heuristic&quot;,
+    &quot;rule_baseline&quot;: null,
+    &quot;remaining_fields&quot;: [],
+    &quot;prebound_arguments&quot;: {
+      &quot;ticket_id&quot;: &quot;T-7003&quot;
+    },
+    &quot;action_executed&quot;: false
+  },
+  &quot;raw_expected_match&quot;: true,
+  &quot;accepted_expected_match&quot;: true
+}</pre><h3>Preserved hosted calls</h3><div class='scroll'><table><thead><tr><th>Provider</th><th>Run</th><th>Choice</th><th>Expectation</th><th>Format</th><th>Original text</th></tr></thead><tbody><tr><td>anthropic</td><td>baseline_first</td><td>ticket_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;ticket_lookup&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>baseline_repeat</td><td>ticket_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;ticket_lookup&quot;
+}
+```</pre></td></tr><tr><td>anthropic</td><td>governed_cold</td><td>ticket_lookup</td><td>match</td><td>format violation</td><td><pre>```json
+{
+  &quot;tool&quot;: &quot;ticket_lookup&quot;
+}
+```</pre></td></tr><tr><td>gemini</td><td>baseline_first</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;ticket_lookup&quot;}</pre></td></tr><tr><td>gemini</td><td>baseline_repeat</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;ticket_lookup&quot;}</pre></td></tr><tr><td>gemini</td><td>governed_cold</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;: &quot;ticket_lookup&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_first</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;ticket_lookup&quot;}</pre></td></tr><tr><td>openai</td><td>baseline_repeat</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;ticket_lookup&quot;}</pre></td></tr><tr><td>openai</td><td>governed_cold</td><td>ticket_lookup</td><td>match</td><td>bare JSON</td><td><pre>{&quot;tool&quot;:&quot;ticket_lookup&quot;}</pre></td></tr></tbody></table></div></details><h2>Timing and interpretation</h2><p>First call includes worker startup and model loading. Warm calls reuse the loaded classifier. Hosted latency was recorded previously; these are different machines and execution conditions, not a controlled speed comparison.</p><p><strong>Model loading:</strong> 36469.99 ms (measured separately inside the worker).</p><pre>{
+  &quot;jev_warm_end_to_end_latency&quot;: {
+    &quot;count&quot;: 13,
+    &quot;min_ms&quot;: 251.0963000004267,
+    &quot;median_ms&quot;: 491.2045000000944,
+    &quot;max_ms&quot;: 847.9265999994823
+  },
+  &quot;jev_cold_end_to_end_ms&quot;: 37362.063799999305,
+  &quot;jev_model_load_ms&quot;: 36469.988199998625,
+  &quot;jev_inference_latency&quot;: {
+    &quot;count&quot;: 14,
+    &quot;min_ms&quot;: 247.4648999996134,
+    &quot;median_ms&quot;: 490.47634999988077,
+    &quot;max_ms&quot;: 844.669400001294
+  },
+  &quot;hosted_recorded_latency&quot;: {
+    &quot;count&quot;: 63,
+    &quot;min_ms&quot;: 469.3524000012985,
+    &quot;median_ms&quot;: 812.5814000013634,
+    &quot;max_ms&quot;: 6380.704400000468
+  }
+}</pre><h2>Scope and limitations</h2><ul><li>Seven invented support cases are a smoke evaluation, not a representative quality benchmark.</li><li>The 63 hosted calls repeat seven cases; they are not 63 independent examples.</li><li>JEV is evaluated retrospectively against preserved historical data; fresh evaluation validity does not renew original operational evidence or authorize any tool or workflow action.</li><li>Business priority is compared separately from the original explanation; JEV does not replace the required reason field. Hosted explanations remain in the source and this report.</li><li>Raw classifier choice and confidence/eligibility gate acceptance are reported separately. Abstention is not counted as a correct automatic replacement.</li><li>Next-step states have a deterministic rule baseline. A classifier adds no demonstrated value for these explicit Boolean states.</li><li>Local NLI input-pair tokens and hosted generative tokens have different meanings and are not interchangeable. Cost and energy savings are unknown.</li><li>Historical hosted latency and present local latency are not a controlled speed benchmark. Cold worker/model loading is included in the first end-to-end call only.</li><li>No JEV choice is automatically deployed, activated in a workflow, or treated as validated for unsampled inputs.</li></ul><p class='muted'>Generated 2026-10-17T19:17:45.966125+00:00. Model: AlexWortega/openjev/qwen3.5-4b-nli-v2.</p></main></html>
