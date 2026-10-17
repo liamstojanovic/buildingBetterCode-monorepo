@@ -12,6 +12,7 @@ dependencies = [
   "chronofy==0.1.9",
   "epicormic==0.1.0",
   "cbor-ld-ex==0.2.1",
+  "cbor2>=6.1.5,<7",
   "pydantic>=2.10,<3",
   "fastapi>=0.115,<1",
   "uvicorn>=0.30,<1",
