@@ -1,0 +1,30 @@
+name: Canopy core
+
+on:
+  push:
+    paths: ["core/**", ".github/workflows/core.yml"]
+  pull_request:
+    paths: ["core/**", ".github/workflows/core.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: core/requirements.lock
+      - run: python -m pip install -r core/requirements.lock
+      - run: python -m pip install -e "core[dev]"
+      - run: python -m pip check
+      - run: python -m ruff check core
+      - run: python -m pytest core/tests -q

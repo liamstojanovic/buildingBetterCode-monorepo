@@ -4,7 +4,7 @@ Timestamps are timezone-aware UTC. Monetary usage is in USD; business money shou
 remain integer minor units in task payloads. Unknown measurements stay null.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 from uuid import uuid4
 
@@ -14,7 +14,7 @@ SCHEMA_VERSION = "1"
 
 
 def utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def new_id() -> str:
