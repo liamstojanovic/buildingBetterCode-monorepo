@@ -3,6 +3,7 @@
 import importlib.util
 import json
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -119,7 +120,8 @@ def test_write_sample_task_needs_no_model_or_provider(monkeypatch, tmp_path):
     assert comparison.main(["--write-sample-task", str(target)]) == 0
     sample = json.loads(target.read_text(encoding="utf-8"))
     assert sample["metadata"]["sample_data"] is True
-    assert all("questions" in step["inputs"] for step in sample["steps"])
+    assert all("prompt" in step["inputs"] for step in sample["steps"])
+    assert all("questions" not in step["inputs"] for step in sample["steps"])
 
 
 def test_model_must_be_explicit(monkeypatch, capsys):
@@ -146,12 +148,12 @@ def test_cli_task_file_is_bound_once_and_handler_is_closed(monkeypatch, tmp_path
 
     monkeypatch.setattr(comparison, "_live_registry", registry)
     result = comparison.main([
-        "--provider", "jev", "--model", "explicit-model", "--task-file", str(task_file),
-        "--api-key-env", "MY_JEV_KEY",
+        "--provider", "anthropic", "--model", "explicit-model", "--task-file", str(task_file),
+        "--api-key-env", "MY_ANTHROPIC_KEY",
     ])
     report = json.loads(capsys.readouterr().out)
     assert result == 0 and closed == [1]
-    assert observed == [("jev", "explicit-model", "MY_JEV_KEY")]
+    assert observed == [("anthropic", "explicit-model", "MY_ANTHROPIC_KEY")]
     assert report["sample_data"] is False and report["task"]["task_id"] == "teammate-task"
     assert all(step["handler_version"] == "test-v1" for step in report["task"]["steps"])
     assert json.loads(task_file.read_text())["steps"][0]["handler_version"] == "1"
@@ -162,3 +164,112 @@ def test_cli_rejects_unregistered_task_handler():
     task.steps[0].handler = "not.registered"
     with pytest.raises(ValueError, match="model.generate"):
         comparison.bind_model_version(task, "test-v1")
+
+
+@pytest.mark.parametrize("provider", ["pollard-jev", "jev"])
+def test_native_provider_uses_package_sample_and_evidence_binding(monkeypatch, capsys, provider):
+    calls, bindings, closed = [], [], []
+    native_task = comparison.sample_task().model_copy(update={"task_id": "package-task"})
+
+    def bind(task, version):
+        bindings.append((task.task_id, version))
+        return comparison.bind_model_version(task, version)
+
+    native_module = SimpleNamespace(
+        pollard_jev_sample_task=lambda: native_task,
+        bind_pollard_jev_task=bind,
+    )
+    monkeypatch.setitem(sys.modules, "canopy.pollard_jev", native_module)
+    handler = SimpleNamespace(version="test-v1", fingerprint="test-v1", close=lambda: closed.append(1))
+    observed = []
+
+    def registry(args):
+        observed.append((args.worker_python, args.model_cache_dir, args.device, args.max_context_tokens))
+        return fake_registry(calls), handler
+
+    monkeypatch.setattr(comparison, "_live_registry", registry)
+    result = comparison.main([
+        "--provider", provider, "--model", "AlexWortega/openjev/qwen3.5-4b-nli-v2",
+        "--worker-python", "worker/python.exe", "--model-cache-dir", "local-weights",
+        "--device", "cpu", "--max-context-tokens", "2048",
+    ])
+    report = json.loads(capsys.readouterr().out)
+    assert result == 0 and closed == [1]
+    assert bindings == [("package-task", "test-v1")]
+    assert observed == [("worker/python.exe", "local-weights", "cpu", 2048)]
+    assert report["task"]["task_id"] == "package-task"
+    assert len(calls) == 3
+
+
+def test_native_task_file_uses_package_binder_instead_of_regenerating(monkeypatch, tmp_path, capsys):
+    bindings = []
+    task = comparison.sample_task().model_copy(update={"task_id": "native-file-task"})
+    path = tmp_path / "native.json"
+    path.write_text(task.model_dump_json(), encoding="utf-8")
+
+    def no_sample():
+        raise AssertionError("A supplied task file must not be replaced by a sample")
+
+    def bind(task, version):
+        bindings.append(task.task_id)
+        return comparison.bind_model_version(task, version)
+
+    monkeypatch.setitem(sys.modules, "canopy.pollard_jev", SimpleNamespace(
+        pollard_jev_sample_task=no_sample, bind_pollard_jev_task=bind,
+    ))
+    handler = SimpleNamespace(version="test-v1", fingerprint="test-v1", close=lambda: None)
+    monkeypatch.setattr(comparison, "_live_registry", lambda args: (fake_registry([]), handler))
+    assert comparison.main([
+        "--provider", "pollard-jev", "--model", "AlexWortega/openjev/qwen3.5-4b-nli-v2",
+        "--task-file", str(path),
+    ]) == 0
+    capsys.readouterr()
+    assert bindings == ["native-file-task"]
+
+
+def test_native_sample_export_does_not_initialize_model(monkeypatch, tmp_path):
+    task = comparison.sample_task().model_copy(update={"task_id": "native-sample"})
+    monkeypatch.setitem(sys.modules, "canopy.pollard_jev", SimpleNamespace(
+        pollard_jev_sample_task=lambda: task,
+    ))
+
+    def no_provider(args):
+        raise AssertionError("Sample export must not initialize any model")
+
+    monkeypatch.setattr(comparison, "_live_registry", no_provider)
+    path = tmp_path / "native-sample.json"
+    assert comparison.main([
+        "--provider", "pollard-jev", "--write-sample-task", str(path),
+    ]) == 0
+    assert json.loads(path.read_text(encoding="utf-8"))["task_id"] == "native-sample"
+
+
+def test_native_worker_configuration_can_come_from_environment(monkeypatch):
+    monkeypatch.setenv("CANOPY_POLLARD_JEV_PYTHON", "test-worker.exe")
+    monkeypatch.setenv("CANOPY_OPENJEV_CACHE", "test-model-cache")
+    args = comparison.build_parser().parse_args(["--provider", "jev"])
+    assert args.worker_python == "test-worker.exe"
+    assert args.model_cache_dir == "test-model-cache"
+    assert args.max_context_tokens == 4096
+
+
+def test_real_native_helpers_bind_sample_without_loading_weights(monkeypatch):
+    monkeypatch.delenv("CANOPY_BASE_URL", raising=False)
+    args = comparison.build_parser().parse_args([
+        "--provider", "pollard-jev", "--model", "AlexWortega/openjev/qwen3.5-4b-nli-v2",
+    ])
+    task = comparison._sample_for_provider(args.provider)
+    registry, handler = comparison._live_registry(args)
+    try:
+        bound = comparison._bind_for_provider(task, handler.version, args.provider)
+        step = bound.steps[0]
+        request = step.inputs["decision_request"]
+        evidence = next(item for item in bound.evidence if item.evidence_id in step.evidence_ids)
+        assert registry.resolve(step.handler, step.handler_version).kind == "model"
+        assert "observations" in request and "choices" in request
+        assert "questions" not in step.inputs
+        assert evidence.data["decision_request"] == request
+        assert evidence.observed_at < evidence.expires_at
+        assert task.evidence == []
+    finally:
+        handler.close()

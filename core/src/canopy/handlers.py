@@ -70,6 +70,7 @@ class HandlerRegistration:
     side_effect: bool
     kind: Literal["model", "tool"]
     cacheable: bool = False
+    preflight: Callable[[Task, Step, RunConfig], None] | None = None
 
 
 class HandlerRegistry:
@@ -85,6 +86,11 @@ class HandlerRegistry:
     diagnostics. Ordinary callables default to non-cacheable because Python
     hidden dependencies cannot be inferred. Non-cacheable does not mean a side
     effect: a read-only handler can still depend on untracked external state.
+
+    ``preflight`` is an optional synchronous, local validation callback. The
+    runtime calls it for every declared step before creating a live run or
+    consulting the cache. Raise an exception to reject the entire task. Inputs
+    are detached snapshots; callbacks must not perform model calls or effects.
     """
 
     def __init__(self) -> None:
@@ -100,6 +106,7 @@ class HandlerRegistry:
         side_effect: bool = False,
         kind: Literal["model", "tool"] = "tool",
         cacheable: bool = False,
+        preflight: Callable[[Task, Step, RunConfig], None] | None = None,
     ) -> None:
         if not isinstance(name, str) or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_.:-]*", name) is None:
             raise ValueError("handler name must be an identifier containing letters, digits, . _ : -")
@@ -114,6 +121,15 @@ class HandlerRegistry:
             for candidate in (handler, implementation)
         ):
             raise ValueError("handler must be a synchronous callable returning HandlerResult")
+        if preflight is not None:
+            if not callable(preflight):
+                raise ValueError("preflight must be callable or None")
+            if any(
+                predicate(candidate)
+                for predicate in (iscoroutinefunction, isasyncgenfunction, isgeneratorfunction)
+                for candidate in (preflight, preflight.__call__)
+            ):
+                raise ValueError("preflight must be a synchronous callable")
         if any(not isinstance(flag, bool) for flag in (synthetic, side_effect, cacheable)):
             raise ValueError("synthetic, side_effect, and cacheable must be booleans")
         if kind not in ("model", "tool"):
@@ -121,7 +137,7 @@ class HandlerRegistry:
         if name in self._handlers:
             raise ValueError(f"handler {name!r} is already registered")
         self._handlers[name] = HandlerRegistration(
-            name, handler, version, synthetic, side_effect, kind, cacheable
+            name, handler, version, synthetic, side_effect, kind, cacheable, preflight
         )
 
     def resolve(self, name: str, version: str = "1") -> HandlerRegistration:

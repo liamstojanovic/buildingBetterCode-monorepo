@@ -26,6 +26,13 @@ jobs:
       - run: python -m pip install -r core/requirements.lock
       - run: python -m pip install -e "core[dev,models]"
       - run: python -m pip check
+      - name: Install isolated Pollard-Jev package for contract tests
+        run: |
+          python -m venv .canopy/pollard-jev-env
+          .canopy/pollard-jev-env/bin/python -m pip install -r core/requirements-pollard-jev.txt
+          .canopy/pollard-jev-env/bin/python -m pip check
       - run: python -m ruff check core
       - run: python -m pytest core/tests -q
+        env:
+          CANOPY_TEST_POLLARD_JEV_PYTHON: ${{ github.workspace }}/.canopy/pollard-jev-env/bin/python
       - run: python core/scripts/component_smoke.py

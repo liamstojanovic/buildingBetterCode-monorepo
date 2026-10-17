@@ -26,12 +26,13 @@ _ENDPOINTS = {
     "openai": "https://api.openai.com",
     "anthropic": "https://api.anthropic.com",
     "gemini": "https://generativelanguage.googleapis.com",
-    "jev": "https://api.typesafe.ai",
 }
 _KEYS = {
     "openai": "OPENAI_API_KEY", "openai-compatible": "OPENAI_API_KEY",
-    "anthropic": "ANTHROPIC_API_KEY", "gemini": "GEMINI_API_KEY", "jev": "JEV_API_KEY",
+    "anthropic": "ANTHROPIC_API_KEY", "gemini": "GEMINI_API_KEY",
 }
+
+POLLARD_JEV_MODEL = "AlexWortega/openjev/qwen3.5-4b-nli-v2"
 
 
 @dataclass(frozen=True)
@@ -45,8 +46,14 @@ class ModelConfig:
     temperature: float | None = None
     timeout_seconds: float = 60.0
     cache_namespace: str = "default"
+    worker_python: str | None = None
+    model_cache_dir: str | None = None
+    device: str | None = None
+    max_context_tokens: int = 4096
 
     def __post_init__(self) -> None:
+        if self.provider == "jev":
+            object.__setattr__(self, "provider", "pollard-jev")
         for label in ("provider", "model", "cache_namespace"):
             value = getattr(self, label)
             if not isinstance(value, str) or not value.strip() or value != value.strip():
@@ -81,8 +88,19 @@ class ModelConfig:
             object.__setattr__(self, "base_url", self.base_url.rstrip("/"))
         if self.provider == "openai-compatible" and self.base_url is None:
             raise ValueError("openai-compatible requires base_url, including its API path prefix")
-        if self.provider == "jev" and self.temperature is not None:
-            raise ValueError("JEV does not support temperature")
+        for field in ("worker_python", "model_cache_dir", "device"):
+            value = getattr(self, field)
+            if value is not None and (not isinstance(value, str) or not value.strip()):
+                raise ValueError(f"{field} must be a nonempty string")
+        if type(self.max_context_tokens) is not int or self.max_context_tokens < 1:
+            raise ValueError("max_context_tokens must be a positive integer")
+        if self.provider == "pollard-jev":
+            if self.temperature is not None:
+                raise ValueError("Pollard-Jev's NLI encoder does not support temperature")
+            if self.base_url is not None or self.api_key_env is not None:
+                raise ValueError("Pollard-Jev uses a local worker, not an API endpoint or key")
+            if self.model != POLLARD_JEV_MODEL:
+                raise ValueError(f"Pollard-Jev 0.13 supports the pinned model {POLLARD_JEV_MODEL}")
 
 
 @dataclass(frozen=True)
@@ -326,9 +344,9 @@ class GeminiAdapter(HTTPAdapter):
 def _adapter(config: ModelConfig) -> ModelAdapter:
     factories = {"openai": OpenAIResponsesAdapter, "openai-compatible": OpenAIChatAdapter,
                  "anthropic": AnthropicAdapter, "gemini": GeminiAdapter}
-    if config.provider == "jev":
-        from .jev import JevAdapter
-        return JevAdapter()
+    if config.provider == "pollard-jev":
+        from .pollard_jev import PollardJevAdapter
+        return PollardJevAdapter()
     if config.provider not in factories:
         raise ValueError("Unknown provider: supply an explicit ModelAdapter for custom providers")
     return factories[config.provider]()
@@ -391,5 +409,6 @@ def register_model_handler(
     """
     handler = ModelHandler(config, adapter)
     registry.register(name, handler, version=handler.version, kind="model",
-                      synthetic=False, cacheable=cacheable)
+                      synthetic=False, cacheable=cacheable,
+                      preflight=getattr(handler._adapter, "validate_task", None))
     return handler

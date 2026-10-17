@@ -17,7 +17,8 @@ class HandlerRegistry:
     def register(self, name: str, handler: Callable[[HandlerContext], HandlerResult],
                  *, version: str = "1", synthetic: bool = False,
                  side_effect: bool = False, kind: Literal["model", "tool"] = "tool",
-                 cacheable: bool = False) -> None: ...
+                 cacheable: bool = False,
+                 preflight: Callable[[Task, Step, RunConfig], None] | None = None) -> None: ...
     def resolve(self, name: str, version: str = "1") -> HandlerRegistration: ...
     def registered_names(self) -> tuple[str, ...]: ...
 
@@ -48,12 +49,16 @@ tenant privileges, permissions, policy, or budget authority. The HTTP applicatio
 factory receives a trusted service context and overwrites those fields.
 
 `HandlerRegistration` is immutable and exposes `name`, `handler`, `version`,
-`synthetic`, `side_effect`, `kind`, and `cacheable`. Unknown names, duplicate
+`synthetic`, `side_effect`, `kind`, `cacheable`, and `preflight`. Unknown names, duplicate
 registrations, async/generator callables, version mismatches, and task attempts
 to change trusted kind/side-effect declarations fail before dispatch. The runtime
 passes detached context copies. Each handler returns `HandlerResult`. Outputs
 are normalized through canonical JSON before reaching dependents, so live and
 reused outputs have the same types (aware timestamps become strings).
+
+Optional synchronous `preflight` callbacks validate detached task, step, and
+configuration copies before run creation, cache lookup, or dispatch, including
+warm cache hits. Historical replay remains an inspection of recorded results.
 
 `run_task(task, config)` lazily creates a durable local runtime with synthetic
 handlers. Custom applications should inject a runtime and close it after requests

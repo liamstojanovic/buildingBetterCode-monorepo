@@ -1,0 +1,5 @@
+# Install in a separate environment, never alongside Canopy's Pollard 1.6.2.
+# Real local weights additionally require: pip install "pollard-jev[openjev]==0.13"
+pollard-jev==0.13
+pollard==1.6.0
+pydantic==2.14.1

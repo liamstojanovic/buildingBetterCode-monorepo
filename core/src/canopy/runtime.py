@@ -135,6 +135,14 @@ class Runtime:
                 raise ValueError(f"step {step_id!r} kind disagrees with registered handler")
             if registration.side_effect != steps[step_id].side_effect:
                 raise ValueError(f"step {step_id!r} side_effect disagrees with registered handler")
+        # Validate every handler's declared inputs before any run is created or
+        # cache lookup occurs. A warm result cannot bypass native input validity.
+        for step_id, registration in registrations.items():
+            if registration.preflight is not None:
+                registration.preflight(
+                    task.model_copy(deep=True), steps[step_id].model_copy(deep=True),
+                    config.model_copy(deep=True),
+                )
 
         started_at, clock_start = utcnow(), perf_counter()
         invalidated = self._invalidated_steps(task) if config.mode == "governed" else frozenset()

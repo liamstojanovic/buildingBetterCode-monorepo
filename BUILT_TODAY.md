@@ -12,7 +12,7 @@ are dependencies, not code claimed as newly written at the hackathon.
 - Runtime and local HTTP integration surface for the separately built frontend
   and benchmark, plus synthetic examples and component/integration tests.
 - Live model handlers for OpenAI Responses, compatible Chat Completions,
-  Anthropic Messages, Gemini generateContent and TypeSafe JEV decisions; an
+  Anthropic Messages, Gemini generateContent and local Pollard-Jev inference; an
   isolated baseline/governed comparison runner with provider usage reporting.
 - Packaging, reproducible environment, CI and integration documentation.
 
@@ -25,9 +25,11 @@ are dependencies, not code claimed as newly written at the hackathon.
 | [Epicormic](https://github.com/jemsbhai/epicormic) | 0.1.0 | Behavioral drift observations and analysis |
 | [CBOR-LD-ex](https://pypi.org/project/cbor-ld-ex/) | 0.2.1 | Compact typed evidence encoding |
 
-Pollard-Jev provides prior design context for typed observations/proposals/policy
-decisions. Its robotics policy is not the enterprise application's policy and it
-is not claimed as an installed runtime integration.
+Pollard-Jev 0.13 is integrated through its native DecisionRequest/OpenJevProvider
+interface in a separate local worker environment, preserving its Pollard 1.6.0
+pin beside Canopy's 1.6.2. Its robotics policy and simulator are not imported.
+Package integration tests use actual contracts and a synthetic encoder; real
+local inference requires the explicitly prepared, pinned OpenJev model cache.
 
 FastAPI, Pydantic, SQLite and the other dependencies retain their own licenses and
 attribution. See `core/requirements.lock` for the reproducible environment.

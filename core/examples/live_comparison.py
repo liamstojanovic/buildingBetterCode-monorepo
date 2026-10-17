@@ -54,16 +54,6 @@ def sample_task() -> Task:
                         "existing reports still works. We need the export tomorrow. "
                         "Please help us resolve this."
                     ),
-                    "questions": {
-                        "priority": {
-                            "type": "choice",
-                            "instructions": "Classify the support ticket using the supplied policy.",
-                            "criteria": {
-                                "high": "A workflow is blocked with a deadline within 48 hours.",
-                                "normal": "A workaround exists without a near-term deadline.",
-                            },
-                        }
-                    },
                 },
                 evidence_ids=["support-policy"],
             ),
@@ -102,6 +92,22 @@ def bind_model_version(task: Task, version: str) -> Task:
     return task.model_copy(update={
         "steps": [step.model_copy(update={"handler_version": version}) for step in task.steps],
     }, deep=True)
+
+
+def _sample_for_provider(provider: str) -> Task:
+    if provider in {"jev", "pollard-jev"}:
+        from canopy.pollard_jev import pollard_jev_sample_task
+
+        return pollard_jev_sample_task()
+    return sample_task()
+
+
+def _bind_for_provider(task: Task, version: str, provider: str) -> Task:
+    if provider in {"jev", "pollard-jev"}:
+        from canopy.pollard_jev import bind_pollard_jev_task
+
+        return bind_pollard_jev_task(task, version)
+    return bind_model_version(task, version)
 
 
 def _summary(result: RunResult) -> dict[str, Any]:
@@ -205,7 +211,8 @@ def run_comparison(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--provider", choices=["openai", "openai-compatible", "anthropic", "gemini", "jev"],
+        "--provider",
+        choices=["openai", "openai-compatible", "anthropic", "gemini", "pollard-jev", "jev"],
         default=os.environ.get("CANOPY_PROVIDER", "openai"),
     )
     parser.add_argument("--model", default=os.environ.get("CANOPY_MODEL"))
@@ -222,6 +229,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--temperature", type=float, help="Optional provider sampling setting")
     parser.add_argument("--cache-namespace", default="default", help="Provider deployment/revision scope")
     parser.add_argument(
+        "--worker-python", default=os.environ.get("CANOPY_POLLARD_JEV_PYTHON"),
+        help="Python executable in the separate pollard-jev worker environment",
+    )
+    parser.add_argument(
+        "--model-cache-dir", default=os.environ.get("CANOPY_OPENJEV_CACHE"),
+        help="Prepared local OpenJEV model cache; runtime never downloads weights",
+    )
+    parser.add_argument("--device", help="Local pollard-jev device, for example cpu or cuda")
+    parser.add_argument(
+        "--max-context-tokens", type=int, default=4096,
+        help="Local pollard-jev context limit for each NLI pair",
+    )
+    parser.add_argument(
         "--write-sample-task", type=Path,
         help="Write the sample Task JSON and exit without credentials or model calls",
     )
@@ -232,19 +252,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.write_sample_task:
-        args.write_sample_task.write_text(sample_task().model_dump_json(indent=2), encoding="utf-8")
+        args.write_sample_task.write_text(
+            _sample_for_provider(args.provider).model_dump_json(indent=2), encoding="utf-8",
+        )
         return 0
     if not args.model:
         parser.error("supply --model or CANOPY_MODEL explicitly")
     if args.max_steps is not None and args.max_steps < 0:
         parser.error("--max-steps must be nonnegative")
     task = Task.model_validate_json(args.task_file.read_text(encoding="utf-8")) \
-        if args.task_file else sample_task()
+        if args.task_file else _sample_for_provider(args.provider)
     # Provider construction is supplied by canopy.models; keep it out of imports
     # so fixture generation and local handler tests require no provider SDK.
     registry, handler = _live_registry(args)
     with closing(handler):
-        task = bind_model_version(task, handler.version)
+        task = _bind_for_provider(task, handler.version, args.provider)
         report = run_comparison(
             task, registry, model_fingerprint=handler.fingerprint,
             max_steps=args.max_steps, output_dir=args.output_dir,
@@ -266,6 +288,10 @@ def _live_registry(args: argparse.Namespace) -> tuple[HandlerRegistry, Any]:
         timeout_seconds=args.timeout_seconds,
         temperature=args.temperature,
         cache_namespace=args.cache_namespace,
+        worker_python=args.worker_python,
+        model_cache_dir=args.model_cache_dir,
+        device=args.device,
+        max_context_tokens=args.max_context_tokens,
     )
     registry = HandlerRegistry()
     handler = register_model_handler(registry, config, cacheable=True)
