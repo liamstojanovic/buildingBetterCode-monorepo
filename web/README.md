@@ -4,16 +4,80 @@ Bun, React, TypeScript, Vite, React Flow, and Storybook. The frontend consumes
 version 1 core contracts and owns only `web/`. Use Node 22.12+ or 24 for the Vite
 and Storybook toolchain; Bun manages dependencies and scripts.
 
+## Start the end-to-end demo
+
+The working end-to-end path is **React frontend → local Python API → real Canopy
+runtime with synthetic handlers**. It needs no model credentials. The initial
+seven-step PortMiami cargo screen is a frontend mock; selecting **Live API** loads
+the backend's three-step catalog/quote/greeting workflow instead.
+
+One-time setup, from the repository root (macOS/Linux; Python 3.11 or 3.12):
+
 ```sh
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r core/requirements.lock
+.venv/bin/python -m pip install -e 'core[dev,models]'
 cd web
 bun install --frozen-lockfile
-bun run dev
 ```
 
-Open <http://127.0.0.1:5173>. The initial **Mock workspace** is an explicitly
-synthetic PortMiami cargo illustration. Run comparison enters presentation view;
-Exit focus returns to the full console. Select any graph node for its evidence,
-dependencies, decision reasons, and reuse provenance.
+If an existing environment already has the pinned core dependencies, use its
+Python executable in place of `.venv/bin/python` throughout. On Windows, use
+`.venv\Scripts\python.exe`; see the [team setup](../docs/TEAM_HANDOFF.md).
+
+**Terminal 1 — repository root:** refresh the fixtures before rehearsal, then
+start the backend. The export runs five paired synthetic trials per case, updates
+only `web/public/recordings/`, and makes no provider requests.
+
+```sh
+.venv/bin/python web/scripts/export-core-fixtures.py --benchmark
+.venv/bin/python core/examples/local_api.py
+```
+
+**Terminal 2 — repository root:**
+
+```sh
+cd web
+bun run dev --strictPort
+```
+
+Open <http://127.0.0.1:5173> and select **Live API** in the data-source menu, then
+**Run comparison**. The warm scenario first primes a real governed cache; baseline
+then executes three steps while Canopy reuses three. Select **Relevant source
+updated** and run again: two dependent steps execute, while the greeting remains
+reusable. Select a graph node to inspect evidence, dependencies and provenance.
+Run comparison enters presentation view; **Exit focus** restores the full console.
+
+The API schema is at <http://127.0.0.1:8000/docs>. Keep both terminals running;
+Ctrl-C stops each server. If ports 8000 or 5173 are occupied, use the existing demo
+processes or stop them before restarting. For another backend port, start it with
+`--port 8001` and run Vite with `CANOPY_API_URL=http://127.0.0.1:8001 bun run dev`.
+
+**Stage fallback:** select **Recorded runs** (or **Core recordings** in the full
+console) and run the comparison. This plays committed actual synthetic core events
+without the API. **Mock workspace** demonstrates the cargo story and UI only.
+Keep the data-source and synthetic labels visible in either case.
+
+## Repository integration status
+
+Aligned with the October 17 [frontend handoff](../docs/FRONTEND_HANDOFF.md):
+
+| Capability | Current state |
+| --- | --- |
+| Runtime, recording, scoped reuse, freshness, budgets, approvals, replay | Implemented in `core/`; synthetic HTTP demo connected to this frontend |
+| Live events | Synchronous `POST /runs` plus ordered event polling; async start/SSE remain backend work |
+| Hosted-model comparisons | Python handlers and CLI implemented; import retained reports/stores using the converter below |
+| PortMiami cargo execution | Frontend mock; registered cargo handlers and representative provider benchmarks still needed |
+| Drift containment and compact messaging | Core components and smoke script; no dashboard HTTP endpoints or frontend report adapter |
+| Pollard-Jev/OpenJEV | Isolated native worker implemented; real local weight execution remains unverified in the team handoff |
+| Optimization advisor / automatic backend switching | Advisor is a proposal; no analyzer, advisor route, switching implementation, or advisor UI here |
+
+The runtime executes an authored dependency graph **sequentially**. The local API
+registers synthetic handlers only; choosing a provider in a browser cannot enable
+hosted inference. The [advisor design](../docs/ADVISOR_DESIGN.md) and
+[benchmark handoff](../docs/BENCHMARK_HANDOFF.md) describe additional work, not
+features enabled by starting this demo. The repository's GitHub Actions workflow
+currently checks the core; frontend checks below must be run separately.
 
 ## Components and checks
 
@@ -34,24 +98,11 @@ Do not edit generated types or change core schemas from the frontend.
 
 ## Actual core integration
 
-Use the pinned Python 3.11/3.12 environment from `docs/TEAM_HANDOFF.md`. From the
-repository root, start the synthetic local API:
-
-```sh
-PYTHONPATH=core/src .venv/bin/python core/examples/local_api.py
-```
-
 Vite proxies `/api` to `http://127.0.0.1:8000`. Set `CANOPY_API_URL` for another
-local backend or `VITE_API_BASE_URL` for a different browser path. Production hosts
-must configure their own `/api` reverse proxy; Vite's proxy is development-only.
+local backend or `VITE_API_BASE_URL` for a different browser path. Static production
+hosts must configure their own `/api` reverse proxy; building `dist/` does not
+deploy the Python API or a proxy.
 Never put provider credentials in browser source or Vite environment variables.
-
-Generate fresh fixtures with the same core environment:
-
-```sh
-cd web
-../.venv/bin/python scripts/export-core-fixtures.py --benchmark
-```
 
 The committed recording contains actual core events for five paired repetitions
 of cold, unchanged, relevant-change, and unrelated-change cases. Order alternates
@@ -64,7 +115,10 @@ cargo mock's handler names are not registered on that service. Loading the bundl
 core task creates a fresh local workflow namespace to isolate the session cache;
 evidence timestamps and contents are preserved. Warm/changed scenarios prepare
 the cache through a visible real governed execution. Cold cases use a new namespace.
-The core task expires one hour after export: regenerate before a later live demo.
+The core task expires one hour after export: regenerate before a later live demo,
+then click **Load core task** in the full console to replace the browser's snapshot.
+Historical recorded playback remains usable after that expiry. With a production
+build, regenerate before `bun run build` so `dist/` contains the refreshed files.
 
 **Import task** accepts Task or `{task: Task}` JSON supplied by the runtime owner.
 Imported identifiers and evidence snapshots are preserved. Changed-source scenarios
@@ -101,8 +155,23 @@ are never guessed. Reads can retry. **Stop watching** ends observation, not serv
 
 ## Real benchmark recordings
 
+For a real-provider demo, follow the [live model setup](../core/docs/live_models.md)
+and configure the selected provider's key in the Python process environment. From
+the repository root, choose a model your account can access:
+
+```sh
+.venv/bin/python core/examples/live_comparison.py \
+  --provider openai --model YOUR_MODEL_ID --output-dir .canopy/comparisons
+```
+
+This explicitly makes provider requests and may incur charges. The default input
+is an invented support ticket, not cargo paperwork. The current CLI compares
+baseline first/repeat and governed cold/warm; it does not generate relevant-change
+or unrelated-change benchmarks or independently score answer quality.
+
 The core's `live_comparison.py --output-dir` retains a report and baseline/governed
-databases. Convert those artifacts without executing models:
+databases. Keep the whole generated directory together, including both SQLite
+stores. From `web/`, convert those artifacts without executing models:
 
 ```sh
 ../.venv/bin/python scripts/import-comparison.py /path/to/comparison/report.json
@@ -123,10 +192,30 @@ with an independently produced JSON array such as:
 ]
 ```
 
-Import the generated `public/recordings/provider-comparison.json`. The converter
+Click **Import recording** and select the generated
+`web/public/recordings/provider-comparison.json`. Raw `report.json`,
+`synthetic_demo.py` output and `component_smoke.py` output are not directly accepted
+by this UI; it requires a `canopy-comparison/v1` bundle. The converter
 reads saved stores only and checks report/result agreement. It does not fabricate
 events, quality scores, cost, or changed-source scenarios. See `src/api/types.ts`
 and the committed core recording for the complete `canopy-comparison/v1` bundle.
+The live comparison runner currently leaves dollar cost and energy unknown;
+importing token measurements alone will not enable dollar projections.
+
+## Troubleshooting before presenting
+
+- **Connection/proxy error:** check the API is running on port 8000 and open its
+  `/docs`; start Vite after setting any `CANOPY_API_URL` override.
+- **Stale evidence or refused run:** regenerate the fixtures and click **Load core
+  task**. Refreshing the browser alone does not refresh the evidence on disk.
+- **Unknown cargo handler:** use **Load core task** for the stock API. Cargo tasks
+  require server-side handler registration by the backend owner.
+- **Async endpoint 404:** expected with today's core; the client uses the existing
+  synchronous start and polling path. It does not require WebSockets or SSE to run.
+- **Graph finishes too quickly:** synthetic handlers are fast. Use recorded
+  playback for inspection; playback speed does not alter measured execution time.
+- **Recording conversion fails:** supply the complete retained comparison
+  directory, including `baseline.sqlite3` and `governed.sqlite3`, not just its report.
 
 ## Measurement rules
 
