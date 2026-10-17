@@ -28,6 +28,8 @@ import {
   Ship,
   Sparkles,
   Square,
+  Sun,
+  Moon,
   Upload,
   X,
   Zap,
@@ -63,6 +65,7 @@ import {
 } from "../fixtures/pricing";
 import { ExecutionTree } from "./ExecutionTree";
 import { ExecutionGraph, statusLabels } from "./ExecutionGraph";
+import { useTheme } from "../theme";
 
 export type SourceMode = "mock" | "recorded" | "live";
 export type Workspace = "execution" | "optimization" | "benchmarks";
@@ -657,6 +660,7 @@ export function Console(props: ConsoleProps) {
   const isExecution = !isOptimization && !isBenchmarks;
   const [methodology, setMethodology] = useState(false);
   const [presentation, setPresentation] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
   const [view, setView] = useState<"workflow" | "tree">("workflow");
   const [modelId, setModelId] = useState<string>(swarmPrices[0].id);
   const mockPrice =
@@ -834,6 +838,22 @@ export function Console(props: ConsoleProps) {
                     ? "RECORDED"
                     : "LIVE API"}
             </span>
+            <button
+              className="icon-button theme-toggle"
+              onClick={toggleTheme}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
           </div>
         </header>
         <main hidden={!isExecution} aria-label="Execution workspace content">

@@ -1,45 +1,81 @@
-/* Miami Vice: bright accents, neutral surfaces, browser-controlled color scheme. */
+/* Vice City: cream Deco daylight by default, neon indigo night on dark.
+   Text pairs hold ≥7:1 contrast; interactive chrome holds ≥3:1 (see
+   scripts/check-contrast.py). The execution tree keeps a dark console in
+   both themes so its aqua trace stays distinct from site text. */
 :root {
-  color-scheme: light dark;
-  --bg: #f6f8fb;
+  color-scheme: light;
+  --bg: #fdf6ea;
   --panel: #ffffff;
-  --panel-light: #eef3f7;
-  --line: #ced9e3;
-  --text: #172c3b;
-  --muted: #516475;
-  --lime: #007b80;
-  --lime-dark: #e0f5f3;
-  --pink: #a52d88;
-  --pink-soft: #fceaf7;
-  --blue: #1665ac;
-  --amber: #855a10;
-  --red: #b3334d;
-  --explainer: #69476e;
-  --button: #0bd3d3;
-  --terminal: #f0faf7;
-  --terminal-text: #136645;
+  --panel-light: #f3ead6;
+  --line: #8a80a0;
+  --text: #252644;
+  --muted: #48486a;
+  --lime: #2d5009;
+  --lime-dark: #edf2dc;
+  --pink: #7d1d7d;
+  --pink-soft: #f9ecf3;
+  --blue: #3a3c9e;
+  --amber: #74400a;
+  --red: #8f2020;
+  --explainer: #5b3c7d;
+  --button: #8a1f6a;
+  --accent-ink: #fdfbff;
+  --accent-hover: #741b5a;
+  --sel: #ffd9e4;
+  --terminal: #16142a;
+  --terminal-text: #89f5e3;
+  --tree-running: #b3bdff;
+  --tree-reused: #e6ffa3;
+  --tree-warn: #ffa34d;
+  --tree-fail: #ffa89b;
+  --tour-accent: #f5899b;
+  --tour-scrim: #0c0d1bc7;
   color: var(--text);
   background: var(--bg);
 }
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0b1018;
-    --panel: #111b26;
-    --panel-light: #192635;
-    --line: #304354;
-    --text: #edf3fa;
-    --muted: #a3b5c7;
-    --lime: #0bd3d3;
-    --lime-dark: #103337;
-    --pink: #f890e7;
-    --pink-soft: #322038;
-    --blue: #87c9ff;
-    --amber: #f2c36e;
-    --red: #ff9db0;
-    --explainer: #dfb8e1;
-    --terminal: #081710;
-    --terminal-text: #81e8b0;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0c0d1b;
+    --panel: #18182d;
+    --panel-light: #252644;
+    --line: #7373a8;
+    --text: #fdfbff;
+    --muted: #b3b8de;
+    --lime: #e6ffa3;
+    --lime-dark: #263014;
+    --pink: #ffabc0;
+    --pink-soft: #3a1f33;
+    --blue: #b3bdff;
+    --amber: #ffa34d;
+    --red: #ffa89b;
+    --explainer: #bdb3ef;
+    --button: #f5899b;
+    --accent-ink: #1e0031;
+    --accent-hover: #ffc7d4;
+    --sel: #38035a;
   }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c0d1b;
+  --panel: #18182d;
+  --panel-light: #252644;
+  --line: #7373a8;
+  --text: #fdfbff;
+  --muted: #b3b8de;
+  --lime: #e6ffa3;
+  --lime-dark: #263014;
+  --pink: #ffabc0;
+  --pink-soft: #3a1f33;
+  --blue: #b3bdff;
+  --amber: #ffa34d;
+  --red: #ffa89b;
+  --explainer: #bdb3ef;
+  --button: #f5899b;
+  --accent-ink: #1e0031;
+  --accent-hover: #ffc7d4;
+  --sel: #38035a;
 }
 body {
   background: var(--bg);
@@ -239,8 +275,8 @@ body {
   color: var(--muted);
 }
 .view-toggle button[aria-pressed="true"] {
-  color: var(--lime);
-  background: var(--lime-dark);
+  color: var(--pink);
+  background: var(--pink-soft);
 }
 .repeat-result {
   display: flex;
@@ -269,7 +305,7 @@ body {
       0deg,
       transparent,
       transparent 3px,
-      #44ca7b05 4px
+      rgba(137, 245, 227, 0.03) 4px
     ),
     var(--terminal);
   color: var(--terminal-text);
@@ -394,18 +430,18 @@ body {
   overflow-wrap: anywhere;
 }
 .tree-reused {
-  border-color: color-mix(in srgb, var(--terminal-text) 40%, transparent);
+  border-color: var(--tree-reused);
 }
 .tree-running {
-  border-color: var(--blue);
-  color: var(--blue);
+  border-color: var(--tree-running);
+  color: var(--tree-running);
 }
 .tree-failed,
 .tree-blocked {
-  color: var(--red);
+  color: var(--tree-fail);
 }
 .tree-awaiting_approval {
-  color: var(--amber);
+  color: var(--tree-warn);
 }
 .terminal-foot {
   margin-top: 14px;
@@ -416,11 +452,11 @@ body {
 .demo-mode .brand-mark {
   background: var(--button);
   border-color: var(--button);
-  color: #092b32;
+  color: var(--accent-ink);
 }
 .demo-mode .primary-button:hover {
-  background: #5ce8e8;
-  border-color: #5ce8e8;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 .demo-mode.presentation .execution-canvas,
 .demo-mode.presentation .execution-tree {
@@ -840,14 +876,6 @@ body {
   }
 }
 
-:root {
-  --tour-scrim: #07101cc7;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --tour-scrim: #02050ad9;
-  }
-}
 .demo-tour-overlay {
   position: fixed;
   inset: 0;
@@ -858,9 +886,9 @@ body {
 }
 .demo-tour-outline {
   fill: none;
-  stroke: var(--button);
+  stroke: var(--tour-accent);
   stroke-width: 2.5px;
-  filter: drop-shadow(0 0 4px #0bd3d380);
+  filter: drop-shadow(0 0 4px rgba(245, 137, 155, 0.5));
 }
 .demo-tour-guard {
   position: fixed;
@@ -893,7 +921,7 @@ body {
 }
 .demo-tour-heading > span {
   font: 9px var(--mono);
-  color: var(--lime);
+  color: var(--pink);
   letter-spacing: 0.6px;
 }
 .demo-tour-heading > .icon-button {
@@ -912,12 +940,12 @@ body {
   background: var(--line);
 }
 .demo-tour-dots .past {
-  background: var(--lime);
-  opacity: 0.5;
+  background: var(--muted);
+  opacity: 0.6;
 }
 .demo-tour-dots .current {
   width: 16px;
-  background: var(--lime);
+  background: var(--pink);
 }
 .demo-tour-card h3 {
   font-size: 20px;
@@ -947,7 +975,7 @@ body {
 }
 .demo-tour-actions .primary-button {
   background: var(--button);
-  color: #092b32;
+  color: var(--accent-ink);
   border-color: var(--button);
 }
 .demo-tour-actions .primary-button,

@@ -10,21 +10,34 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  color: #e9eee9;
-  background: #101815;
   font-synthesis: none;
   font-weight: 400;
-  --bg: #101815;
-  --panel: #151f19;
-  --panel-light: #19251e;
-  --line: #2c3a31;
-  --muted: #8a9b8e;
-  --lime: #b8ef9b;
-  --lime-dark: #1d3826;
-  --blue: #8fcbea;
-  --amber: #e4bb76;
-  --red: #f08f83;
+  /* Vice City night — demo.css overrides these for light/system themes. */
+  color-scheme: dark;
+  --bg: #0c0d1b;
+  --panel: #18182d;
+  --panel-light: #252644;
+  --line: #7373a8;
+  --text: #fdfbff;
+  --muted: #b3b8de;
+  --lime: #e6ffa3;
+  --lime-dark: #263014;
+  --pink: #ffabc0;
+  --pink-soft: #3a1f33;
+  --blue: #b3bdff;
+  --amber: #ffa34d;
+  --red: #ffa89b;
+  --explainer: #bdb3ef;
+  --button: #f5899b;
+  --accent-ink: #1e0031;
+  --accent-hover: #ffc7d4;
+  --terminal: #16142a;
+  --terminal-text: #89f5e3;
+  --sel: #38035a;
+  --sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", monospace;
+  color: var(--text);
+  background: var(--bg);
 }
 * {
   box-sizing: border-box;
@@ -69,7 +82,7 @@ a:focus-visible,
 select:focus-visible,
 input:focus-visible,
 summary:focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--button);
   outline-offset: 4px;
 }
 button {
@@ -85,8 +98,8 @@ button svg {
   flex-shrink: 0;
 }
 ::selection {
-  background: var(--muted);
-  color: white;
+  background: var(--sel);
+  color: var(--text);
 }
 h1,
 h2,
@@ -128,8 +141,8 @@ code {
   display: flex;
   width: 36px;
   height: 37px;
-  background: var(--lime);
-  color: var(--panel-light);
+  background: var(--button);
+  color: var(--accent-ink);
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -154,7 +167,7 @@ code {
 }
 .rail-link:hover,
 .rail-link.active {
-  color: var(--lime);
+  color: var(--pink);
   background: var(--panel-light);
 }
 .rail-help {
@@ -165,8 +178,8 @@ code {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: var(--line);
-  color: var(--text);
+  background: var(--button);
+  color: var(--accent-ink);
   display: grid;
   place-items: center;
   font-size: 12px;
@@ -184,11 +197,11 @@ code {
   cursor: pointer;
 }
 .benchmark-entry:hover {
-  border-color: var(--lime);
-  color: var(--lime);
+  border-color: var(--pink);
+  color: var(--pink);
 }
 .benchmark-entry:focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--button);
   outline-offset: 3px;
 }
 @media (max-width: 900px) {
@@ -294,7 +307,7 @@ main {
   align-items: center;
 }
 .hero .eyebrow {
-  color: var(--lime);
+  color: var(--pink);
   font-size: 9px;
   letter-spacing: 2px;
   margin-bottom: 14px;
@@ -302,7 +315,7 @@ main {
 .tiny-line {
   width: 20px;
   height: 1px;
-  background: var(--lime);
+  background: var(--pink);
 }
 h1 {
   font-size: 39px;
@@ -386,7 +399,7 @@ h1 > span {
   flex: 1;
 }
 .route-line i:last-child {
-  background: var(--lime);
+  background: var(--pink);
   border: 0;
 }
 .shipment-foot {
@@ -473,9 +486,9 @@ h1 > span {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  background: var(--lime);
-  color: var(--panel-light);
-  border: 1px solid var(--lime);
+  background: var(--button);
+  color: var(--accent-ink);
+  border: 1px solid var(--button);
   border-radius: 6px;
   padding: 11px 16px;
   font-size: 11px;
@@ -483,8 +496,8 @@ h1 > span {
   white-space: nowrap;
 }
 .primary-button:hover:not(:disabled) {
-  background: var(--text);
-  border-color: var(--text);
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 .primary-button > svg:last-child {
   margin-left: 6px;
@@ -697,9 +710,9 @@ h1 > span {
   color: var(--muted);
 }
 .lane-symbol.canopy {
-  background: var(--line);
+  background: var(--lime-dark);
   color: var(--lime);
-  border-color: var(--muted);
+  border-color: var(--lime);
 }
 .lane-heading h3 {
   font-size: 13px;
@@ -776,7 +789,7 @@ h1 > span {
   border-radius: 8px;
 }
 .react-flow__node:focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--button);
   outline-offset: 3px;
 }
 .react-flow__attribution {
@@ -947,7 +960,7 @@ h1 > span {
   font-size: 8px;
 }
 .quality-pass {
-  color: var(--text);
+  color: var(--lime);
 }
 .execution-foot {
   display: flex;
@@ -964,14 +977,14 @@ h1 > span {
   align-items: center;
 }
 .separator {
-  color: var(--line);
+  color: var(--muted);
   margin: 0 5px;
 }
 .error-banner {
   padding: 15px;
-  border: 1px solid var(--muted);
-  background: var(--panel-light);
-  color: var(--muted);
+  border: 1px solid var(--red);
+  background: color-mix(in srgb, var(--red) 10%, var(--panel));
+  color: var(--red);
   border-radius: 7px;
   font-size: 12px;
   margin: 18px 0;
@@ -1173,7 +1186,7 @@ h1 > span {
 }
 .impact-controls label > span {
   float: right;
-  color: var(--lime);
+  color: var(--pink);
 }
 .impact-controls input[type="number"] {
   display: block;
@@ -1190,7 +1203,7 @@ h1 > span {
 .impact-controls input[type="range"] {
   display: block;
   width: 100%;
-  accent-color: var(--lime);
+  accent-color: var(--pink);
   height: 3px;
   margin-top: 12px;
   cursor: pointer;
@@ -1297,9 +1310,9 @@ h1 > span {
   margin-bottom: 28px;
 }
 .inspector-icon {
-  background: var(--line);
-  color: var(--lime);
-  border: 1px solid var(--muted);
+  background: var(--pink-soft);
+  color: var(--pink);
+  border: 1px solid var(--pink);
   width: 48px;
   height: 48px;
   border-radius: 12px;

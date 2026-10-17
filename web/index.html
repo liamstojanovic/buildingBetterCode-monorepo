@@ -4,7 +4,23 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/canopy.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#101815" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#fdf6ea"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0c0d1b"
+    />
+    <script>
+      try {
+        var t = localStorage.getItem("canopy-theme");
+        if (t === "light" || t === "dark")
+          document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta name="description" content="Canopy — inspect agent execution, reuse verified work, and see what changed." />
     <title>Canopy — Execution intelligence</title>
   </head>

@@ -38,13 +38,13 @@ main[hidden] {
   white-space: nowrap;
 }
 .file-button:focus-within {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--button);
   outline-offset: 4px;
 }
 .source-advisor {
   color: var(--blue);
-  background: #1a2d34;
-  border-color: #324d58;
+  background: color-mix(in srgb, var(--blue) 14%, var(--panel));
+  border-color: var(--line);
 }
 .advisor-import-status {
   color: var(--muted);
@@ -66,7 +66,7 @@ main[hidden] {
   line-height: 1.7;
 }
 .advisor-empty > svg {
-  color: var(--lime);
+  color: var(--pink);
 }
 .advisor-empty p {
   max-width: 650px;
@@ -88,15 +88,15 @@ main[hidden] {
   overflow-wrap: anywhere;
 }
 .advisor-error {
-  color: #ffd5cb;
-  border: 1px solid #794839;
-  background: #35231e;
+  color: var(--red);
+  border: 1px solid color-mix(in srgb, var(--red) 60%, transparent);
+  background: color-mix(in srgb, var(--red) 10%, var(--panel));
   margin-bottom: 20px;
 }
 .advisor-warning {
   color: var(--amber);
-  background: #30291c;
-  border: 1px solid #655638;
+  background: color-mix(in srgb, var(--amber) 8%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
   margin: 16px 0;
 }
 .advisor-provenance {
@@ -189,7 +189,7 @@ main[hidden] {
   font-size: 12px;
 }
 .advisor-filters select {
-  color: #e9eee9;
+  color: var(--text);
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
@@ -210,7 +210,7 @@ main[hidden] {
   max-height: calc(100vh - 40px);
   overflow-y: auto;
   padding: 4px;
-  scrollbar-color: #50644f var(--panel);
+  scrollbar-color: var(--line) var(--panel);
   scrollbar-width: thin;
 }
 .advisor-detail-target {
@@ -218,7 +218,7 @@ main[hidden] {
   scroll-margin-top: 20px;
 }
 .advisor-detail-target:focus-visible {
-  outline: 2px solid var(--lime);
+  outline: 2px solid var(--button);
   outline-offset: 4px;
   border-radius: 12px;
 }
@@ -237,11 +237,11 @@ main[hidden] {
 }
 .advisor-card:hover {
   background: var(--panel-light);
-  border-color: #60765c;
+  border-color: var(--muted);
 }
 .advisor-card.selected {
-  border-color: var(--lime);
-  background: #1b2c20;
+  border-color: var(--pink);
+  background: var(--pink-soft);
 }
 .advisor-card > strong {
   font-size: 16px;
@@ -258,7 +258,7 @@ main[hidden] {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--lime);
+  color: var(--pink);
   font-size: 12px;
 }
 .advisor-status {
@@ -268,20 +268,20 @@ main[hidden] {
   padding: 5px 9px;
   border-radius: 5px;
   color: var(--muted);
-  background: #233028;
+  background: var(--panel-light);
   width: fit-content;
 }
 .advisor-status-candidate {
   color: var(--lime);
-  background: #2b432b;
+  background: var(--lime-dark);
 }
 .advisor-status-needs_mapping {
   color: var(--amber);
-  background: #3a311f;
+  background: color-mix(in srgb, var(--amber) 8%, var(--panel));
 }
 .advisor-status-unsupported {
-  color: #cfb6b0;
-  background: #362925;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--muted) 12%, var(--panel));
 }
 .advisor-detail {
   padding: 26px;
@@ -301,8 +301,8 @@ main[hidden] {
   font-size: 14px;
 }
 .advisor-evaluation {
-  border: 1px solid #40584a;
-  background: #1b2a22;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--blue) 10%, var(--panel));
   padding: 18px;
   margin-top: 22px;
   border-radius: 8px;
@@ -312,7 +312,7 @@ main[hidden] {
   color: var(--blue);
 }
 .advisor-evaluation > p {
-  color: #b6c6b9;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.7;
   margin-top: 10px;
