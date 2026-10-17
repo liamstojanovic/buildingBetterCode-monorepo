@@ -1,0 +1,29 @@
+{
+  "format": "canopy-openjev-gpu-preflight/v1",
+  "ok": false,
+  "generated_at": "2026-10-17T19:47:35.205375+00:00",
+  "python": "3.12.15",
+  "platform": "Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "stage": "cuda_access",
+  "mode": "device_only",
+  "quality_benchmark": false,
+  "actions_executed": false,
+  "packages": {
+    "pollard-jev": "0.13",
+    "pollard": "1.6.0",
+    "pydantic": "2.14.1",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.15.0",
+    "huggingface-hub": "1.33.0",
+    "tokenizers": "0.22.2",
+    "numpy": "2.5.3",
+    "safetensors": "0.8.0"
+  },
+  "cuda_runtime": "12.8",
+  "cuda_available": false,
+  "error": {
+    "type": "RuntimeError",
+    "message": "CUDA is unavailable; check Docker Desktop WSL2 integration and GPU access"
+  },
+  "elapsed_ms": 1194.7077039999385
+}

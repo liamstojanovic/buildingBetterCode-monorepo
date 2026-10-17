@@ -1,0 +1,104 @@
+{
+  "synthetic": true,
+  "live_provider_calls": 0,
+  "synthetic_probe_calls": 31,
+  "monitor_states": [
+    "unknown",
+    "stable",
+    "nonconformant"
+  ],
+  "message_bytes": {
+    "cbor_bytes": 269,
+    "json_bytes": 486,
+    "bytes_saved": 217,
+    "reduction_fraction": 0.44650205761316875
+  },
+  "duplicate_message_inserted": false,
+  "runs": {
+    "cold": {
+      "status": "completed",
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 1,
+        "tool_calls": 2,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 109.12191499983237,
+        "tokens_known": true,
+        "elapsed_known": true
+      }
+    },
+    "warm": {
+      "status": "completed",
+      "reused_steps": 3,
+      "invalidated_steps": 0,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 49.935588000153075,
+        "tokens_known": true,
+        "elapsed_known": true
+      }
+    },
+    "changed": {
+      "status": "completed",
+      "reused_steps": 1,
+      "invalidated_steps": 2,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 1,
+        "tool_calls": 1,
+        "cost_usd": null,
+        "energy_j": null,
+        "elapsed_ms": 82.49388000012914,
+        "tokens_known": true,
+        "elapsed_known": true
+      }
+    },
+    "contained": {
+      "status": "blocked",
+      "reused_steps": 0,
+      "invalidated_steps": 2,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 43.89017399989825,
+        "tokens_known": true,
+        "elapsed_known": true
+      }
+    },
+    "replay": {
+      "status": "completed",
+      "reused_steps": 0,
+      "invalidated_steps": 0,
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "provider_cached_input_tokens": 0,
+        "model_calls": 0,
+        "tool_calls": 0,
+        "cost_usd": 0.0,
+        "energy_j": null,
+        "elapsed_ms": 0.0,
+        "tokens_known": true,
+        "elapsed_known": false
+      }
+    }
+  }
+}

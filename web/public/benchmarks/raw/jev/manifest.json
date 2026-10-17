@@ -1,0 +1,10 @@
+{
+  "format": "canopy-jev-demo/v1",
+  "sample_data": true,
+  "synthetic": false,
+  "files": {
+    "comparison.json": "a5c65c187b54414187ce0d4888671f7986971dc20305c009d85c68d73bae97b0",
+    "index.html": "9161a151ece0587d856f67ea2f1e5510c9f39b85b14b144e333bf5669f386bb2"
+  },
+  "source_manifest_sha256": "1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0"
+}

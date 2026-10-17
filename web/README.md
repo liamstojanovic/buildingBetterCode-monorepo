@@ -41,10 +41,77 @@ total cost estimates include this overhead. Deltas are Canopy minus baseline;
 only completed pairs show savings. Reused tokens are not billed to the LLM.
 JeV appears only in the Canopy lane. The model does not make actual requests or
 claim JeV replacement quality; token usage and totals are illustrative.
+This hosted OpenRouter JeV pricing example is separate from the measured local
+Pollard-Jev/OpenJEV results in **Benchmarks**. Those results do not inherit the
+mock token costs or establish dollar savings.
 
 Recorded and live sources preserve their reported costs and unknown values.
 The mock price selector does not alter stored runtime results or enable provider
 requests. Independent quality remains unknown.
+
+## Measured benchmarks: JEV and CBOR-LD-EX
+
+Click **Measured benchmarks** in the top bar, or **Benchmarks** in the left
+navigation. This read-only workspace loads the latest published
+[container evidence](../core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+at source commit `ecd976d`. It needs no GPU, provider key or model/API request.
+The Docker stack still starts the API container so nginx can resolve its proxy.
+The guided tour, execution graph/tree, selected steps, approval state
+and Optimization imports remain available when you switch back.
+
+Walk through its four category buttons:
+
+1. **Business decisions:** `high` matches the expectation in both passes but is
+   **Deferred** because the margin is about 0.115, below 0.15. Show raw choice
+   beside accepted choice, independent entailment scores and the remaining
+   explanation requirement.
+2. **Tool selection:** select knowledge search, incident lookup and ticket
+   lookup; all six trials are accepted. Expand the input/hypotheses disclosure
+   to see prebound arguments. No tool action occurs.
+3. **Next steps:** retrieve, clarify and stop all pass twice. Show each
+   deterministic rule baseline; these supplied transitions can avoid inference
+   entirely. No workflow transition occurs.
+4. **CBOR-LD-EX savings:** 618 messages / 36 batches, **771,411 → 356,491 bytes**,
+   **53.79%** smaller with lossless decoding. Inspect CPU encode/decode costs,
+   local SQLite batching and duplicate suppression, then the dense-float case
+   where JSON wins. Bytes saved are not token, dollar or network-latency savings.
+
+The overall JEV result is **14/14 raw matches and 12/14 accepted matches** over
+seven distinct cases. Warm median is **301.87 ms**; the first call includes
+**5,643.78 ms** of model loading. The timing section identifies the 16 GB RTX 4090
+Laptop and old-Docker compatibility workaround. Neither the physical 12 GB
+teammate GPU nor a controlled speedup against hosted models is established.
+The $0 provider-spend card is the incremental evidence-refresh ledger, not the
+cost of the original hosted recordings or GPU execution.
+
+**Every headline has a source** shows measurement dates and downloads of the full
+JEV comparison, trial journal, CBOR report, GPU check, provenance, audit, spend
+and SHA-256 inventories. Historical advisor findings remain **Not evaluated**;
+this later mapping evaluation does not activate automatic routing.
+
+`scripts/export-benchmark-fixture.py` verifies source hashes and deterministically
+exports `public/benchmarks/latest.json` plus raw JSON/JSONL downloads. It uses
+Python's standard library and makes no model calls. From the repository root:
+
+```sh
+python3.12 web/scripts/export-benchmark-fixture.py
+python3.12 web/scripts/export-benchmark-fixture.py --check
+```
+
+On Windows use `.venv\Scripts\python.exe` in place of `python3.12`. From `web/`,
+the equivalents are `bun run fixtures:benchmarks` and
+`bun run fixtures:benchmarks:check` (requires `python3.12` on PATH). The check
+rejects stale, missing or unexpected files. Preserve the source publication and
+dates; update the exporter's reviewed source directory/revision for a later
+publication. Exporting does not rerun a benchmark or ingest `.canopy/` results.
+
+`src/api/benchmarks.ts` validates the bundled
+`canopy.benchmark_evidence/v1` projection and numerical relationships before
+rendering. Unknown/incomplete data produces an error and **Retry loading
+evidence**. Benchmarks does not import arbitrary JEV or communication files;
+their standalone generated HTML remains the path for fresh local runs. Rebuild
+the web image after changing bundled assets and reload the page. Source hash
+verification runs in the exporter/check; browser validation is structural.
 
 ## Start the end-to-end demo
 
@@ -115,8 +182,9 @@ Aligned with the October 17 [frontend handoff](../docs/FRONTEND_HANDOFF.md):
 | Live events | Synchronous `POST /runs` plus ordered event polling; async start/SSE remain backend work |
 | Hosted-model comparisons | Python handlers and CLI implemented; import retained reports/stores using the converter below |
 | PortMiami cargo execution | Frontend mock; registered cargo handlers and representative provider benchmarks still needed |
-| Drift containment and compact messaging | Core components and smoke script; no dashboard HTTP endpoints or frontend report adapter |
-| Pollard-Jev/OpenJEV | Actual local inference evaluated against retained LLM calls in all three decision categories; standalone results page, no dedicated React adapter |
+| Drift containment | Core components and smoke script; no dashboard HTTP endpoint or component-report importer |
+| Compact messaging | Benchmarks displays published CBOR-LD-EX bytes, CPU costs, mailbox results and JSON fallback; no live mailbox HTTP endpoint |
+| Pollard-Jev/OpenJEV | Benchmarks displays actual local inference across all three categories, raw/gated choices and source downloads |
 | Optimization advisor | Offline core analyzer implemented; Optimization view imports its reports and displays unevaluated findings |
 | Automatic backend switching | Not implemented; advisor findings do not activate a replacement backend |
 
@@ -124,8 +192,8 @@ The runtime executes an authored dependency graph **sequentially**. The local AP
 registers synthetic handlers only; choosing a provider in a browser cannot enable
 hosted inference. The [advisor design](../docs/ADVISOR_DESIGN.md) and
 [benchmark handoff](../docs/BENCHMARK_HANDOFF.md) distinguish implemented offline
-analysis/evaluation from future routing. The repository's GitHub Actions workflow
-currently checks the core; frontend checks below must be run separately.
+analysis/evaluation from future routing. Web CI checks bundled benchmark evidence,
+generated contracts, tests and the production build alongside the core workflow.
 
 ## Components and checks
 
@@ -136,6 +204,7 @@ bun run test
 bun run build
 bun run build-storybook
 bun run contracts:check
+bun run fixtures:benchmarks:check
 ```
 
 Storybook covers empty/running/completed execution, warm reuse, source changes,
@@ -312,6 +381,9 @@ importing token measurements alone will not enable dollar projections.
   playback for inspection; playback speed does not alter measured execution time.
 - **Recording conversion fails:** supply the complete retained comparison
   directory, including `baseline.sqlite3` and `governed.sqlite3`, not just its report.
+- **Benchmarks unavailable or stale:** run the benchmark fixture check, regenerate
+  only from the reviewed publication, rebuild the web image and reload. The
+  runtime API and fresh `.canopy/` results do not update bundled benchmark assets.
 
 ## Measurement rules
 
@@ -336,3 +408,9 @@ importing token measurements alone will not enable dollar projections.
 Keep Recorded and synthetic labels visible in the stage fallback. The cargo mock
 demonstrates UI behavior until the benchmark owner supplies registered cargo
 handlers and representative results.
+
+For the full measured-results demo, follow the four-button **Benchmarks** sequence
+above after the execution story. Use **Optimization** to explain discovery,
+**Benchmarks** to inspect the later evaluation, and the original raw downloads to
+answer questions about scope. See [the frontend handoff](../docs/FRONTEND_HANDOFF.md)
+and [Windows/WSL2 runbook](../demo_handoff.md) for the complete presentation order.

@@ -1,0 +1,32 @@
+name: Canopy frontend
+
+on:
+  push:
+    paths: ["web/**", "core/schemas/**", "core/examples/recordings/**", "deploy/demo/Dockerfile.web", ".github/workflows/web.yml"]
+  pull_request:
+    paths: ["web/**", "core/schemas/**", "core/examples/recordings/**", "deploy/demo/Dockerfile.web", ".github/workflows/web.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: npm install --global bun@1.3.0
+      - run: bun install --frozen-lockfile
+      - name: Verify bundled benchmarks match published evidence
+        run: python scripts/export-benchmark-fixture.py --check
+      - run: bun run contracts:check
+      - run: bun run test
+      - run: bun run build

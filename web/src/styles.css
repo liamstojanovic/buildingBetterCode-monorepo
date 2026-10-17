@@ -171,6 +171,39 @@ code {
   place-items: center;
   font-size: 12px;
 }
+.benchmark-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 8px 10px;
+  font: 12px var(--sans);
+  cursor: pointer;
+}
+.benchmark-entry:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+.benchmark-entry:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .app-shell .topbar {
+    height: auto;
+    min-height: 68px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-block: 14px;
+  }
+  .app-shell .topbar-right {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
 .workspace {
   margin-left: 66px;
 }

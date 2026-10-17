@@ -1,0 +1,141 @@
+{
+  "schema_version": "1",
+  "report_type": "canopy.offline_advisor",
+  "analyzer_version": "offline-advisor-v1",
+  "generated_at": "2026-10-17T20:09:19.364726Z",
+  "tenant_id": "sample-tenant",
+  "source": "comparison_report",
+  "source_integrity": "validated_import",
+  "limits": {
+    "max_runs": 1000,
+    "max_groups": 200,
+    "max_samples_per_group": 8,
+    "max_steps_per_run": 200,
+    "max_step_chars": 65536,
+    "max_seconds": 30.0,
+    "rank_by": "model_calls"
+  },
+  "analysis": {
+    "scanned_runs": 4,
+    "scanned_model_steps": 4,
+    "skipped_replay_runs": 0,
+    "skipped_incomplete_runs": 0,
+    "skipped_duplicate_runs": 0,
+    "skipped_oversized_steps": 0,
+    "skipped_group_observations": 0,
+    "limit_reasons": [],
+    "elapsed_ms": 7.175399000061589,
+    "model_calls": 0,
+    "tool_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": null,
+    "energy_j": null
+  },
+  "recommendations": [
+    {
+      "recommendation_id": "advisor-63357f9b8c04097e3d42a493f2c603bbe752e052f21368924d88cfb7c67cd951",
+      "group_fingerprint": "canopy-json-v1:63357f9b8c04097e3d42a493f2c603bbe752e052f21368924d88cfb7c67cd951",
+      "workflow_id": "sample-support-triage",
+      "step_id": "classify_ticket",
+      "handler": "model.generate",
+      "handler_version": "cad17a3df031c21f22022a7c6fab55c8350b7a7fa334e2c754a449286792bc24",
+      "model_fingerprint": "cad17a3df031c21f22022a7c6fab55c8350b7a7fa334e2c754a449286792bc24",
+      "prompt_version": "1",
+      "grouping_basis": "exact_inputs",
+      "finding": {
+        "category": "business_decision",
+        "status": "needs_mapping",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "bounded_choice_question"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed.",
+          "The current native bridge requires typed numeric observations and authored hypotheses.",
+          "The output also requires generation or additional fields beyond the bounded choice."
+        ],
+        "required_changes": [
+          "Author and review a hypothesis for every eligible choice.",
+          "Design an explicit text-evidence adapter.",
+          "Keep or independently map the remaining output work and include its resource cost.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "high",
+          "normal"
+        ],
+        "partial_substitution": true,
+        "native_compatibility": "requires_text_adapter"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 1038,
+        "output_tokens": 98,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 0
+      },
+      "samples": [
+        {
+          "run_id": "d2e708b1-0477-4f3b-947e-ef614fc5744d",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": false,
+          "selected_choice": "high"
+        },
+        {
+          "run_id": "7a128313-615b-45b2-a92c-466a376bf6bf",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": false,
+          "selected_choice": "high"
+        },
+        {
+          "run_id": "827732f2-4753-499e-98ea-8c0b597dd886",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": false,
+          "selected_choice": "high"
+        },
+        {
+          "run_id": "a7715d9a-d0cb-40de-8541-6e5292dfb211",
+          "step_id": "classify_ticket",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": false,
+          "selected_choice": null
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    }
+  ],
+  "limitations": [
+    "Structural recommendations are not evaluated replacements or execution authority.",
+    "Observed resource totals describe scanned records, not predicted savings or quality.",
+    "Replay runs are excluded; reused outputs do not add historical model usage.",
+    "Samples are bounded diagnostic references, not a representative evaluation dataset.",
+    "Time limits are cooperative; a source read or integrity check can exceed the deadline.",
+    "No model calls, routing changes, text adapter, or automatic activation are performed.",
+    "Imported measurements are caller-provided; structural validation does not authenticate the report or establish Pollard recording integrity."
+  ]
+}

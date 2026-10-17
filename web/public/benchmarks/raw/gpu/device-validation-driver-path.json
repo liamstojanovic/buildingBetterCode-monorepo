@@ -1,0 +1,40 @@
+{
+  "format": "canopy-openjev-gpu-preflight/v1",
+  "ok": true,
+  "generated_at": "2026-10-17T19:48:14.034536+00:00",
+  "python": "3.12.15",
+  "platform": "Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "stage": "device_check_complete",
+  "mode": "device_only",
+  "quality_benchmark": false,
+  "actions_executed": false,
+  "packages": {
+    "pollard-jev": "0.13",
+    "pollard": "1.6.0",
+    "pydantic": "2.14.1",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.15.0",
+    "huggingface-hub": "1.33.0",
+    "tokenizers": "0.22.2",
+    "numpy": "2.5.3",
+    "safetensors": "0.8.0"
+  },
+  "cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4090 Laptop GPU",
+  "compute_capability": [
+    8,
+    9
+  ],
+  "bf16_supported": true,
+  "memory_before_model": {
+    "free_mib": 15044.0,
+    "total_mib": 16375.5,
+    "allocated_mib": 0.0,
+    "reserved_mib": 0.0,
+    "peak_allocated_mib": 0.0,
+    "peak_reserved_mib": 0.0
+  },
+  "actual_model_calls": 0,
+  "elapsed_ms": 2852.0827180000197
+}

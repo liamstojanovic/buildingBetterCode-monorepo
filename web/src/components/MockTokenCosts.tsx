@@ -198,6 +198,8 @@ export function MockTokenCosts({
             Assumes {modeledJevTokensPerDecision.input} input +{" "}
             {modeledJevTokensPerDecision.output} output tokens per model-task
             decision.
+            {" "}This pricing scenario is separate from the recorded local
+            OpenJEV results in Benchmarks; their cost savings remain unknown.
           </small>
         </div>
       )}

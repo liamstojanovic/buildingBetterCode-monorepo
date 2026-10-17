@@ -10,6 +10,8 @@ The [latest published evidence](core/examples/recordings/container-benchmarks-20
 and [results page](core/examples/recordings/container-benchmarks-2026-10-17/index.html)
 provide a ready-to-open fallback: the CPU rerun against `28a276b` completed at
 **20:09:26 UTC on 17 October 2026**, alongside the latest retained GPU rehearsal.
+The React **Benchmarks** workspace now presents that publication directly; click
+**Measured benchmarks** in the top bar or **Benchmarks** in the left navigation.
 This refresh made **zero hosted calls ($0 provider spend)**. Follow the steps
 below to produce your own hardware's measurements; retained playback does not
 renew its original operational evidence.
@@ -28,14 +30,16 @@ Ubuntu; the Dockerfiles supply the application runtimes.
 | Budgets, replay, drift and deduplication | Fresh deterministic component executions | Generated CPU results |
 | Three-provider LLM baseline vs governed | Playback of actual OpenAI, Anthropic and Gemini calls on invented data | **Import recording** / retained evidence hub |
 | Offline advisor | Reanalyzes nine retained comparisons without another model call | React **Optimization** imports and generated reports, all three categories |
-| JEV mappings and gates | Actual local OpenJEV inference on seven complete mapped cases, twice | Generated JEV results page |
-| Efficient agent messages | Actual `cbor-ld-ex` encoding, roundtrips and SQLite mailbox measurements | Generated communication results page |
+| JEV mappings and gates | Actual local OpenJEV inference on seven complete mapped cases, twice | React **Benchmarks** for the latest publication; generated page for your new GPU run |
+| Efficient agent messages | Actual `cbor-ld-ex` encoding, roundtrips and SQLite mailbox measurements | React **Benchmarks → CBOR-LD-EX savings**; generated page for your new CPU run |
 
 The initial seven-step PortMiami screen is a **frontend mock**. **Live API** loads
 the real three-step catalog/quote/greeting fixture instead. The API registers
 synthetic handlers; selecting a model in the browser does not enable hosted
 calls. JEV is an evaluated, explicit candidate replacement here; automatic
 backend switching and real tool/action execution are not activated.
+The guided mock tour and OpenRouter JeV 1.13 token-price example are illustrative;
+they are separate from the local Pollard-Jev/OpenJEV benchmark measurements.
 
 ## 1. Prepare Windows and WSL2 once
 
@@ -131,7 +135,7 @@ curl --fail http://127.0.0.1:8080/api/runs
 ```
 
 Expected: `fixtures` exits **0**, while `api` and `web` are **healthy**. The fixture
-job generates current evidence plus real synthetic recordings before the frontend
+job generates fresh task evidence plus real synthetic recordings before the frontend
 starts. It makes no provider requests. The health response is `ok`; `/api/runs`
 returns JSON (initially an empty run list).
 
@@ -144,6 +148,50 @@ Open these in your **Windows browser**:
 
 Only host loopback is published. This API supplies a fixed demo operator identity;
 keep this local setup on your machine.
+
+### 3a. Rehearse the measured-results view immediately
+
+With the stack from step 3 running, this view reads bundled static evidence;
+no provider key, API request or GPU is needed to inspect it. Keep the API container
+running because nginx resolves its proxy upstream when starting. If the guided cargo tour is open, close it first.
+If execution is in focus mode, click **Exit focus view** to restore navigation.
+
+1. Click **Measured benchmarks** in the top bar (or **Benchmarks** in the left
+   navigation). Confirm source `ecd976d`, **14/14 raw JEV matches**, **12/14 accepted
+   matches** and **53.79% CBOR payload reduction**. These are seven distinct cases
+   evaluated twice, not fourteen independent tasks.
+2. **Business decisions:** select `high`; inspect **Pass 1** and **Pass 2**.
+   Point to expected `high` → raw `high` → **Defer**. The margin around 0.115 is
+   below the 0.15 gate. The business explanation still requires generation.
+3. **Tool selection:** click knowledge search, incident lookup and ticket lookup.
+   Each case has two accepted passes. Expand **Inspect the mapped input and
+   hypotheses** to show supplied candidates and prebound arguments. No tool runs.
+4. **Next steps:** click retrieve, clarify and stop. Each passes twice; show the
+   **Deterministic baseline**. These supplied transition rules can select a step
+   without any model. No transition is executed.
+5. **CBOR-LD-EX savings:** show **771,411 bytes JSON → 356,491 bytes shared-context
+   CBOR**, all **618 messages** decoded exactly across **36 batches**. Scroll to
+   **CPU tradeoff**: compact JSON encoded/decoded faster in this test. Show the
+   dense-float fallback (1,827 B JSON versus 2,866 B CBOR), 36 SQLite transactions
+   instead of 618, and 36 suppressed duplicate messages. Byte savings do not
+   establish token, dollar, energy or internet-latency savings.
+6. Scroll to **Every headline has a source** and download the full JEV comparison
+   or CBOR timing report. Show separate measurement dates, original raw results
+   and the SHA-256 inventories. The $0 provider-spend card is only this refresh's
+   incremental spending. The original hosted cost and replacement savings remain
+   unknown.
+
+The timing panel separates cold loading from warm inference and identifies the
+16 GB RTX 4090 Laptop validation and its old-Docker workaround. Your 12 GB GPU
+still needs step 7. Switching back to **Execution** or **Optimization** preserves
+their state; viewing benchmarks does not rerun inference or change approvals.
+
+The displayed dataset is the reviewed evidence bundled in the web image. Fresh
+results from steps 5 and 8 appear on their generated HTML pages; they do not
+silently replace the published React snapshot. For a new publication the frontend
+owner verifies and exports it with `web/scripts/export-benchmark-fixture.py`, then
+rebuilds the web image. The exact refresh/check commands are in the
+[frontend handoff](docs/FRONTEND_HANDOFF.md#refresh-and-verify-the-bundled-evidence).
 
 ## 4. Rehearse live workflow execution
 
@@ -211,6 +259,8 @@ The generated CPU page also links each raw JSON. Inspect `finding.category`,
 These retained calls produce `needs_mapping` / `not_evaluated` discovery findings.
 The advisor does not automatically ingest the separately authored mapping or JEV
 evaluation results. Step 8 demonstrates that separate evaluation.
+The same separation is visible between **Optimization** discovery and
+**Benchmarks** measured mapping results; the old findings remain unevaluated.
 
 Show **Budget, reuse and replay**: the `budget_refused` run stops under a zero-step
 limit; replay returns recorded output without dispatching handlers. Show **Drift
@@ -259,7 +309,9 @@ fixture collection is not a general model ranking.
 
 Advisor, JEV and communication JSON are different report formats. Use
 **Optimization → Import advisor report** for advisor JSON; use the dedicated
-pages for JEV and communication reports. None belongs in **Import recording**.
+**Benchmarks** workspace for published JEV/communication evidence and generated
+HTML pages for fresh local reports. Benchmarks has no arbitrary report-file
+import. None of these formats belongs in **Import recording**.
 
 ## 7. Build the GPU image and verify this 12 GB machine
 
@@ -338,17 +390,24 @@ On the generated page, inspect all three categories:
 | Tool selection | Knowledge search, incident lookup, ticket lookup | Allowed candidates, chosen hypothesis, acceptance gate; no tool executes |
 | Next-step decision | Retrieve, clarify, stop | State, authored transitions, explicit choices and deterministic rule baseline |
 
-The **historical native reference**, measured on a **4090 Laptop GPU with 16 GB**, got all
+The **latest published container reference**, measured on a **4090 Laptop GPU with 16 GB**, got all
 7 raw choices right and accepted 6/7 per pass. Business priority chose `high` but
 deferred because its 0.115 margin missed the fixed 0.15 gate. All three tool choices
 and all three next-step choices were accepted. Keep a different result from your
 machine visible; do not lower the gate or remove a candidate to reproduce a badge.
 
-That native run's warm median was 491.20 ms and the first call included approximately
-36.47 s of loading. Those are **not promised 4080 timings** and are not a controlled
+That container run's warm median was **301.87 ms**; its **6,469.67 ms** first call
+included **5,643.78 ms** of model loading. The older native run's 491.20 ms warm
+median remains in its original artifact. These are **not promised 4080 timings** and are not a controlled
 comparison with hosted latency. Report your fresh timings, first-load overhead,
 and abstentions separately. JEV chooses among supplied hypotheses; it does not
 supply the business rationale or authorize downstream execution.
+
+The published container run needed a temporary container-only compatibility
+override for old Docker Desktop. Its exact provenance and limitation are shown
+in **Benchmarks** and the validation section below. Keep your fresh local result
+and hardware visible on its generated page; do not relabel the bundled snapshot
+as your new run.
 
 This comparison intentionally uses the complete committed collection. Arbitrary
 fresh hosted exports are not drop-in replacements: the evaluator expects the
@@ -380,8 +439,8 @@ Reload the page and **Load core task** again.
 
 ## 10. Presentation order and stage fallback
 
-Prepare these tabs before presenting: React frontend, retained evidence hub,
-fresh CPU results, fresh JEV results, fresh communication page. Run model downloads
+Prepare these tabs before presenting: React frontend with **Benchmarks** loaded,
+retained evidence hub, fresh CPU results, fresh JEV results and fresh communication page. Run model downloads
 and the first GPU warm-up beforehand. Keep the laptop plugged in and other GPU
 workloads closed.
 
@@ -390,12 +449,12 @@ workloads closed.
 | 0:00–1:00 | Live API unchanged, then relevant source updated | Real execution records; reuse only while relevant evidence remains valid |
 | 1:00–2:00 | Hosted recording across provider/category examples | Same baseline/governed task, retained outputs and failures |
 | 2:00–3:00 | Optimization view with fresh advisor imports | Offline discovery of bounded business/tool/next-step candidates, no extra inference |
-| 3:00–4:15 | Fresh JEV page, including business deferral | Actual local evaluation and explicit abstention; selection is distinct from generation |
-| 4:15–5:00 | Fresh communication page and governance JSON | Smaller lossless messages, batching/deduplication, enforced budgets and containment |
+| 3:00–4:15 | Benchmarks: Business decisions → Tool selection → Next steps; use the fresh page to show your machine's run | Raw versus accepted choices, business deferral, retained explanation and deterministic rules |
+| 4:15–5:00 | Benchmarks: CBOR-LD-EX savings; fresh communication page and governance JSON for new local results | Smaller lossless payloads, CPU tradeoff, batching/deduplication and enforced containment |
 
 If live API is unavailable, select **Recorded runs / Core recordings** in React.
-If the GPU fails, use the **retained JEV page** from the evidence hub and state that
-it is the earlier 16 GB-machine run. Playback needs no GPU or provider credentials.
+If the GPU fails, use **Benchmarks** or the retained JEV page from the evidence hub
+and state that it is the published 16 GB-machine run. Playback needs no GPU or provider credentials.
 After images and weights are prepared, the normal demo runs without external
 network access. Keep fresh and retained results labeled distinctly.
 
@@ -496,9 +555,15 @@ CBOR bytes. The original hosted observations were retained, not rerun or redated
 
 All three Docker images built successfully. The CPU stack, live frontend/API,
 warm reuse, freshness changes, approval flow, advisor imports and communication
-reports were exercised. Core tests passed **821/821**; frontend tests passed
-**59/59**, including a successful build and contract check. The implementation's
+reports were exercised. Core tests passed **821/821**; the original frontend
+checks passed **59/59**, including a successful build and contract check. The implementation's
 [CI run also passed](https://github.com/liamstojanovic/buildingBetterCode-monorepo/actions/runs/39064452878).
+
+After consolidating the teammate's guided demo and adding the measured Benchmarks
+workspace, **111/111 frontend tests** passed. The production Docker build and
+browser walkthrough passed, and all 31 served benchmark artifacts matched the
+published projection/download bytes. These checks made no model calls and did
+not rerun or redate the measurements below.
 
 The GPU image was exercised on a **4090 Laptop with 16 GB VRAM**, using the Linux
 Docker model volume. The capacity check completed all **7 calls / 26 hypothesis

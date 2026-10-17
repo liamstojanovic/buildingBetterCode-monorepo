@@ -1,0 +1,35 @@
+{
+  "format": "canopy-openjev-model-preparation/v1",
+  "ok": true,
+  "generated_at": "2026-10-17T19:49:20.171699+00:00",
+  "download_requested": false,
+  "repository": "AlexWortega/openjev",
+  "revision": "552759daad712f1af6c4c13dabcb1e047886fc9c",
+  "checkpoint": "qwen3.5-4b-nli-v2",
+  "snapshot": "/models/models--AlexWortega--openjev/snapshots/552759daad712f1af6c4c13dabcb1e047886fc9c",
+  "manifest_sha256": "258768022733ca7bee4f5eb2dcaf7589fe5a7ad0619e722925335ef58b452975",
+  "files": {
+    "qwen3.5-4b-nli-v2/tokenizer.json": {
+      "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+      "bytes": 19989325
+    },
+    "qwen3.5-4b-nli-v2/config.json": {
+      "sha256": "477bed7614828c875db38b952835af9ca2fb5fa024af56cda8a708181db76a07",
+      "bytes": 3167
+    },
+    "modeling_openjev.py": {
+      "sha256": "071670d0879963ee69600ed31f0f3d5a37bee314461709477e8ac0e25f33fd97",
+      "bytes": 13789
+    },
+    "qwen3.5-4b-nli-v2/tokenizer_config.json": {
+      "sha256": "9cf04fffe3d8c3b85e439fb35c7acad0761ab51c422a8c4256d9f887c3a0be7d",
+      "bytes": 1125
+    },
+    "qwen3.5-4b-nli-v2/model.safetensors": {
+      "sha256": "f625c42c6bac1fbc03935f584d0126d096b6681bdc62d11f4a7c7f3b94bc35b3",
+      "bytes": 9078635984
+    }
+  },
+  "verified_bytes": 9098643390,
+  "elapsed_ms": 49511.466143000005
+}

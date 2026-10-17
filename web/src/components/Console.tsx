@@ -65,10 +65,12 @@ import { ExecutionTree } from "./ExecutionTree";
 import { ExecutionGraph, statusLabels } from "./ExecutionGraph";
 
 export type SourceMode = "mock" | "recorded" | "live";
+export type Workspace = "execution" | "optimization" | "benchmarks";
 export interface ConsoleProps {
-  activeWorkspace?: "execution" | "optimization";
-  onWorkspace?: (workspace: "execution" | "optimization") => void;
+  activeWorkspace?: Workspace;
+  onWorkspace?: (workspace: Workspace) => void;
   optimization?: ReactNode;
+  benchmarks?: ReactNode;
   advisorSourceLabel?: string;
   baseline: RunState;
   canopy: RunState;
@@ -651,6 +653,8 @@ function Impact({
 export function Console(props: ConsoleProps) {
   const { baseline, canopy, sourceMode, scenario, busy, selected } = props;
   const isOptimization = props.activeWorkspace === "optimization";
+  const isBenchmarks = props.activeWorkspace === "benchmarks";
+  const isExecution = !isOptimization && !isBenchmarks;
   const [methodology, setMethodology] = useState(false);
   const [presentation, setPresentation] = useState(false);
   const [view, setView] = useState<"workflow" | "tree">("workflow");
@@ -678,7 +682,7 @@ export function Console(props: ConsoleProps) {
     sourceMode === "mock" &&
     scenario === "cold" &&
     !busy &&
-    !isOptimization &&
+    isExecution &&
     !presentation &&
     !methodology;
   useEffect(() => {
@@ -733,7 +737,7 @@ export function Console(props: ConsoleProps) {
       : null;
   return (
     <div
-      className={`app-shell demo-mode${sourceMode === "mock" ? " mock-priced" : ""}${presentation && !isOptimization ? " presentation" : ""}${isOptimization ? " optimization-active" : ""}`}
+      className={`app-shell demo-mode${sourceMode === "mock" ? " mock-priced" : ""}${presentation && isExecution ? " presentation" : ""}${isOptimization ? " optimization-active" : ""}${isBenchmarks ? " benchmarks-active" : ""}`}
     >
       <aside className="rail">
         <a className="brand-mark" href="#" aria-label="Canopy home">
@@ -741,8 +745,8 @@ export function Console(props: ConsoleProps) {
         </a>
         <nav className="rail-links" aria-label="Workspace navigation">
           <button
-            className={`rail-link${!isOptimization ? " active" : ""}`}
-            aria-current={!isOptimization ? "page" : undefined}
+            className={`rail-link${isExecution ? " active" : ""}`}
+            aria-current={isExecution ? "page" : undefined}
             onClick={() => props.onWorkspace?.("execution")}
             aria-label="Execution workspace"
             title="Execution"
@@ -757,6 +761,15 @@ export function Console(props: ConsoleProps) {
             title="Optimization"
           >
             <Sparkles size={20} />
+          </button>
+          <button
+            className={`rail-link${isBenchmarks ? " active" : ""}`}
+            aria-current={isBenchmarks ? "page" : undefined}
+            onClick={() => props.onWorkspace?.("benchmarks")}
+            aria-label="Benchmarks workspace"
+            title="Benchmarks"
+          >
+            <FlaskConical size={20} />
           </button>
           <a
             className="rail-link"
@@ -794,16 +807,26 @@ export function Console(props: ConsoleProps) {
           <div className="wordmark">
             canopy<span>/</span>
             <span className="workspace-name">
-              {isOptimization ? "Optimization" : "Execution studio"}
+              {isOptimization ? "Optimization" : isBenchmarks ? "Benchmarks" : "Execution studio"}
             </span>
           </div>
           <div className="topbar-right">
+            {!isBenchmarks && (
+              <button
+                className="benchmark-entry"
+                onClick={() => props.onWorkspace?.("benchmarks")}
+              >
+                <FlaskConical size={14} /> Measured benchmarks
+              </button>
+            )}
             <span className="event-tag">eMerge AI · Miami 2026</span>
             <span
-              className={`source-badge source-${isOptimization ? "advisor" : sourceMode}`}
+              className={`source-badge source-${isOptimization ? "advisor" : isBenchmarks ? "recorded" : sourceMode}`}
             >
               <i />
-              {isOptimization
+              {isBenchmarks
+                ? "RECORDED BENCHMARKS"
+                : isOptimization
                 ? (props.advisorSourceLabel ?? "NO ADVISOR REPORT")
                 : sourceMode === "mock"
                   ? "Demo Mode"
@@ -813,7 +836,7 @@ export function Console(props: ConsoleProps) {
             </span>
           </div>
         </header>
-        <main hidden={isOptimization} aria-label="Execution workspace content">
+        <main hidden={!isExecution} aria-label="Execution workspace content">
           <div className="hero">
             <div>
               <div className="eyebrow">
@@ -838,7 +861,9 @@ export function Console(props: ConsoleProps) {
                 <p>
                   {scenario === "cold"
                     ? complete
-                      ? "Novel agent tasks execute normally, using capable but expensive large language models. This first mock run is complete: both paths did the same work."
+                      ? sourceMode === "mock"
+                        ? "Novel agent tasks execute normally, using capable but expensive large language models. This first mock run is complete: both paths did the same work."
+                        : "The first comparison is complete. Inspect the recorded work, outputs and measured usage in each lane."
                       : "Novel agent tasks execute normally, using capable but expensive large language models. Follow each step as both paths execute the work."
                     : scenario === "warm" || scenario === "unrelated"
                       ? "The same work returns. The baseline executes every step again. Canopy checks validity and reuses eligible results, avoiding repeat model and tool calls."
@@ -1383,8 +1408,15 @@ export function Console(props: ConsoleProps) {
         >
           {props.optimization}
         </main>
+        <main
+          hidden={!isBenchmarks}
+          className="benchmarks-main"
+          aria-label="Benchmarks workspace content"
+        >
+          {props.benchmarks}
+        </main>
       </div>
-      {!isOptimization && selected && inspectedStep && (
+      {isExecution && selected && inspectedStep && (
         <Inspector
           state={inspectedState}
           step={inspectedStep}
@@ -1398,7 +1430,7 @@ export function Console(props: ConsoleProps) {
       )}
       {tourStep &&
         sourceMode === "mock" &&
-        !isOptimization &&
+        isExecution &&
         !methodology &&
         !selected &&
         !busy && (
@@ -1409,7 +1441,7 @@ export function Console(props: ConsoleProps) {
             onClose={dismissTour}
           />
         )}
-      {!isOptimization && methodology && (
+      {isExecution && methodology && (
         <div className="modal-backdrop" onClick={() => setMethodology(false)}>
           <section
             className="methodology-modal"

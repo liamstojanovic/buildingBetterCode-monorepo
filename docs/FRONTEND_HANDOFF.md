@@ -4,20 +4,27 @@ The complete Windows/WSL2 presentation runbook is
 [demo_handoff.md](../demo_handoff.md): container startup, fresh fixtures, exact UI
 steps, hosted recording imports, advisor/JEV/comms pages and stage fallbacks.
 
-For the latest published measurements, use the [container evidence notes](../core/examples/recordings/container-benchmarks-2026-10-17/README.md)
-and [results page](../core/examples/recordings/container-benchmarks-2026-10-17/index.html).
-In **Optimization → Import advisor report**, import an individual JSON report
-from that bundle's `cpu/advisor/` directory. **Import recording** remains the
-separate playback importer. Older retained README text predates the Optimization
-view; it does not describe the current frontend. Show JEV and communication
-results through the linked HTML pages, preserving their hardware, timing and
-acceptance caveats. This refresh added no hosted calls; historical recordings
-keep their original dates and outputs.
+Click **Measured benchmarks** in the top bar, or **Benchmarks** in the left
+navigation, for the latest published JEV and CBOR-LD-EX results inside React.
+The view loads bundled, validated evidence from the [container publication](../core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+at source commit `ecd976d`; it makes no model or API requests and needs no GPU.
+The Docker stack still starts the API container so nginx can resolve its proxy.
+It preserves the original measurement dates, raw outcomes, abstentions and scope.
+The [standalone results page](../core/examples/recordings/container-benchmarks-2026-10-17/index.html)
+remains available for deeper inspection and stage fallback.
+
+**Optimization → Import advisor report** imports discovery reports from the
+bundle's `cpu/advisor/` directory. **Import recording** remains the execution
+playback importer. The guided cargo tour and its modeled token prices are also
+preserved. They are illustrative and separate from the measured benchmark view;
+its $0 provider-spend figure describes this refresh, not free inference or savings
+against the original hosted calls.
 
 The frontend teammate owns `web/`. This guide separates live HTTP features,
 offline discovery, recorded JEV evaluation, communication measurements and future
-backend routing. The Optimization workspace imports advisor reports now; the
-[demo guide](JEV_COMMS_DEMO.md) links the separate JEV and communication pages.
+backend routing. Optimization imports advisor reports; Benchmarks displays the
+published mapping evaluation and communication measurements. The
+[demo guide](JEV_COMMS_DEMO.md) also links the standalone evidence pages.
 Start with the [team handoff](TEAM_HANDOFF.md), [HTTP API](../core/docs/api.md),
 and [live model guide](../core/docs/live_models.md).
 
@@ -32,8 +39,8 @@ and [live model guide](../core/docs/live_models.md).
 | Hosted models and native Pollard-Jev | Python registry and comparison CLI | Import actual comparison report; custom service wiring needed for live HTTP execution |
 | Drift containment and compact messaging | Component APIs and smoke report | Imported component report, clearly labeled synthetic |
 | Optimization advisor | Offline discovery plus implemented Optimization workspace | **Import advisor report** or **Load advisor demo**; findings are unevaluated; no live advisor routes |
-| JEV mapping evaluation | Actual local NLI comparison across three sample categories | Dedicated comparison format; use offline HTML until its view is implemented |
-| Shared-context communication | `MessageBatchCodec`, `Mailbox.deliver_batch`, measured replay | Dedicated communication report or offline HTML; no mailbox HTTP endpoint |
+| JEV mapping evaluation | Actual local NLI comparison across three sample categories | **Benchmarks** shows raw and accepted choices, hypotheses, gates, timings and downloadable source evidence |
+| Shared-context communication | `MessageBatchCodec`, `Mailbox.deliver_batch`, measured replay | **Benchmarks → CBOR-LD-EX savings** shows bytes, CPU tradeoffs and mailbox results; no mailbox HTTP endpoint |
 
 The runtime executes a predefined DAG sequentially in deterministic order. It
 does not dynamically select tools or generate next steps. The local HTTP example
@@ -204,22 +211,35 @@ The sanitized comparison JSON alone cannot reconstruct those events through this
 converter. Reanalyze a comparison with the advisor CLI instead, as shown in the
 demo guide.
 
-## Actual JEV mapping evaluation: a separate view
+## Benchmarks: show all three JEV categories
 
-Open the [offline JEV comparison](../core/examples/recordings/jev-evaluation-2026-10-17/index.html)
-or [full JSON](../core/examples/recordings/jev-evaluation-2026-10-17/comparison.json).
-It records 14 actual local calls: two trials of seven distinct cases. The first
-trial matched all seven expected selections; the gate accepted six. The repeat
-had the same choices and dispositions. All three tool selections and all three
-next-step choices were accepted. Business priority selected `high` correctly but
-deferred because its margin was only `0.1150`, below the fixed `0.15` threshold.
-Show that abstention; do not lower a threshold to make the card green.
+Click **Measured benchmarks** or the **Benchmarks** navigation button. The
+headline should show **14/14 raw matches, 12/14 accepted matches**, seven distinct
+cases and two passes. These are actual local Pollard-Jev/OpenJEV calls on authored
+sample inputs, not the cargo mock's modeled OpenRouter JeV 1.13 token charges.
+The current data comes from the [container JEV comparison](../core/examples/recordings/container-benchmarks-2026-10-17/jev/comparison.json).
 
-The actual business entailments were about `0.9915` for `high` and `0.8765` for
-`normal`. These are independent entailments, not a categorical distribution over
-actions, so both can be high. The business explanation is still required. The
-three Boolean next-step cases also have a deterministic rule answer with no model
-call. No tool or transition was executed and no route was activated.
+Use this sequence on stage:
+
+1. **Business decisions:** select `high`, switch **Pass 1 / Pass 2**, and show
+   expected choice → raw JEV choice → **Defer**. The correct raw choice has a
+   margin near `0.1150`, below the fixed `0.15` gate, in both passes. The generated
+   `reason` is still required. Independent entailment scores are not calibrated
+   confidence or a categorical probability distribution. Do not lower the gate.
+2. **Tool selection:** select `knowledge_search`, `incident_lookup` and
+   `ticket_lookup`. Each has two accepted trials. Expand **Inspect the mapped
+   input and hypotheses** to show the finite candidates and prebound arguments.
+   This evaluates tool choice; it neither generates arguments nor executes tools.
+3. **Next steps:** select `retrieve`, `clarify` and `stop`. Each has two accepted
+   trials. Show the **Deterministic baseline** for each supplied transition rule;
+   these cases can use a rule without inference. No transition is executed.
+4. Scroll to **Separate loading from warm inference**, then **Every headline has
+   a source**. Keep the GPU, measurement dates and comparison limitations visible.
+
+Changing workspaces preserves execution results, the selected inspector step,
+approval state and live observation. Execution tours, focus mode and overlays
+do not cover Benchmarks. The benchmark data and selected category remain in
+browser memory until reload; workspace navigation does not rerun inference.
 
 The comparison contains all 63 retained hosted calls, with 62 normalized expected
 choices. It excludes 21 warm reuses from that count. JEV agrees with 62 of the 63
@@ -228,15 +248,20 @@ known OpenAI `respond`/`retrieve` error visible. Within all 63 hosted calls, 29
 were bare JSON and 28 met the strict output contract; the earlier 54-call selector
 table intentionally excludes business results.
 
-Create a dedicated importer keyed by
-`format: "canopy-jev-recorded-comparison/v1"`. This is neither `AdvisorReport`,
-`RunResult`, nor `canopy-comparison/v1`, and `parseBundle` must not accept it by
-casting. There is no generated JSON Schema for this example report; implement
-strict runtime validation for its versioned shape before rendering external
-imports. Unknown formats or incomplete trials should produce a clear import
-error. Until then, link the standalone page, which embeds the saved result.
+The implemented view consumes the generated projection
+`schemaVersion: "canopy.benchmark_evidence/v1"`, not arbitrary uploaded JEV JSON.
+The raw comparison retains `format: "canopy-jev-recorded-comparison/v1"` and is
+available under **Download raw evidence → Full JEV comparison and hosted
+responses**. It is neither `AdvisorReport` nor a `canopy-comparison/v1` execution
+bundle. Do not feed it to either importer or change the historical advisor's
+`needs_mapping` / `not_evaluated` findings to describe the later mapping result.
 
-| Evaluation field | Frontend treatment |
+The table below is a **raw comparison inspection reference**. The React view
+renders a selected projection. Exact mapping versions, evaluation windows,
+complete NLI rows, per-phase timings and original hosted responses are available
+in the full comparison download linked above.
+
+| Raw evaluation field | What to inspect |
 | --- | --- |
 | `evaluation_kind`, `sample_data`, `synthetic`, `automatic_activation` | Historical sample evaluation / actual model inference / no activation banner |
 | `configuration`, `source_manifest_sha256`, `source_files`, `expectations_sha256` | Model/settings and original data provenance |
@@ -250,16 +275,22 @@ error. Until then, link the standalone page, which embeds the saved result.
 | `hosted_calls[]` | Preserve original output text, normalized choice, strict-format result and recorded usage |
 | `summary`, `limitations` | Counts, conditional acceptance and measurement limits; cost/energy savings remain null |
 
-The first call took about 37.36 seconds including 36.47 seconds of model loading.
-The other 13 calls had median end-to-end latency 491.20 ms on the recorded GPU
-setup. Historical hosted latency is a different measurement under different
-conditions; do not present a controlled speedup percentage. NLI input-pair tokens
-are not hosted generative billing units. Loading an offline page makes no calls.
+The current container comparison's first call took **6,469.67 ms**, including
+**5,643.78 ms** loading. Its other 13 calls had a **301.87 ms** median. These replace
+the older native reference's 491.20 ms warm median in the current UI; both source
+artifacts remain intact. The GPU was a 16 GB RTX 4090 Laptop, with a temporary
+container-only workaround for old Docker Desktop. Neither the teammate's physical
+12 GB 4080 nor the unmodified current-Docker GPU path was tested on this host.
+Historical hosted latency uses different models, output work and conditions;
+there is no controlled speedup percentage or measured replacement-dollar saving.
+NLI input-pair tokens are not hosted generative billing units.
 
-## Communication efficiency: a separate measured report
+## Benchmarks: demonstrate CBOR-LD-EX savings
 
-Open the [offline communication demo](../core/examples/recordings/comms-efficiency-2026-10-17/index.html)
-or its [report JSON](../core/examples/recordings/comms-efficiency-2026-10-17/report.json).
+Select **CBOR-LD-EX savings** in Benchmarks. The current
+[communication report](../core/examples/recordings/container-benchmarks-2026-10-17/cpu/comms/report.json)
+is also available under **Download raw evidence → CBOR measurements and timing
+samples**.
 It wraps retained events as local inter-agent messages and compares complete
 compact JSON bodies, individual CBOR-LD messages, and self-contained
 shared-context batches through the actual `cbor-ld-ex` codec. It verifies exact
@@ -273,19 +304,21 @@ individual CBOR messages 585,595 B, and shared-context CBOR batches 356,491 B
 were delivered and acknowledged, and 36 duplicate redeliveries were suppressed.
 The dense-float case selects 1,827 B JSON over 2,866 B CBOR.
 
-Show CPU costs beside byte reduction: over the entire corpus, five-repetition
-median JSON encode/decode was 24.29/40.74 ms, compared with 32.87/54.86 ms for
-batched CBOR. JSON was cheaper to encode and decode here. Atomic batch delivery
-used 36 SQLite transactions instead of 618; the separate one-sample local timing
-was 204.52 ms versus 872.85 ms. That delivery comparison includes validation and
+Show **Smaller does not mean faster serialization** beside byte reduction: over
+the entire corpus, the latest five-repetition median JSON encode/decode was
+**32.05/52.38 ms**, compared with **38.24/72.39 ms** for shared-context CBOR. JSON
+was cheaper to encode and decode here. **SQLite commits with batching**
+shows 36 transactions instead of 618; the separate one-sample local timing was
+**219.77 ms** versus **1,219.06 ms**. That delivery comparison includes validation and
 commits but excludes frame creation, acknowledgements and network. Do not turn it
 into a production throughput claim.
 
-Its discriminator is `format: "canopy-messaging-demo/v1"`; the downloadable wire
-inventory has `format: "canopy-message-frames/v1"`. Give these separate runtime
-validation and UI state. Suggested panels are totals, per-run frame selector,
-first complete message, roundtrip/deduplication checks, and measured CPU/mailbox
-timings. `frames.json` carries base64 for inspectability; compare raw frame bytes
+The raw discriminator is `format: "canopy-messaging-demo/v1"`; the wire inventory
+has `format: "canopy-message-frames/v1"`. Benchmarks displays their verified
+projection with byte bars, lossless-roundtrip status, CPU timings, mailbox results
+and **Dense floats fall back to JSON**. Detailed per-run frames remain in the
+standalone publication; arbitrary communication-file import is not implemented.
+`frames.json` carries base64 for inspectability; compare raw frame bytes
 for wire savings, not the larger JSON/base64 artifact download size. Every CBOR
 batch includes its context, so prior frames are not needed for decoding.
 
@@ -294,6 +327,44 @@ network capture or distributed-agent throughput benchmark. The HTTP API remains
 JSON; no binary browser transport or live mailbox stream has been added. Byte
 savings are not evidence of token, dollar or energy savings. Use the
 [presentation guide](JEV_COMMS_DEMO.md) for a ready demo and reproduction commands.
+
+### Refresh and verify the bundled evidence
+
+[export-benchmark-fixture.py](../web/scripts/export-benchmark-fixture.py) uses only
+Python's standard library. It verifies publication, nested JEV/comms and original
+hosted-source hashes, then writes `web/public/benchmarks/latest.json` and preserved
+raw JSON/JSONL downloads. It never runs benchmarks, makes provider calls, rewrites
+the core evidence or replaces source timestamps with the export time. The hosted
+source manifest SHA-256 is
+`1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0`.
+
+From the repository root on Windows:
+
+```powershell
+.venv\Scripts\python.exe web\scripts\export-benchmark-fixture.py
+.venv\Scripts\python.exe web\scripts\export-benchmark-fixture.py --check
+```
+
+On Linux/WSL, use `python3.12 web/scripts/export-benchmark-fixture.py`, with
+`--check` to verify. From `web/`, `bun run fixtures:benchmarks` and
+`bun run fixtures:benchmarks:check` are equivalent when `python3.12` is on PATH.
+Check mode detects stale, missing and unexpected generated files. Commit the
+generated projection and raw downloads together after reviewing the source.
+For a new publication, update the exporter's source directory/revision and
+supported shape explicitly; **latest** means the evidence bundled in this build,
+not a live filesystem watcher. Fresh `.canopy/demo-results/` runs remain on their
+generated HTML pages until reviewed and published. Rebuild the web image after
+changing bundled assets, and reload the browser.
+
+[api/benchmarks.ts](../web/src/api/benchmarks.ts) validates required fields,
+versions, counts, match/gate relationships, finite metrics and allowed evidence
+URLs before rendering. A missing or invalid bundle shows an error and **Retry
+loading evidence**, not fabricated results. Hash verification occurs at export
+and check time; browser shape validation is not independent source authentication.
+[Benchmarks.tsx](../web/src/components/Benchmarks.tsx) owns the read-only view.
+Web CI checks fixture freshness, contracts, tests and the production build. Before
+handoff, also run those checks locally and verify the four category buttons,
+raw-download links and navigation back to the preserved execution workspace.
 
 ## HTTP integration details
 
@@ -474,8 +545,9 @@ it contains Canopy results:
 | Frontend session/core fixture bundle | `format: "canopy-comparison/v1"`, `recordings` with task/result/events | Frontend `parseBundle` |
 | Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; `scripts/import-comparison.py` converts retained reports plus databases/events for the frontend |
 | Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | Optimization → **Import advisor report** (`parseAdvisorReport`) |
-| Actual JEV mapping comparison | `format: "canopy-jev-recorded-comparison/v1"`, cases/trials/hosted_calls | Standalone HTML now; dedicated frontend adapter to implement |
-| Communication replay report | `format: "canopy-messaging-demo/v1"`, totals/frames/scenarios/timings | Standalone HTML now; dedicated frontend adapter to implement |
+| Actual JEV mapping comparison | `format: "canopy-jev-recorded-comparison/v1"`, cases/trials/hosted_calls | Exporter verifies and projects the published report into Benchmarks; raw download and standalone HTML retained |
+| Communication replay report | `format: "canopy-messaging-demo/v1"`, totals/frames/scenarios/timings | Exporter verifies and projects the published report into Benchmarks; raw download and standalone HTML retained |
+| Bundled benchmark projection | `schemaVersion: "canopy.benchmark_evidence/v1"` | Benchmarks fetches `/benchmarks/latest.json` with strict runtime validation; no arbitrary file import |
 
 The frontend's `exportSession()` and `fixtures:core` bundle are **not** accepted by
 the advisor CLI's `--report` option. Analyze their underlying Canopy database with
@@ -491,8 +563,8 @@ For frontend verification, use a generated seven-group report to check the three
 decision families, the native-shaped candidate, mapping gaps and retained-work
 findings. Include null resources, a limit-reached report and invalid/wrong-format
 JSON. Keep existing comparison import/export behavior covered separately. Available
-checks in `web/package.json` are `bun run contracts:check`, `bun run typecheck`,
-`bun run test` and `bun run build`.
+checks in `web/package.json` are `bun run fixtures:benchmarks:check`,
+`bun run contracts:check`, `bun run typecheck`, `bun run test` and `bun run build`.
 
 ### Advisor field interpretation
 
@@ -565,10 +637,10 @@ and say nothing by themselves about tokens, energy, or latency.
 
 Finish with the retained hosted bundles above, then use **Optimization** →
 **Import advisor report** to review their combined offline report. Open a
-business, tool and next-step finding, then open the actual JEV comparison and
-inspect its raw choices, accepted choices and business abstention. Show the
-deterministic next-step baseline and retained explanation requirement. Open the
-communication page for full-body byte counts, exact decode, mailbox delivery,
+business, tool and next-step finding, then select **Measured benchmarks** and
+inspect all three categories' raw choices, accepted choices and business
+abstention. Show the deterministic next-step baseline and retained explanation
+requirement. Select **CBOR-LD-EX savings** for full-body byte counts, exact decode, mailbox delivery,
 duplicate suppression and the JSON-favorable fallback example. Use the synthetic
 advisor demo for broader detector coverage. Explain the next independent
 replacement experiment; none of these pages implements adaptive agent routes.

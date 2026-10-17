@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import { Console, type SourceMode } from "./components/Console";
+import { Console, type SourceMode, type Workspace } from "./components/Console";
 import { HttpRunClient } from "./api/client";
 import { parseBundle, RecordedRunClient } from "./api/recorded";
 import { validateTask } from "./api/validation";
 import { readAdvisorFile, type AdvisorReport } from "./api/advisor";
 import { Optimization } from "./components/Optimization";
+import { Benchmarks } from "./components/Benchmarks";
 import {
   unknownUsage,
   type ApprovalDetail,
@@ -114,7 +115,7 @@ function firstEncounter(mode: "baseline" | "governed") {
 }
 
 export default function App() {
-  const [workspace, setWorkspace] = useState<"execution" | "optimization">(
+  const [workspace, setWorkspace] = useState<Workspace>(
     "execution",
   );
   const [advisorReport, setAdvisorReport] = useState<AdvisorReport | null>(
@@ -629,6 +630,7 @@ export default function App() {
     <Console
       activeWorkspace={workspace}
       onWorkspace={setWorkspace}
+      benchmarks={<Benchmarks active={workspace === "benchmarks"} />}
       advisorSourceLabel={
         advisorOrigin === "demo"
           ? "SYNTHETIC ADVISOR DEMO"

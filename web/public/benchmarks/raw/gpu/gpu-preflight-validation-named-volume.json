@@ -1,0 +1,274 @@
+{
+  "format": "canopy-openjev-gpu-preflight/v1",
+  "ok": true,
+  "generated_at": "2026-10-17T19:55:20.679534+00:00",
+  "python": "3.12.15",
+  "platform": "Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "stage": "all_seven_cases_fit",
+  "mode": "capacity_check_historical_text_only",
+  "quality_benchmark": false,
+  "actions_executed": false,
+  "packages": {
+    "pollard-jev": "0.13",
+    "pollard": "1.6.0",
+    "pydantic": "2.14.1",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.15.0",
+    "huggingface-hub": "1.33.0",
+    "tokenizers": "0.22.2",
+    "numpy": "2.5.3",
+    "safetensors": "0.8.0"
+  },
+  "cuda_runtime": "12.8",
+  "cuda_available": true,
+  "gpu_name": "NVIDIA GeForce RTX 4090 Laptop GPU",
+  "compute_capability": [
+    8,
+    9
+  ],
+  "bf16_supported": true,
+  "memory_before_model": {
+    "free_mib": 15044.0,
+    "total_mib": 16375.5,
+    "allocated_mib": 0.0,
+    "reserved_mib": 0.0,
+    "peak_allocated_mib": 0.0,
+    "peak_reserved_mib": 0.0
+  },
+  "model": {
+    "repository": "AlexWortega/openjev",
+    "revision": "552759daad712f1af6c4c13dabcb1e047886fc9c",
+    "checkpoint": "qwen3.5-4b-nli-v2",
+    "snapshot": "/models/models--AlexWortega--openjev/snapshots/552759daad712f1af6c4c13dabcb1e047886fc9c",
+    "manifest_sha256": "258768022733ca7bee4f5eb2dcaf7589fe5a7ad0619e722925335ef58b452975",
+    "files": {
+      "qwen3.5-4b-nli-v2/tokenizer.json": {
+        "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+        "bytes": 19989325
+      },
+      "qwen3.5-4b-nli-v2/config.json": {
+        "sha256": "477bed7614828c875db38b952835af9ca2fb5fa024af56cda8a708181db76a07",
+        "bytes": 3167
+      },
+      "modeling_openjev.py": {
+        "sha256": "071670d0879963ee69600ed31f0f3d5a37bee314461709477e8ac0e25f33fd97",
+        "bytes": 13789
+      },
+      "qwen3.5-4b-nli-v2/tokenizer_config.json": {
+        "sha256": "9cf04fffe3d8c3b85e439fb35c7acad0761ab51c422a8c4256d9f887c3a0be7d",
+        "bytes": 1125
+      },
+      "qwen3.5-4b-nli-v2/model.safetensors": {
+        "sha256": "f625c42c6bac1fbc03935f584d0126d096b6681bdc62d11f4a7c7f3b94bc35b3",
+        "bytes": 9078635984
+      }
+    },
+    "verified_bytes": 9098643390
+  },
+  "max_context_tokens": 1024,
+  "allocator_limit_mib": 11264.0,
+  "memory_measurement_note": "The limit and peaks cover the PyTorch caching allocator. CUDA context, driver and other applications also use memory. Passing proves these seven complete inputs fit this run; it does not guarantee capacity for larger workloads.",
+  "model_load_ms": 4174.326585000017,
+  "model_identity": {
+    "provider": "alexwortega-openjev",
+    "provider_version": "openjev-nli-adapter-v1",
+    "model": "AlexWortega/openjev/qwen3.5-4b-nli-v2",
+    "model_version": "552759daad712f1af6c4c13dabcb1e047886fc9c;max_len=1024;dtype=bfloat16;device=cuda",
+    "synthetic": false,
+    "settings": {
+      "input_representation": "json-v1"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "business_decision:classify_ticket",
+      "category": "business_decision",
+      "hypothesis_count": 2,
+      "raw_choice": "high",
+      "entailment_scores": {
+        "high": 0.9915139079093933,
+        "normal": 0.8764945864677429
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          135,
+          131
+        ],
+        "unshared_input_tokens": 266,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 614.4708509998509
+    },
+    {
+      "case_id": "next_step:choose_clarification",
+      "category": "next_step",
+      "hypothesis_count": 5,
+      "raw_choice": "clarify",
+      "entailment_scores": {
+        "stop": 0.040488384664058685,
+        "escalate": 0.1760057508945465,
+        "clarify": 0.9744396805763245,
+        "retrieve": 0.5151614546775818,
+        "respond": 0.06835441291332245
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          204,
+          204,
+          216,
+          217,
+          217
+        ],
+        "unshared_input_tokens": 1058,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 338.28855800015845
+    },
+    {
+      "case_id": "next_step:choose_retrieval",
+      "category": "next_step",
+      "hypothesis_count": 5,
+      "raw_choice": "retrieve",
+      "entailment_scores": {
+        "stop": 0.14569127559661865,
+        "escalate": 0.2442573755979538,
+        "clarify": 0.456281840801239,
+        "retrieve": 0.9962969422340393,
+        "respond": 0.6358931064605713
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          203,
+          203,
+          215,
+          216,
+          216
+        ],
+        "unshared_input_tokens": 1053,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 294.45172400005504
+    },
+    {
+      "case_id": "next_step:choose_stop",
+      "category": "next_step",
+      "hypothesis_count": 5,
+      "raw_choice": "stop",
+      "entailment_scores": {
+        "stop": 0.9976611137390137,
+        "escalate": 0.0014198669232428074,
+        "clarify": 0.005693356040865183,
+        "retrieve": 0.010043014772236347,
+        "respond": 0.02784353867173195
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          202,
+          202,
+          214,
+          215,
+          215
+        ],
+        "unshared_input_tokens": 1048,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 296.99282900014623
+    },
+    {
+      "case_id": "tool_selection:choose_knowledge_tool",
+      "category": "tool_selection",
+      "hypothesis_count": 3,
+      "raw_choice": "knowledge_search",
+      "entailment_scores": {
+        "knowledge_search": 0.9970394968986511,
+        "incident_lookup": 0.0036563670728355646,
+        "ticket_lookup": 0.006287252996116877
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          95,
+          97,
+          98
+        ],
+        "unshared_input_tokens": 290,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 282.06289299987475
+    },
+    {
+      "case_id": "tool_selection:choose_incident_tool",
+      "category": "tool_selection",
+      "hypothesis_count": 3,
+      "raw_choice": "incident_lookup",
+      "entailment_scores": {
+        "knowledge_search": 0.014598291367292404,
+        "incident_lookup": 0.985112726688385,
+        "ticket_lookup": 0.025428730994462967
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          91,
+          93,
+          94
+        ],
+        "unshared_input_tokens": 278,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 286.38616400007777
+    },
+    {
+      "case_id": "tool_selection:choose_ticket_tool",
+      "category": "tool_selection",
+      "hypothesis_count": 3,
+      "raw_choice": "ticket_lookup",
+      "entailment_scores": {
+        "knowledge_search": 0.0009343493729829788,
+        "incident_lookup": 0.0011826185509562492,
+        "ticket_lookup": 0.9916480779647827
+      },
+      "measurements": {
+        "tokenized_pair_lengths": [
+          98,
+          100,
+          101
+        ],
+        "unshared_input_tokens": 299,
+        "maximum_context_tokens": 1024,
+        "input_context_truncated": false,
+        "context_limit_exceeded": false,
+        "tokenization_basis": "complete_unpadded_pairs"
+      },
+      "inference_ms": 277.77475899983983
+    }
+  ],
+  "memory_after_model_and_cases": {
+    "free_mib": 5804.0,
+    "total_mib": 16375.5,
+    "allocated_mib": 8763.13,
+    "reserved_mib": 9186.0,
+    "peak_allocated_mib": 9143.99,
+    "peak_reserved_mib": 9186.0
+  },
+  "actual_model_calls": 7,
+  "hypothesis_pairs": 26,
+  "maximum_observed_pair_tokens": 217,
+  "elapsed_ms": 12766.61831499996
+}

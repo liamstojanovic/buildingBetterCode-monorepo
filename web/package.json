@@ -15,7 +15,9 @@
     "build-storybook": "storybook build",
     "fixtures:core": "python3.12 scripts/export-core-fixtures.py",
     "fixtures:advisor": "python3.12 scripts/export-advisor-fixture.py",
-    "benchmark:core": "python3.12 scripts/export-core-fixtures.py --benchmark"
+    "benchmark:core": "python3.12 scripts/export-core-fixtures.py --benchmark",
+    "fixtures:benchmarks": "python3.12 scripts/export-benchmark-fixture.py",
+    "fixtures:benchmarks:check": "python3.12 scripts/export-benchmark-fixture.py --check"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.5",

@@ -1,0 +1,788 @@
+{
+  "schemaVersion": "canopy.benchmark_evidence/v1",
+  "publishedAt": "2026-10-17T20:11:22.426139+00:00",
+  "auditedAt": "2026-10-17T20:18:11.140696+00:00",
+  "sourceCommit": "ecd976d2d7d7118179cd0260d2add4110b014c49",
+  "sourceUrl": "https://github.com/liamstojanovic/buildingBetterCode-monorepo/tree/ecd976d2d7d7118179cd0260d2add4110b014c49/core/examples/recordings/container-benchmarks-2026-10-17",
+  "dates": {
+    "cpu": "2026-10-17T20:09:26.264153+00:00",
+    "jev": "2026-10-17T19:55:53.064141+00:00",
+    "comms": "2026-10-17T20:09:20.938913+00:00"
+  },
+  "revisions": {
+    "cpu": "28a276b14bb5ce70ecef026955dcbdd5dff8d1c4",
+    "gpu": "840600770afc6bf4ae5855a41157ce7e550dd7b6"
+  },
+  "sourceManifestSha256": "1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0",
+  "advisor": {
+    "reports": 9,
+    "groups": 21,
+    "modelCalls": 0
+  },
+  "jev": {
+    "model": "AlexWortega/openjev/qwen3.5-4b-nli-v2",
+    "distinctCases": 7,
+    "trials": 14,
+    "rawMatches": 14,
+    "acceptedMatches": 12,
+    "firstTrialRawMatches": 7,
+    "firstTrialAcceptedMatches": 6,
+    "coldMs": 6469.6742680000625,
+    "modelLoadMs": 5643.778961999942,
+    "warm": {
+      "count": 13,
+      "minMs": 164.20005200006926,
+      "medianMs": 301.872067999966,
+      "maxMs": 379.8725760000252
+    },
+    "hosted": {
+      "calls": 63,
+      "excludedReused": 21,
+      "normalizedMatches": 62,
+      "strictMatches": 28,
+      "latency": {
+        "count": 63,
+        "minMs": 469.3524000012985,
+        "medianMs": 812.5814000013634,
+        "maxMs": 6380.704400000468
+      },
+      "wrongChoices": [
+        {
+          "provider": "openai",
+          "model": "gpt-4.1-mini-2025-04-14",
+          "caseId": "next_step:choose_retrieval",
+          "runLabel": "baseline_first",
+          "choice": "respond",
+          "expected": "retrieve"
+        }
+      ]
+    },
+    "cases": [
+      {
+        "id": "business_decision:classify_ticket",
+        "category": "business_decision",
+        "stepId": "classify_ticket",
+        "field": "priority",
+        "expectedChoice": "high",
+        "expectationBasis": "Authored smoke expectation from the recorded policy: export workflow is blocked and the stated deadline is tomorrow (within 48 hours). This expectation was declared for this evaluation, not supplied to JEV, and is not an independent held-out human annotation.",
+        "premise": "Customer ticket: Invented sample ticket: Our twelve-person team cannot export the quarterly report. The export button returns error EX-104. Reading existing reports still works. We need the export tomorrow. Please help us resolve this.\nSupplied policy evidence: [{\"export_errors\":\"Ask for the report identifier and error timestamp.\",\"fixture\":true,\"priorities\":{\"high\":\"A business workflow is blocked with a deadline within 48 hours.\",\"normal\":\"A workaround is available and no near-term deadline exists.\"},\"promises\":\"Do not guarantee a resolution time.\"}]",
+        "choices": [
+          {
+            "name": "high",
+            "hypothesis": "A workflow is blocked with a deadline within 48 hours."
+          },
+          {
+            "name": "normal",
+            "hypothesis": "A workaround exists without a near-term deadline."
+          }
+        ],
+        "requiresExplanation": true,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": true,
+            "elapsedMs": 6469.6742680000625,
+            "rawChoice": "high",
+            "acceptedChoice": null,
+            "disposition": "defer",
+            "reasons": [
+              "entailment_margin_below_threshold"
+            ],
+            "scores": {
+              "high": 0.9915139079093933,
+              "normal": 0.8764945864677429
+            },
+            "selectedEntailment": 0.9915139079093933,
+            "margin": 0.11501932144165039,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [
+              "reason"
+            ],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": false
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 164.20005200006926,
+            "rawChoice": "high",
+            "acceptedChoice": null,
+            "disposition": "defer",
+            "reasons": [
+              "entailment_margin_below_threshold"
+            ],
+            "scores": {
+              "high": 0.9915139079093933,
+              "normal": 0.8764945864677429
+            },
+            "selectedEntailment": 0.9915139079093933,
+            "margin": 0.11501932144165039,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [
+              "reason"
+            ],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": false
+          }
+        ]
+      },
+      {
+        "id": "next_step:choose_clarification",
+        "category": "next_step",
+        "stepId": "choose_clarification",
+        "field": "next_step",
+        "expectedChoice": "clarify",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "The workflow is unresolved. A human specialist is not required. Missing required fields: report_id. Approved evidence is not available.\nSupplied policy evidence: [{\"policy\":\"Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\",\"sample_data\":true}]\nOrdered transition catalog: [{\"eligibility\":\"The customer has confirmed resolution; the workflow is complete.\",\"name\":\"stop\"},{\"eligibility\":\"Unresolved state explicitly requires a human specialist.\",\"name\":\"escalate\"},{\"eligibility\":\"Unresolved state is missing one or more required fields.\",\"name\":\"clarify\"},{\"eligibility\":\"Unresolved state has required fields but lacks approved evidence.\",\"name\":\"retrieve\"},{\"eligibility\":\"Unresolved state has required fields and approved evidence.\",\"name\":\"respond\"}]",
+        "choices": [
+          {
+            "name": "stop",
+            "hypothesis": "The customer has confirmed resolution, so the workflow is complete and should stop."
+          },
+          {
+            "name": "escalate",
+            "hypothesis": "The workflow is unresolved and requires a human specialist, so it should escalate."
+          },
+          {
+            "name": "clarify",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify."
+          },
+          {
+            "name": "retrieve",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence."
+          },
+          {
+            "name": "respond",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 358.5140019999926,
+            "rawChoice": "clarify",
+            "acceptedChoice": "clarify",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.040488384664058685,
+              "escalate": 0.1760057508945465,
+              "clarify": 0.9744396805763245,
+              "retrieve": 0.5151614546775818,
+              "respond": 0.06835441291332245
+            },
+            "selectedEntailment": 0.9744396805763245,
+            "margin": 0.4592782258987427,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "clarify",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 379.8725760000252,
+            "rawChoice": "clarify",
+            "acceptedChoice": "clarify",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.040488384664058685,
+              "escalate": 0.1760057508945465,
+              "clarify": 0.9744396805763245,
+              "retrieve": 0.5151614546775818,
+              "respond": 0.06835441291332245
+            },
+            "selectedEntailment": 0.9744396805763245,
+            "margin": 0.4592782258987427,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "clarify",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      },
+      {
+        "id": "next_step:choose_retrieval",
+        "category": "next_step",
+        "stepId": "choose_retrieval",
+        "field": "next_step",
+        "expectedChoice": "retrieve",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "The workflow is unresolved. A human specialist is not required. All required fields are available. Approved evidence is not available.\nSupplied policy evidence: [{\"policy\":\"Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\",\"sample_data\":true}]\nOrdered transition catalog: [{\"eligibility\":\"The customer has confirmed resolution; the workflow is complete.\",\"name\":\"stop\"},{\"eligibility\":\"Unresolved state explicitly requires a human specialist.\",\"name\":\"escalate\"},{\"eligibility\":\"Unresolved state is missing one or more required fields.\",\"name\":\"clarify\"},{\"eligibility\":\"Unresolved state has required fields but lacks approved evidence.\",\"name\":\"retrieve\"},{\"eligibility\":\"Unresolved state has required fields and approved evidence.\",\"name\":\"respond\"}]",
+        "choices": [
+          {
+            "name": "stop",
+            "hypothesis": "The customer has confirmed resolution, so the workflow is complete and should stop."
+          },
+          {
+            "name": "escalate",
+            "hypothesis": "The workflow is unresolved and requires a human specialist, so it should escalate."
+          },
+          {
+            "name": "clarify",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify."
+          },
+          {
+            "name": "retrieve",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence."
+          },
+          {
+            "name": "respond",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 314.4265210000867,
+            "rawChoice": "retrieve",
+            "acceptedChoice": "retrieve",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.14569127559661865,
+              "escalate": 0.2442573755979538,
+              "clarify": 0.456281840801239,
+              "retrieve": 0.9962969422340393,
+              "respond": 0.6358931064605713
+            },
+            "selectedEntailment": 0.9962969422340393,
+            "margin": 0.360403835773468,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "retrieve",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 350.4185619999589,
+            "rawChoice": "retrieve",
+            "acceptedChoice": "retrieve",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.14569127559661865,
+              "escalate": 0.2442573755979538,
+              "clarify": 0.456281840801239,
+              "retrieve": 0.9962969422340393,
+              "respond": 0.6358931064605713
+            },
+            "selectedEntailment": 0.9962969422340393,
+            "margin": 0.360403835773468,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "retrieve",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      },
+      {
+        "id": "next_step:choose_stop",
+        "category": "next_step",
+        "stepId": "choose_stop",
+        "field": "next_step",
+        "expectedChoice": "stop",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "The workflow is resolved. A human specialist is not required. All required fields are available. Approved evidence is available.\nSupplied policy evidence: [{\"policy\":\"Evaluate the supplied transition catalog in order and select the first eligible transition. A resolved workflow always stops. Otherwise human requirement takes precedence over missing fields, then missing evidence, then responding. Select only the transition; do not execute it.\",\"sample_data\":true}]\nOrdered transition catalog: [{\"eligibility\":\"The customer has confirmed resolution; the workflow is complete.\",\"name\":\"stop\"},{\"eligibility\":\"Unresolved state explicitly requires a human specialist.\",\"name\":\"escalate\"},{\"eligibility\":\"Unresolved state is missing one or more required fields.\",\"name\":\"clarify\"},{\"eligibility\":\"Unresolved state has required fields but lacks approved evidence.\",\"name\":\"retrieve\"},{\"eligibility\":\"Unresolved state has required fields and approved evidence.\",\"name\":\"respond\"}]",
+        "choices": [
+          {
+            "name": "stop",
+            "hypothesis": "The customer has confirmed resolution, so the workflow is complete and should stop."
+          },
+          {
+            "name": "escalate",
+            "hypothesis": "The workflow is unresolved and requires a human specialist, so it should escalate."
+          },
+          {
+            "name": "clarify",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, and is missing required fields, so it should ask the customer to clarify."
+          },
+          {
+            "name": "retrieve",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields, and lacks approved evidence, so it should retrieve evidence."
+          },
+          {
+            "name": "respond",
+            "hypothesis": "The workflow is unresolved, does not require a human specialist, has all required fields and approved evidence, so it should respond to the customer."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 265.22400399994694,
+            "rawChoice": "stop",
+            "acceptedChoice": "stop",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.9976611137390137,
+              "escalate": 0.0014198669232428074,
+              "clarify": 0.005693356040865183,
+              "retrieve": 0.010043014772236347,
+              "respond": 0.02784353867173195
+            },
+            "selectedEntailment": 0.9976611137390137,
+            "margin": 0.9698175750672817,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "stop",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 330.9279120001065,
+            "rawChoice": "stop",
+            "acceptedChoice": "stop",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "stop": 0.9976611137390137,
+              "escalate": 0.0014198669232428074,
+              "clarify": 0.005693356040865183,
+              "retrieve": 0.010043014772236347,
+              "respond": 0.02784353867173195
+            },
+            "selectedEntailment": 0.9976611137390137,
+            "margin": 0.9698175750672817,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": "stop",
+            "remainingFields": [],
+            "preboundArguments": null,
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      },
+      {
+        "id": "tool_selection:choose_knowledge_tool",
+        "category": "tool_selection",
+        "stepId": "choose_knowledge_tool",
+        "field": "tool",
+        "expectedChoice": "knowledge_search",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "Customer request: Please find the troubleshooting instructions for export error EX-104.\nSupplied policy evidence: [{\"policy\":\"Choose the one read-only tool matching the customer's explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\",\"sample_data\":true}]",
+        "choices": [
+          {
+            "name": "knowledge_search",
+            "hypothesis": "The customer's request is to find troubleshooting instructions."
+          },
+          {
+            "name": "incident_lookup",
+            "hypothesis": "The customer's request is to read current service incident status."
+          },
+          {
+            "name": "ticket_lookup",
+            "hypothesis": "The customer's request is to read an existing support ticket status."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 289.52809899988097,
+            "rawChoice": "knowledge_search",
+            "acceptedChoice": "knowledge_search",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.9970394968986511,
+              "incident_lookup": 0.0036563670728355646,
+              "ticket_lookup": 0.006287252996116877
+            },
+            "selectedEntailment": 0.9970394968986511,
+            "margin": 0.9907522439025342,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "query": "export error EX-104"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 311.20960399994146,
+            "rawChoice": "knowledge_search",
+            "acceptedChoice": "knowledge_search",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.9970394968986511,
+              "incident_lookup": 0.0036563670728355646,
+              "ticket_lookup": 0.006287252996116877
+            },
+            "selectedEntailment": 0.9970394968986511,
+            "margin": 0.9907522439025342,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "query": "export error EX-104"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      },
+      {
+        "id": "tool_selection:choose_incident_tool",
+        "category": "tool_selection",
+        "stepId": "choose_incident_tool",
+        "field": "tool",
+        "expectedChoice": "incident_lookup",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "Customer request: Is the reports service currently experiencing a widespread incident?\nSupplied policy evidence: [{\"policy\":\"Choose the one read-only tool matching the customer's explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\",\"sample_data\":true}]",
+        "choices": [
+          {
+            "name": "knowledge_search",
+            "hypothesis": "The customer's request is to find troubleshooting instructions."
+          },
+          {
+            "name": "incident_lookup",
+            "hypothesis": "The customer's request is to read current service incident status."
+          },
+          {
+            "name": "ticket_lookup",
+            "hypothesis": "The customer's request is to read an existing support ticket status."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 295.0518560001001,
+            "rawChoice": "incident_lookup",
+            "acceptedChoice": "incident_lookup",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.014598291367292404,
+              "incident_lookup": 0.985112726688385,
+              "ticket_lookup": 0.025428730994462967
+            },
+            "selectedEntailment": 0.985112726688385,
+            "margin": 0.959683995693922,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "service": "reports"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 299.6259199999258,
+            "rawChoice": "incident_lookup",
+            "acceptedChoice": "incident_lookup",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.014598291367292404,
+              "incident_lookup": 0.985112726688385,
+              "ticket_lookup": 0.025428730994462967
+            },
+            "selectedEntailment": 0.985112726688385,
+            "margin": 0.959683995693922,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "service": "reports"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      },
+      {
+        "id": "tool_selection:choose_ticket_tool",
+        "category": "tool_selection",
+        "stepId": "choose_ticket_tool",
+        "field": "tool",
+        "expectedChoice": "ticket_lookup",
+        "expectationBasis": "Preauthored selector fixture expectation in expected-choices.json.",
+        "premise": "Customer request: Please check the latest status of my existing support ticket T-7003.\nSupplied policy evidence: [{\"policy\":\"Choose the one read-only tool matching the customer's explicit request: troubleshooting instructions use knowledge_search; current widespread service incidents use incident_lookup; existing support-ticket status uses ticket_lookup. Arguments are prebound; choose only the tool name.\",\"sample_data\":true}]",
+        "choices": [
+          {
+            "name": "knowledge_search",
+            "hypothesis": "The customer's request is to find troubleshooting instructions."
+          },
+          {
+            "name": "incident_lookup",
+            "hypothesis": "The customer's request is to read current service incident status."
+          },
+          {
+            "name": "ticket_lookup",
+            "hypothesis": "The customer's request is to read an existing support ticket status."
+          }
+        ],
+        "requiresExplanation": false,
+        "trials": [
+          {
+            "trial": 1,
+            "cold": false,
+            "elapsedMs": 301.872067999966,
+            "rawChoice": "ticket_lookup",
+            "acceptedChoice": "ticket_lookup",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.0009343493729829788,
+              "incident_lookup": 0.0011826185509562492,
+              "ticket_lookup": 0.9916480779647827
+            },
+            "selectedEntailment": 0.9916480779647827,
+            "margin": 0.9904654594138265,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "ticket_id": "T-7003"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          },
+          {
+            "trial": 2,
+            "cold": false,
+            "elapsedMs": 299.9979490000442,
+            "rawChoice": "ticket_lookup",
+            "acceptedChoice": "ticket_lookup",
+            "disposition": "accept_selection",
+            "reasons": [],
+            "scores": {
+              "knowledge_search": 0.0009343493729829788,
+              "incident_lookup": 0.0011826185509562492,
+              "ticket_lookup": 0.9916480779647827
+            },
+            "selectedEntailment": 0.9916480779647827,
+            "margin": 0.9904654594138265,
+            "minimumEntailment": 0.8,
+            "minimumMargin": 0.15,
+            "thresholdBasis": "uncalibrated_demo_heuristic",
+            "ruleBaseline": null,
+            "remainingFields": [],
+            "preboundArguments": {
+              "ticket_id": "T-7003"
+            },
+            "actionExecuted": false,
+            "rawMatch": true,
+            "acceptedMatch": true
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "Seven invented support cases are a smoke evaluation, not a representative quality benchmark.",
+      "The 63 hosted calls repeat seven cases; they are not 63 independent examples.",
+      "JEV is evaluated retrospectively against preserved historical data; fresh evaluation validity does not renew original operational evidence or authorize any tool or workflow action.",
+      "Business priority is compared separately from the original explanation; JEV does not replace the required reason field. Hosted explanations remain in the source and this report.",
+      "Raw classifier choice and confidence/eligibility gate acceptance are reported separately. Abstention is not counted as a correct automatic replacement.",
+      "Next-step states have a deterministic rule baseline. A classifier adds no demonstrated value for these explicit Boolean states.",
+      "Local NLI input-pair tokens and hosted generative tokens have different meanings and are not interchangeable. Cost and energy savings are unknown.",
+      "Historical hosted latency and present local latency are not a controlled speed benchmark. Cold worker/model loading is included in the first end-to-end call only.",
+      "No JEV choice is automatically deployed, activated in a workflow, or treated as validated for unsampled inputs."
+    ]
+  },
+  "comms": {
+    "messages": 618,
+    "batches": 36,
+    "jsonBytes": 771411,
+    "singleCborBytes": 585595,
+    "batchCborBytes": 356491,
+    "base64Bytes": 475376,
+    "bytesSaved": 414920,
+    "reductionFraction": 0.5378715107770048,
+    "roundtripVerified": true,
+    "networkCalls": 0,
+    "timingRepetitions": 5,
+    "timings": [
+      {
+        "encoding": "json",
+        "encodeMs": 32.052518,
+        "decodeMs": 52.377112
+      },
+      {
+        "encoding": "single_cbor",
+        "encodeMs": 36.710624,
+        "decodeMs": 82.970268
+      },
+      {
+        "encoding": "cbor",
+        "encodeMs": 38.240773,
+        "decodeMs": 72.391868
+      },
+      {
+        "encoding": "auto",
+        "encodeMs": 38.632803,
+        "decodeMs": 70.890793
+      }
+    ],
+    "mailbox": {
+      "delivered": 618,
+      "acknowledged": 618,
+      "duplicatesSuppressed": 36,
+      "individualMs": 1219.055349,
+      "batchMs": 219.768263,
+      "individualTransactions": 618,
+      "batchTransactions": 36,
+      "scope": "One local sample per path on separate fresh SQLite databases; FULL synchronous WAL, validation and commits included. Frame construction, database creation and acknowledgements excluded. Not a production throughput or network-latency benchmark."
+    },
+    "denseFallback": {
+      "jsonBytes": 1827,
+      "cborBytes": 2866,
+      "selectedBytes": 1827,
+      "selectedEncoding": "json",
+      "detail": "Float64 is preserved exactly; compact JSON is smaller for this payload."
+    },
+    "scope": "Payload bytes including shared context and annotations; excludes transport headers. Content type is required for either format. Local validated encode/decode; excludes source I/O, SQLite, network and batch accumulation time. Median of repeats; machine-dependent.",
+    "limitations": [
+      "Binary wire savings are not LLM token, cost, latency or energy savings.",
+      "Batching can delay first-event delivery; choose flush thresholds for the workload.",
+      "Base64 adds bytes: the export is inspectable JSON, not the measured binary wire.",
+      "Each batch is independently decodable; no hidden context setup is excluded.",
+      "Batch codec and mailbox are opt-in primitives, not automatic runtime networking."
+    ]
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090 Laptop GPU",
+    "totalMiB": 16375.5,
+    "allocatorLimitMiB": 11264.0,
+    "peakAllocatedMiB": 9143.99,
+    "peakReservedMiB": 9186.0,
+    "teammate12GbTested": false,
+    "standardCurrentDockerTested": false,
+    "compatibilityOverride": "Read-only bind of the installed host libnvdxgdmal.so.1 at its standard library and exact /usr/lib/wsl/drivers paths. This compensates for old Docker Desktop driver injection; no host files or Docker configuration were modified.",
+    "scope": "The limit and peaks cover the PyTorch caching allocator. CUDA context, driver and other applications also use memory. Passing proves these seven complete inputs fit this run; it does not guarantee capacity for larger workloads."
+  },
+  "spend": {
+    "providerUsd": 0.0,
+    "budgetUsd": 5.0,
+    "remainingUsd": 5.0,
+    "historicalHostedUsd": null,
+    "energySavingsJ": null,
+    "costSavingsUsd": null,
+    "scope": "This audit, CPU refresh, and publication task only; earlier hosted calls are retained evidence."
+  },
+  "downloads": [
+    {
+      "label": "Full JEV comparison and hosted responses",
+      "url": "/benchmarks/raw/jev/comparison.json",
+      "sha256": "a5c65c187b54414187ce0d4888671f7986971dc20305c009d85c68d73bae97b0"
+    },
+    {
+      "label": "All JEV trial journal entries",
+      "url": "/benchmarks/raw/jev/trials.jsonl",
+      "sha256": "a271f56dc3b1a828fd175eb225ad2ec1ad50f82bbc2adb3662342e0fdb71eb63"
+    },
+    {
+      "label": "CBOR measurements and timing samples",
+      "url": "/benchmarks/raw/cpu/comms/report.json",
+      "sha256": "76b529cd958deb820506dea7c4b570353710cf81a565a74b7bf1379073177e0d"
+    },
+    {
+      "label": "GPU capacity check",
+      "url": "/benchmarks/raw/gpu/gpu-preflight-validation-named-volume.json",
+      "sha256": "b45c870252021e6c510ed7c16a4134581785ef44f418c78d120366a59118a4f8"
+    },
+    {
+      "label": "GPU compatibility and validation note",
+      "url": "/benchmarks/raw/gpu-validation.json",
+      "sha256": "7dae31cf195406b729cf09840618549b5870619718965fbf952f34e33957d4ed"
+    },
+    {
+      "label": "Measurement provenance",
+      "url": "/benchmarks/raw/provenance.json",
+      "sha256": "766532bd29d002825a99728f1125d4038ffbe86b4cfaa5cdebd5eb09d1a3a820"
+    },
+    {
+      "label": "Source integrity audit",
+      "url": "/benchmarks/raw/audit.json",
+      "sha256": "5731473310e4266099855fbde92b00af5e8ac1e81b5a871182562bdc2cbe3e60"
+    },
+    {
+      "label": "Incremental provider budget ledger",
+      "url": "/benchmarks/raw/spend.json",
+      "sha256": "ce68e11dd219cd9d0f1cfeed8e7877ec9ed571686daacfe1b2a97745d15f9797"
+    },
+    {
+      "label": "Publication SHA256 inventory",
+      "url": "/benchmarks/raw/manifest.json",
+      "sha256": "f12f352b3ecf8c0c07f9324b0ef30ef8ad0d54070681c4d2ee503650ac9cb8ef"
+    },
+    {
+      "label": "Historical hosted source inventory",
+      "url": "/benchmarks/raw/source-manifest.json",
+      "sha256": "1bd40f41c16b72f61e98fc407fe5ac6dddfa4d98c957edfc8e166ca103e71ec0"
+    }
+  ]
+}
