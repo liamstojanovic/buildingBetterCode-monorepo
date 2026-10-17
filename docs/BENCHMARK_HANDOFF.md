@@ -1,5 +1,11 @@
 # Benchmark teammate handoff
 
+For running the **entire demo on Windows + Docker Desktop/WSL2**, start with
+[demo_handoff.md](../demo_handoff.md). It includes all Dockerfiles, frontend/API
+startup, fresh offline advisor and communication runs, the 12 GB GPU capacity
+check, actual local JEV comparison, approval rehearsal and troubleshooting.
+Use this document for benchmark methodology and custom provider workloads.
+
 The benchmark owns representative workloads and independent correctness scoring.
 The core supplies recorded execution, provider adapters and governed reuse. Start
 with one shared workload and retain the complete outputs before expanding the

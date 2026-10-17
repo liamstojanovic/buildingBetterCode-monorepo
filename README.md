@@ -8,6 +8,7 @@ Canopy connects recorded execution, validity-aware reuse, budgets, policy contro
 and drift monitoring. The Python core lives in `core/`; the team's frontend lives
 in `web/`. The benchmark is independently owned by another teammate.
 
+- [End-to-end Docker demo: Windows/WSL2 and the 12 GB GPU](demo_handoff.md)
 - [Team setup and integration handoff](docs/TEAM_HANDOFF.md)
 - [Frontend integration and demo guide](docs/FRONTEND_HANDOFF.md)
 - [Benchmark teammate guide](docs/BENCHMARK_HANDOFF.md)

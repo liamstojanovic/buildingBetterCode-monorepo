@@ -1,9 +1,13 @@
 # Frontend integration and demo handoff
 
+The complete Windows/WSL2 presentation runbook is
+[demo_handoff.md](../demo_handoff.md): container startup, fresh fixtures, exact UI
+steps, hosted recording imports, advisor/JEV/comms pages and stage fallbacks.
+
 The frontend teammate owns `web/`. This guide separates live HTTP features,
 offline discovery, recorded JEV evaluation, communication measurements and future
-backend routing. The [demo guide](JEV_COMMS_DEMO.md) links standalone pages that
-work before dedicated frontend views are implemented.
+backend routing. The Optimization workspace imports advisor reports now; the
+[demo guide](JEV_COMMS_DEMO.md) links the separate JEV and communication pages.
 Start with the [team handoff](TEAM_HANDOFF.md), [HTTP API](../core/docs/api.md),
 and [live model guide](../core/docs/live_models.md).
 
@@ -17,7 +21,7 @@ and [live model guide](../core/docs/live_models.md).
 | Budgets | Admission/refusal/settlement events and measured usage | Read-only authority and outcome display |
 | Hosted models and native Pollard-Jev | Python registry and comparison CLI | Import actual comparison report; custom service wiring needed for live HTTP execution |
 | Drift containment and compact messaging | Component APIs and smoke report | Imported component report, clearly labeled synthetic |
-| Optimization advisor | Implemented offline discovery and strict JSON report | Import generated report; findings are unevaluated; no live advisor routes |
+| Optimization advisor | Offline discovery plus implemented Optimization workspace | **Import advisor report** or **Load advisor demo**; findings are unevaluated; no live advisor routes |
 | JEV mapping evaluation | Actual local NLI comparison across three sample categories | Dedicated comparison format; use offline HTML until its view is implemented |
 | Shared-context communication | `MessageBatchCodec`, `Mailbox.deliver_batch`, measured replay | Dedicated communication report or offline HTML; no mailbox HTTP endpoint |
 
@@ -150,12 +154,11 @@ choice and requested bare-JSON format; fenced JSON can satisfy the former while
 failing the latter. Those checks are not an independent quality benchmark, and
 the frontend bundles' `evaluations` remain empty.
 
-Next open the combined `AdvisorReport` and filter its findings by business
-decision, tool selection and next step. The current frontend supports recording
-import; its advisor view is still an integration task described below. Until that
-view is implemented, use the saved advisor JSON for this part of the demo rather
-than feeding it to **Import recording**. Show selected choices, reasons, mapping
-gaps, measured work and `not_evaluated` side by side.
+Next select **Optimization** → **Import advisor report** and open the combined
+`AdvisorReport`. Filter by business decision, tool selection and next step, then
+inspect choices, reasons, mapping gaps, observed work and **Not evaluated**.
+This import preserves the execution workspace and makes no model calls.
+**Import recording** remains the separate comparison-bundle action.
 
 The [combined advisor report](../core/examples/recordings/advisor-live-2026-10-17/advisor-report.json)
 contains 21 provider-specific groups over seven distinct cases: three business,
@@ -401,7 +404,11 @@ dispatch. Show the two run IDs separately.
 
 ## Offline advisor: implemented report import
 
-Generate the demo from the repository root:
+Select **Optimization** → **Load advisor demo** for the bundled seven-group
+synthetic analysis, or **Import advisor report** for a saved report. The Docker
+startup and exact presentation steps are in [demo_handoff.md](../demo_handoff.md).
+Neither action performs LLM or OpenJEV inference. To generate a new synthetic
+analysis from the repository root:
 
 ```powershell
 .venv\Scripts\python.exe core\examples\advisor_demo.py --output-dir .canopy\advisor-demo
@@ -425,41 +432,29 @@ does not establish real OpenJEV inference or quality. Then inspect the text,
 tool-selection and next-step mapping gaps, generation, deterministic threshold,
 and unmapped-decision findings.
 
-Give advisor reports their own import adapter, distinct from run and component
-reports. Validate against [AdvisorReport.schema.json](../core/schemas/AdvisorReport.schema.json)
-and check `report_type: "canopy.offline_advisor"`, `schema_version: "1"` and
-`analyzer_version: "offline-advisor-v1"`. Render unfamiliar versions as unsupported
-instead of interpreting arbitrary JSON as this schema.
+The implemented importer validates reports against
+[AdvisorReport.schema.json](../core/schemas/AdvisorReport.schema.json), including
+`report_type: "canopy.offline_advisor"`, `schema_version: "1"` and
+`analyzer_version: "offline-advisor-v1"`. It rejects unfamiliar versions and files
+larger than 20 MiB. A failed import retains the previous report.
 
-### Integration points in the current frontend draft
+### Implemented frontend integration map
 
-The frontend draft integrated at `8b7d56b` has run comparison import but no advisor
-import. These are the concrete places to extend in the frontend teammate's work:
-
-1. [scripts/generate-contracts.ts](../web/scripts/generate-contracts.ts) currently
-   lists only `Task`, `RunEvent`, `RunResult` and `RunConfig`. Add `AdvisorReport`
-   to that explicit list; exporting a new Python schema does not automatically
-   generate its TypeScript counterpart. Add `DecisionDescriptor` and `AdvisorLimits`
-   as separate generated entry points if the UI needs them independently. From
-   `web/`, use `bun run contracts` and then `bun run contracts:check`; generated
-   files live under `src/api/generated/` and should not be edited by hand.
-2. [src/api/validation.ts](../web/src/api/validation.ts) currently compiles only
-   Task and RunResult with Ajv2020 and formats. Compile the advisor schema there
-   (or in an equivalent advisor module) for actual runtime validation; generated
-   TypeScript alone does not validate imported JSON. Export the report type through
-   [src/api/types.ts](../web/src/api/types.ts) or a dedicated advisor type module.
-3. [src/api/recorded.ts](../web/src/api/recorded.ts) exposes `parseBundle`, which
-   accepts only `format: "canopy-comparison/v1"`, with `recordings` containing
-   `task`, `result` and `events` and mandatory `baseline`/`warm` entries. It rejects
-   advisor reports. Introduce a separate advisor parser/import path rather than
-   casting an advisor report to `ComparisonBundle` or fabricating run events.
-4. [App.tsx](../web/src/App.tsx) currently routes `importRecording` through
-   `loadBundle`/`parseBundle` and resets the run-comparison state. Keep advisor
-   report state separate from those baseline/Canopy lanes. Wire an advisor-specific
-   import action/view through [Console.tsx](../web/src/components/Console.tsx),
-   whose existing `onImport` means recording import and `onImportTask` means a live
-   task. Preserve the existing import size/error treatment and display the parsed
-   report's provenance and limits in the advisor view.
+- [scripts/generate-contracts.ts](../web/scripts/generate-contracts.ts) generates
+  `AdvisorReport` alongside the execution contracts. Use `bun run contracts` and
+  `bun run contracts:check`; do not edit `src/api/generated/` by hand.
+- [src/api/advisor.ts](../web/src/api/advisor.ts) owns advisor parsing and file
+  limits. [src/api/validation.ts](../web/src/api/validation.ts) performs Ajv schema
+  validation and fills schema defaults on a detached copy. Generated TypeScript
+  types alone do not validate imported JSON.
+- [App.tsx](../web/src/App.tsx) keeps advisor imports separate from execution
+  state. Switching workspaces preserves comparison results, selection, approvals,
+  presentation state and live observation. Reports remain in browser memory until
+  reload; imports do not populate the HTTP service's store.
+- [Optimization.tsx](../web/src/components/Optimization.tsx) provides category and
+  status filters, finding details, provenance, observed usage, bounded source
+  references and **Analysis coverage and limits**. All discovery findings remain
+  **Not evaluated**; this view cannot activate a replacement backend.
 
 These JSON formats are distinct; none is interchangeable merely because
 it contains Canopy results:
@@ -468,7 +463,7 @@ it contains Canopy results:
 | --- | --- | --- |
 | Frontend session/core fixture bundle | `format: "canopy-comparison/v1"`, `recordings` with task/result/events | Frontend `parseBundle` |
 | Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; `scripts/import-comparison.py` converts retained reports plus databases/events for the frontend |
-| Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | New frontend advisor import to implement |
+| Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | Optimization → **Import advisor report** (`parseAdvisorReport`) |
 | Actual JEV mapping comparison | `format: "canopy-jev-recorded-comparison/v1"`, cases/trials/hosted_calls | Standalone HTML now; dedicated frontend adapter to implement |
 | Communication replay report | `format: "canopy-messaging-demo/v1"`, totals/frames/scenarios/timings | Standalone HTML now; dedicated frontend adapter to implement |
 
@@ -489,7 +484,7 @@ JSON. Keep existing comparison import/export behavior covered separately. Availa
 checks in `web/package.json` are `bun run contracts:check`, `bun run typecheck`,
 `bun run test` and `bun run build`.
 
-### Advisor fields to render
+### Advisor field interpretation
 
 | Report data | UI treatment |
 | --- | --- |
@@ -520,7 +515,7 @@ and possibly a selected choice; they do not contain full prompts/evidence.
 Only link a sample to `/runs/{id}` when the service store and tenant match the
 source. An imported report does not populate that service's database.
 
-Suggested interaction: import a report, filter by category/status, select a card,
+In Optimization, import a report, filter by category/status, select a card,
 then inspect reasons, blockers, choices, revisions, observed work and references.
 The default sort is the report order, based on its recorded ranking metric.
 Do not label that order as predicted ROI or suitability probability.
@@ -558,8 +553,8 @@ component reports to show budget containment, probe-driven drift containment,
 and actual message-byte counts/deduplication. Message byte savings can be negative
 and say nothing by themselves about tokens, energy, or latency.
 
-Finish with the retained hosted bundles above, then review their combined offline
-advisor report in the advisor view when implemented, or as saved JSON. Open a
+Finish with the retained hosted bundles above, then use **Optimization** →
+**Import advisor report** to review their combined offline report. Open a
 business, tool and next-step finding, then open the actual JEV comparison and
 inspect its raw choices, accepted choices and business abstention. Show the
 deterministic next-step baseline and retained explanation requirement. Open the

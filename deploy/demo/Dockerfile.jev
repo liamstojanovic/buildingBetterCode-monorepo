@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1
+# Build from the repository root. CUDA runtime libraries are supplied by the
+# official PyTorch cu128 wheel; the Windows NVIDIA driver is supplied by WSL2.
+FROM python:3.12.15-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    HF_HUB_DISABLE_IMPLICIT_TOKEN=1 \
+    HF_HUB_DISABLE_TELEMETRY=1 \
+    HF_HUB_DISABLE_PROGRESS_BARS=1 \
+    TOKENIZERS_PARALLELISM=false \
+    HF_HOME=/tmp/huggingface \
+    HF_HUB_CACHE=/models \
+    TORCH_HOME=/tmp/torch \
+    PATH=/opt/core-env/bin:$PATH
+
+WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libgomp1 libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+COPY core/requirements.lock core/requirements-openjev-container.txt /tmp/requirements/
+RUN python -m venv /opt/core-env \
+    && python -m venv /opt/jev-env \
+    && /opt/core-env/bin/python -m pip install --no-cache-dir -r /tmp/requirements/requirements.lock \
+    && /opt/jev-env/bin/python -m pip install --no-cache-dir --only-binary=:all: -r /tmp/requirements/requirements-openjev-container.txt \
+    && /opt/core-env/bin/python -m pip check \
+    && /opt/jev-env/bin/python -m pip check
+
+COPY core /app/core
+COPY deploy/demo /app/deploy/demo
+RUN /opt/core-env/bin/python -m pip install --no-cache-dir --no-deps /app/core \
+    && /opt/core-env/bin/python -c "from importlib.metadata import version; assert version('pollard') == '1.6.2'" \
+    && /opt/jev-env/bin/python -c "import torch; from importlib.metadata import version; assert version('pollard') == '1.6.0'; assert torch.__version__ == '2.11.0+cu128'; assert torch.version.cuda == '12.8'" \
+    && mkdir -p /models /results
+
+CMD ["/opt/jev-env/bin/python", "deploy/demo/gpu_preflight.py", "--cache-dir", "/models"]

@@ -1,5 +1,8 @@
 # Team integration handoff
 
+For the end-to-end Windows/WSL2 Docker presentation, follow
+[demo_handoff.md](../demo_handoff.md), including the 12 GB GPU capacity check.
+
 The core is a Python package in `core/`. The frontend remains in `web/` and the
 benchmark teammate can choose their own directory. Core component chats do not
 edit those applications. The shared machine-readable models are in
@@ -28,7 +31,7 @@ Updated October 17, 2026. Start with the role-specific guides:
 | Drift probes/containment and compact messaging/deduplication | Python components, CBOR-LD batches and persistent mailbox | Component smoke example plus measured communication replay; no dedicated HTTP dashboard endpoints |
 | OpenAI, compatible endpoints, Anthropic, Gemini | Implemented live handlers | Explicit provider/model and credentials; `live_comparison.py` |
 | Pollard-Jev/OpenJEV | Isolated native worker plus explicit text mappings for all three sample categories | Actual local classifier comparison and offline HTML; separate environment and cached pinned weights needed only to rerun inference |
-| Business/tool/next-step optimization advisor | Offline Python/CLI discovery and JSON report | [Retained hosted recordings](../core/examples/recordings/advisor-live-2026-10-17/README.md) across three providers; `core/examples/advisor_demo.py` for synthetic coverage; no advisor HTTP endpoint |
+| Business/tool/next-step optimization advisor | Offline Python/CLI discovery plus frontend Optimization report import | Import the [retained hosted report](../core/examples/recordings/advisor-live-2026-10-17/advisor-report.json), or **Load advisor demo** for synthetic coverage; no advisor HTTP endpoint |
 | Automatic backend switching or dynamic agent loop | Not implemented | No production control or success claims in the demo |
 
 Use the current commit's test/CI results as integration evidence, not business
@@ -72,11 +75,12 @@ These outcomes remain visible; subsequent answer variation is not evidence that
 governance corrected quality. Those historical runs had no transition-eligibility
 gate; the new JEV mapping applies an explicit gate without changing raw results.
 
-The frontend can import the supplied comparison bundles now. Its separate advisor
-report view still needs the integration described in the frontend handoff; use
-the saved advisor JSON until it is built. The benchmark teammate can reanalyze
-the full comparison exports and extend the cases with independently labeled
-outcomes. The artifact guide includes fresh-task and reanalysis commands.
+The frontend imports the supplied comparison bundles with **Import recording**.
+Select **Optimization** → **Import advisor report** for their combined discovery
+report, or **Load advisor demo** for synthetic detector coverage. Advisor imports
+preserve execution state and make no model calls. The benchmark teammate can
+reanalyze the full comparison exports and extend the cases with independently
+labeled outcomes. The artifact guide includes fresh-task and reanalysis commands.
 
 ## Actual JEV evaluation and communication demo
 
@@ -161,15 +165,19 @@ explanation and tool execution costs visible.
 
 ## Frontend boundary
 
-The implemented offline advisor has an importable
-[AdvisorReport schema](../core/schemas/AdvisorReport.schema.json). Generate the
-demo with `python core/examples/advisor_demo.py --output-dir .canopy/advisor-demo`.
-Display actual findings, observed usage, provenance, limits and missing evaluation.
+The Optimization workspace validates imported reports against the existing
+[AdvisorReport schema](../core/schemas/AdvisorReport.schema.json) and displays
+findings, observed usage, provenance, limits and missing evaluation. Use its
+**Load advisor demo** action, or generate a new report with
+`python core/examples/advisor_demo.py --output-dir .canopy/advisor-demo` and select
+**Import advisor report**. The [container runbook](../demo_handoff.md) covers the
+complete demo setup.
 Current states are `candidate`, `needs_mapping`, `unsupported`; every finding is
 unevaluated in that discovery contract. Explicit text mappings and a separate
 evaluation report now exist; no live advisor endpoint, activation or automatic
-routing was added. See the frontend guide for the distinct report adapters and
-offline HTML fallback.
+routing was added. The actual JEV evaluation and communication replay still use
+separate standalone pages; their reports cannot be imported as advisor reports.
+See the frontend guide for the distinct report formats.
 
 Render the current run status and ordered `RunEvent` records. The server supplies
 usage and status; the browser must not invent successful operations or metrics.

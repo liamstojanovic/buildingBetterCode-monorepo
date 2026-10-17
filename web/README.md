@@ -6,6 +6,11 @@ and Storybook toolchain; Bun manages dependencies and scripts.
 
 ## Start the end-to-end demo
 
+For the complete Windows/WSL2 Docker setup, including GPU JEV inference, the
+offline advisor and compact communication measurements, follow
+[demo_handoff.md](../demo_handoff.md). The commands below are the direct local
+development path.
+
 The working end-to-end path is **React frontend → local Python API → real Canopy
 runtime with synthetic handlers**. It needs no model credentials. The initial
 seven-step PortMiami cargo screen is a frontend mock; selecting **Live API** loads
@@ -62,22 +67,22 @@ Keep the data-source and synthetic labels visible in either case.
 
 Aligned with the October 17 [frontend handoff](../docs/FRONTEND_HANDOFF.md):
 
-| Capability                                                              | Current state                                                                                              |
-| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Runtime, recording, scoped reuse, freshness, budgets, approvals, replay | Implemented in `core/`; synthetic HTTP demo connected to this frontend                                     |
-| Live events                                                             | Synchronous `POST /runs` plus ordered event polling; async start/SSE remain backend work                   |
-| Hosted-model comparisons                                                | Python handlers and CLI implemented; import retained reports/stores using the converter below              |
-| PortMiami cargo execution                                               | Frontend mock; registered cargo handlers and representative provider benchmarks still needed               |
-| Drift containment and compact messaging                                 | Core components and smoke script; no dashboard HTTP endpoints or frontend report adapter                   |
-| Pollard-Jev/OpenJEV                                                     | Isolated native worker implemented; real local weight execution remains unverified in the team handoff     |
-| Optimization advisor                                                    | Offline core analyzer implemented; Optimization view imports its reports and displays unevaluated findings |
-| Automatic backend switching                                             | Not implemented; advisor findings do not activate a replacement backend                                    |
+| Capability | Current state |
+| --- | --- |
+| Runtime, recording, scoped reuse, freshness, budgets, approvals, replay | Implemented in `core/`; synthetic HTTP demo connected to this frontend |
+| Live events | Synchronous `POST /runs` plus ordered event polling; async start/SSE remain backend work |
+| Hosted-model comparisons | Python handlers and CLI implemented; import retained reports/stores using the converter below |
+| PortMiami cargo execution | Frontend mock; registered cargo handlers and representative provider benchmarks still needed |
+| Drift containment and compact messaging | Core components and smoke script; no dashboard HTTP endpoints or frontend report adapter |
+| Pollard-Jev/OpenJEV | Actual local inference evaluated against retained LLM calls in all three decision categories; standalone results page, no dedicated React adapter |
+| Optimization advisor | Offline core analyzer implemented; Optimization view imports its reports and displays unevaluated findings |
+| Automatic backend switching | Not implemented; advisor findings do not activate a replacement backend |
 
 The runtime executes an authored dependency graph **sequentially**. The local API
 registers synthetic handlers only; choosing a provider in a browser cannot enable
 hosted inference. The [advisor design](../docs/ADVISOR_DESIGN.md) and
-[benchmark handoff](../docs/BENCHMARK_HANDOFF.md) separate implemented offline discovery
-from future replacement evaluation and routing. The repository's GitHub Actions workflow
+[benchmark handoff](../docs/BENCHMARK_HANDOFF.md) distinguish implemented offline
+analysis/evaluation from future routing. The repository's GitHub Actions workflow
 currently checks the core; frontend checks below must be run separately.
 
 ## Components and checks

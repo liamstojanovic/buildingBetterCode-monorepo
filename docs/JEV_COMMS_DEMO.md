@@ -1,5 +1,9 @@
 # JEV evaluation and agent communication demo
 
+To rerun the complete demo in Docker on Windows/WSL2, use
+[demo_handoff.md](../demo_handoff.md). It includes the GPU image, explicit model
+download, complete-case capacity check and fresh results served beside this evidence.
+
 Open [the demo start page](../core/examples/recordings/index.html) in a browser.
 The pages contain their data and styling locally. Viewing them needs no model
 credentials, GPU, database or network connection. The team's frontend stays in

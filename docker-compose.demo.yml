@@ -1,0 +1,116 @@
+name: canopy-demo
+
+x-core: &core
+  image: canopy-demo-core:local
+  build:
+    context: .
+    dockerfile: deploy/demo/Dockerfile.core
+  init: true
+
+x-jev: &jev
+  image: canopy-demo-jev:local
+  build:
+    context: .
+    dockerfile: deploy/demo/Dockerfile.jev
+  init: true
+  profiles: [gpu]
+  shm_size: 1gb
+
+x-gpu: &gpu
+  resources:
+    reservations:
+      devices:
+        - driver: nvidia
+          count: 1
+          capabilities: [gpu]
+
+services:
+  fixtures:
+    <<: *core
+    command: [python, deploy/demo/init_fixtures.py, --output-dir, /demo-fixtures]
+    network_mode: none
+    volumes:
+      - demo-fixtures:/demo-fixtures
+    healthcheck:
+      disable: true
+
+  api:
+    <<: *core
+    command: [python, deploy/demo/start_api.py, --db, /data/api.sqlite3]
+    volumes:
+      - api-data:/data
+    ports:
+      - "127.0.0.1:${CANOPY_API_PORT:-8000}:8000"
+
+  web:
+    image: canopy-demo-web:local
+    build:
+      context: .
+      dockerfile: deploy/demo/Dockerfile.web
+    init: true
+    ports:
+      - "127.0.0.1:${CANOPY_WEB_PORT:-8080}:8080"
+    volumes:
+      - demo-fixtures:/demo-fixtures:ro
+      - ./.canopy/demo-results:/generated:ro
+    depends_on:
+      fixtures:
+        condition: service_completed_successfully
+      api:
+        condition: service_healthy
+
+  tools:
+    <<: *core
+    profiles: [tools]
+    network_mode: none
+    command: [python, core/scripts/component_smoke.py]
+    volumes:
+      - ./.canopy/demo-results:/results
+    healthcheck:
+      disable: true
+
+  # Explicit opt-in for fresh hosted calls; keys are passed with `run -e NAME`.
+  live-models:
+    <<: *core
+    profiles: [live]
+    command: [python, core/examples/live_comparison.py, --help]
+    volumes:
+      - ./.canopy/demo-results:/results
+    healthcheck:
+      disable: true
+
+  model-download:
+    <<: *jev
+    command: [/opt/jev-env/bin/python, deploy/demo/prepare_openjev.py, --cache-dir, /models]
+    volumes:
+      - openjev-model:/models
+
+  gpu-check:
+    <<: *jev
+    deploy: *gpu
+    network_mode: none
+    environment:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+    command: [/opt/jev-env/bin/python, deploy/demo/gpu_preflight.py, --cache-dir, /models]
+    volumes:
+      - openjev-model:/models:ro
+      - ./.canopy/demo-results:/results
+
+  jev:
+    <<: *jev
+    deploy: *gpu
+    network_mode: none
+    environment:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+    # The runbook supplies fresh output and journal paths for each invocation.
+    command: [python, core/examples/jev_recorded_comparison.py, --help]
+    volumes:
+      - openjev-model:/models:ro
+      - ./.canopy/demo-results:/results
+
+volumes:
+  demo-fixtures:
+  api-data:
+  openjev-model:
