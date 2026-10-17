@@ -1,0 +1,686 @@
+{
+  "schema_version": "1",
+  "report_type": "canopy.offline_advisor",
+  "analyzer_version": "offline-advisor-v1",
+  "generated_at": "2026-10-17T19:26:52.816168Z",
+  "tenant_id": "advisor-demo",
+  "source": "recording_store",
+  "source_integrity": "verified_recordings",
+  "limits": {
+    "max_runs": 1000,
+    "max_groups": 200,
+    "max_samples_per_group": 8,
+    "max_steps_per_run": 200,
+    "max_step_chars": 65536,
+    "max_seconds": 30.0,
+    "rank_by": "model_calls"
+  },
+  "analysis": {
+    "scanned_runs": 4,
+    "scanned_model_steps": 28,
+    "skipped_replay_runs": 0,
+    "skipped_incomplete_runs": 0,
+    "skipped_duplicate_runs": 0,
+    "skipped_oversized_steps": 0,
+    "skipped_group_observations": 0,
+    "limit_reasons": [],
+    "elapsed_ms": 39.927958001499064,
+    "model_calls": 0,
+    "tool_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd": null,
+    "energy_j": null
+  },
+  "recommendations": [
+    {
+      "recommendation_id": "advisor-3a8f0660f0040b5ead06c7449d1613031818d8a14e391debb2aaaeae0198b779",
+      "group_fingerprint": "canopy-json-v1:3a8f0660f0040b5ead06c7449d1613031818d8a14e391debb2aaaeae0198b779",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "choose_next_step",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "next_step",
+        "status": "needs_mapping",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "declared_choices"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed.",
+          "The current native bridge requires typed numeric observations and authored hypotheses."
+        ],
+        "required_changes": [
+          "Author and review a hypothesis for every eligible choice.",
+          "Map decision evidence to a supported representation without discarding its meaning.",
+          "Validate stopping, loops, missing transitions and state-dependent eligibility.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "retrieve",
+          "respond",
+          "clarify"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "requires_mapping"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "choose_next_step",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "choose_next_step",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "retrieve"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "choose_next_step",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "retrieve"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "choose_next_step",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "retrieve"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-4679ca2e10b3c51adac7cdd57d9874d449adbd75a98536786f17d23460a457e9",
+      "group_fingerprint": "canopy-json-v1:4679ca2e10b3c51adac7cdd57d9874d449adbd75a98536786f17d23460a457e9",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "choose_tool",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "tool_selection",
+        "status": "needs_mapping",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "declared_choices",
+          "tools"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed.",
+          "The current native bridge requires typed numeric observations and authored hypotheses."
+        ],
+        "required_changes": [
+          "Author and review a hypothesis for every eligible choice.",
+          "Bind existing arguments and enforce tool permissions and approvals at execution.",
+          "Map decision evidence to a supported representation without discarding its meaning.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "lookup_order",
+          "search_docs",
+          "clarify"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "requires_mapping"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "choose_tool",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "choose_tool",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "lookup_order"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "choose_tool",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "lookup_order"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "choose_tool",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "lookup_order"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-754377c17a41c04ce81b8d4e737927213b730c2a1658ed30dea81322d592fa6d",
+      "group_fingerprint": "canopy-json-v1:754377c17a41c04ce81b8d4e737927213b730c2a1658ed30dea81322d592fa6d",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "write_response",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "unknown",
+        "status": "unsupported",
+        "strategy": "retain_llm",
+        "signals": [
+          "declared_generation_requirement"
+        ],
+        "reasons": [
+          "The declared output requires generation and has no bounded selection contract."
+        ],
+        "blockers": [],
+        "required_changes": [],
+        "choices": [],
+        "partial_substitution": false,
+        "native_compatibility": "not_applicable"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "write_response",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "write_response",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "write_response",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "write_response",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": null
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-807a9d8abe47440d6a1c65671bb5b4dd1b65c70434d77151c241ddb6c5e2ce41",
+      "group_fingerprint": "canopy-json-v1:807a9d8abe47440d6a1c65671bb5b4dd1b65c70434d77151c241ddb6c5e2ce41",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "classify_ticket",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "business_decision",
+        "status": "needs_mapping",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "declared_choices"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed.",
+          "The current native bridge requires typed numeric observations and authored hypotheses."
+        ],
+        "required_changes": [
+          "Design an explicit text-evidence adapter.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "billing",
+          "technical",
+          "account"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "requires_text_adapter"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "classify_ticket",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "technical"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "technical"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "classify_ticket",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "technical"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-93d8680c6904ec39ef693cd472ed2900efaf71f5eeac59fc78b349acf765c823",
+      "group_fingerprint": "canopy-json-v1:93d8680c6904ec39ef693cd472ed2900efaf71f5eeac59fc78b349acf765c823",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "review_operations",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "business_decision",
+        "status": "candidate",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "declared_choices",
+          "native_choices",
+          "typed_numeric_observations_and_hypotheses"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed."
+        ],
+        "required_changes": [
+          "Preserve native request validity and map the proposal to the existing output contract.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "investigate",
+          "monitor"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "native_request_shape"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "review_operations",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "review_operations",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "investigate"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "review_operations",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "investigate"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "review_operations",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "investigate"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-97e292054cad0de0e1fa2751962964c7b95d8dad6bdfc7a76558a549ccec9713",
+      "group_fingerprint": "canopy-json-v1:97e292054cad0de0e1fa2751962964c7b95d8dad6bdfc7a76558a549ccec9713",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "check_threshold",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "business_decision",
+        "status": "candidate",
+        "strategy": "deterministic_function",
+        "signals": [
+          "declared_deterministic_rule"
+        ],
+        "reasons": [
+          "The application declares an explicit deterministic rule."
+        ],
+        "blockers": [
+          "The rule and equivalent outcomes still require independent validation."
+        ],
+        "required_changes": [
+          "Implement and benchmark the explicit rule as an ordinary function."
+        ],
+        "choices": [
+          "approve",
+          "review"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "not_applicable"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "check_threshold",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "check_threshold",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "approve"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "check_threshold",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "approve"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "check_threshold",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "approve"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    },
+    {
+      "recommendation_id": "advisor-fc5262b926cf8a64125f00adb0cc89e595712fecdc3a2c2d4c5150ca60c8af68",
+      "group_fingerprint": "canopy-json-v1:fc5262b926cf8a64125f00adb0cc89e595712fecdc3a2c2d4c5150ca60c8af68",
+      "workflow_id": "advisor-demo-workflow",
+      "step_id": "unmapped_decision",
+      "handler": "advisor.fixture",
+      "handler_version": "demo-v1",
+      "model_fingerprint": "synthetic-advisor-fixture-v1",
+      "prompt_version": "1",
+      "grouping_basis": "declared_template",
+      "finding": {
+        "category": "business_decision",
+        "status": "needs_mapping",
+        "strategy": "evaluate_openjev",
+        "signals": [
+          "declared_choices"
+        ],
+        "reasons": [
+          "An explicit bounded choice set makes this selection worth evaluating."
+        ],
+        "blockers": [
+          "An explicit acceptance and abstention rule is required; scores do not authorize execution.",
+          "Independent outcome evaluation and resource measurements have not been performed.",
+          "The current native bridge requires typed numeric observations and authored hypotheses."
+        ],
+        "required_changes": [
+          "Author and review a hypothesis for every eligible choice.",
+          "Map decision evidence to a supported representation without discarding its meaning.",
+          "Validate the candidate set against independent expected outcomes and missing-option cases."
+        ],
+        "choices": [
+          "accept",
+          "review"
+        ],
+        "partial_substitution": false,
+        "native_compatibility": "requires_mapping"
+      },
+      "observed": {
+        "observations": 4,
+        "completed": 3,
+        "failed": 0,
+        "blocked": 0,
+        "reused": 1,
+        "awaiting_approval": 0,
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cost_usd": null,
+        "elapsed_ms": null,
+        "unknown_token_observations": 0,
+        "unknown_cost_observations": 3,
+        "unknown_elapsed_observations": 1,
+        "synthetic_observations": 4
+      },
+      "samples": [
+        {
+          "run_id": "118b6fa4-fcd2-4950-85e1-c57dc9d6d129",
+          "step_id": "unmapped_decision",
+          "status": "reused",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": null
+        },
+        {
+          "run_id": "89d96fb2-0dd1-4b8b-912d-5cd6f5ee03c5",
+          "step_id": "unmapped_decision",
+          "status": "completed",
+          "mode": "governed",
+          "synthetic": true,
+          "selected_choice": "review"
+        },
+        {
+          "run_id": "0168e974-fd1f-42b0-9b58-6b90e9d7e59b",
+          "step_id": "unmapped_decision",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "review"
+        },
+        {
+          "run_id": "7f99444c-1a1a-41ce-8062-10607adc6cd1",
+          "step_id": "unmapped_decision",
+          "status": "completed",
+          "mode": "baseline",
+          "synthetic": true,
+          "selected_choice": "review"
+        }
+      ],
+      "sample_limit_reached": false,
+      "evaluation_status": "not_evaluated",
+      "estimated_savings_usd": null,
+      "measured_quality": null
+    }
+  ],
+  "limitations": [
+    "Structural recommendations are not evaluated replacements or execution authority.",
+    "Observed resource totals describe scanned records, not predicted savings or quality.",
+    "Replay runs are excluded; reused outputs do not add historical model usage.",
+    "Samples are bounded diagnostic references, not a representative evaluation dataset.",
+    "Time limits are cooperative; a source read or integrity check can exceed the deadline.",
+    "No model calls, routing changes, text adapter, or automatic activation are performed."
+  ]
+}

@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-for (const name of ["Task", "RunEvent", "RunResult", "RunConfig"]) {
+for (const name of ["Task", "RunEvent", "RunResult", "RunConfig", "AdvisorReport"]) {
   const schema = JSON.parse(
     await readFile(`${root}../core/schemas/${name}.schema.json`, "utf8"),
   );

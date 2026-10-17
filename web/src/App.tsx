@@ -3,6 +3,8 @@ import { Console, type SourceMode } from "./components/Console";
 import { HttpRunClient } from "./api/client";
 import { parseBundle, RecordedRunClient } from "./api/recorded";
 import { validateTask } from "./api/validation";
+import { readAdvisorFile, type AdvisorReport } from "./api/advisor";
+import { Optimization } from "./components/Optimization";
 import {
   unknownUsage,
   type ApprovalDetail,
@@ -101,6 +103,19 @@ function observer(dispatch: React.Dispatch<RunAction>): RunObserver {
 }
 
 export default function App() {
+  const [workspace, setWorkspace] = useState<"execution" | "optimization">(
+    "execution",
+  );
+  const [advisorReport, setAdvisorReport] = useState<AdvisorReport | null>(
+    null,
+  );
+  const [advisorOrigin, setAdvisorOrigin] = useState<"demo" | "import" | null>(
+    null,
+  );
+  const [advisorBusy, setAdvisorBusy] = useState(false);
+  const [advisorError, setAdvisorError] = useState<string | null>(null);
+  const advisorEpoch = useRef(0);
+  const advisorController = useRef<AbortController | null>(null);
   const [baseline, dispatchBaseline] = useReducer(
     runReducer,
     cargoTask,
@@ -142,13 +157,20 @@ export default function App() {
   const requestEpoch = useRef(0);
 
   useEffect(() => () => controller.current?.abort(), []);
+  useEffect(
+    () => () => {
+      advisorEpoch.current += 1;
+      advisorController.current?.abort();
+    },
+    [],
+  );
   useEffect(() => {
     const handle = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelected(null);
+      if (event.key === "Escape" && workspace === "execution") setSelected(null);
     };
     window.addEventListener("keydown", handle);
     return () => window.removeEventListener("keydown", handle);
-  }, []);
+  }, [workspace]);
 
   const reset = useCallback((task: Task) => {
     dispatchBaseline({ type: "reset", task });
@@ -549,8 +571,72 @@ export default function App() {
     }
   };
 
+  const importAdvisor = async (file: File) => {
+    const epoch = ++advisorEpoch.current;
+    advisorController.current?.abort();
+    setAdvisorBusy(true);
+    setAdvisorError(null);
+    try {
+      const report = await readAdvisorFile(file);
+      if (epoch !== advisorEpoch.current) return;
+      setAdvisorReport(report);
+      setAdvisorOrigin("import");
+    } catch (error) {
+      if (epoch === advisorEpoch.current)
+        setAdvisorError(error instanceof Error ? error.message : String(error));
+    } finally {
+      if (epoch === advisorEpoch.current) setAdvisorBusy(false);
+    }
+  };
+
+  const loadAdvisorDemo = async () => {
+    const epoch = ++advisorEpoch.current;
+    advisorController.current?.abort();
+    const abort = new AbortController();
+    advisorController.current = abort;
+    setAdvisorBusy(true);
+    setAdvisorError(null);
+    try {
+      const response = await fetch("/recordings/advisor-demo.json", {
+        signal: abort.signal,
+      });
+      if (!response.ok)
+        throw new Error(
+          "The bundled advisor demo could not be loaded. Import an advisor report instead.",
+        );
+      const report = await readAdvisorFile(await response.blob());
+      if (epoch !== advisorEpoch.current) return;
+      setAdvisorReport(report);
+      setAdvisorOrigin("demo");
+    } catch (error) {
+      if (!abort.signal.aborted && epoch === advisorEpoch.current)
+        setAdvisorError(error instanceof Error ? error.message : String(error));
+    } finally {
+      if (epoch === advisorEpoch.current) setAdvisorBusy(false);
+    }
+  };
+
   return (
     <Console
+      activeWorkspace={workspace}
+      onWorkspace={setWorkspace}
+      advisorSourceLabel={
+        advisorOrigin === "demo"
+          ? "SYNTHETIC ADVISOR DEMO"
+          : advisorOrigin === "import"
+            ? "IMPORTED ADVISOR REPORT"
+            : "NO ADVISOR REPORT"
+      }
+      optimization={
+        <Optimization
+          report={advisorReport}
+          origin={advisorOrigin}
+          busy={advisorBusy}
+          error={advisorError}
+          onImport={(file) => void importAdvisor(file)}
+          onLoadDemo={() => void loadAdvisorDemo()}
+        />
+      }
       baseline={baseline}
       canopy={canopy}
       scenario={scenario}

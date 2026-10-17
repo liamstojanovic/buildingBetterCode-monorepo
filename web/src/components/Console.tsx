@@ -1,5 +1,5 @@
 import { projectImpact } from "../state/impact";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Activity,
   ArrowDownRight,
@@ -58,6 +58,10 @@ import { ExecutionGraph, statusLabels } from "./ExecutionGraph";
 
 export type SourceMode = "mock" | "recorded" | "live";
 export interface ConsoleProps {
+  activeWorkspace?: "execution" | "optimization";
+  onWorkspace?: (workspace: "execution" | "optimization") => void;
+  optimization?: ReactNode;
+  advisorSourceLabel?: string;
   baseline: RunState;
   canopy: RunState;
   scenario: Scenario;
@@ -529,6 +533,7 @@ function Impact({
 
 export function Console(props: ConsoleProps) {
   const { baseline, canopy, sourceMode, scenario, busy, selected } = props;
+  const isOptimization = props.activeWorkspace === "optimization";
   const [methodology, setMethodology] = useState(false);
   const [presentation, setPresentation] = useState(false);
   const usage = currentUsage(canopy);
@@ -559,23 +564,37 @@ export function Console(props: ConsoleProps) {
       ? baselineUsage.cost_usd - usage.cost_usd
       : null;
   return (
-    <div className={`app-shell${presentation ? " presentation" : ""}`}>
+    <div
+      className={`app-shell${presentation && !isOptimization ? " presentation" : ""}${isOptimization ? " optimization-active" : ""}`}
+    >
       <aside className="rail">
         <a className="brand-mark" href="#" aria-label="Canopy home">
           <Leaf size={23} />
         </a>
-        <div className="rail-links">
-          <a
-            className="rail-link active"
-            href="#execution"
+        <nav className="rail-links" aria-label="Workspace navigation">
+          <button
+            className={`rail-link${!isOptimization ? " active" : ""}`}
+            aria-current={!isOptimization ? "page" : undefined}
+            onClick={() => props.onWorkspace?.("execution")}
             aria-label="Execution workspace"
+            title="Execution"
           >
             <GitBranch size={20} />
-          </a>
+          </button>
+          <button
+            className={`rail-link${isOptimization ? " active" : ""}`}
+            aria-current={isOptimization ? "page" : undefined}
+            onClick={() => props.onWorkspace?.("optimization")}
+            aria-label="Optimization workspace"
+            title="Optimization"
+          >
+            <Sparkles size={20} />
+          </button>
           <a
             className="rail-link"
             href="#evidence"
             aria-label="Source evidence"
+            onClick={() => props.onWorkspace?.("execution")}
           >
             <Layers3 size={20} />
           </a>
@@ -583,13 +602,17 @@ export function Console(props: ConsoleProps) {
             className="rail-link"
             href="#impact"
             aria-label="Enterprise impact"
+            onClick={() => props.onWorkspace?.("execution")}
           >
             <Activity size={20} />
           </a>
-        </div>
+        </nav>
         <button
           className="rail-link rail-help"
-          onClick={() => setMethodology(true)}
+          onClick={() => {
+            props.onWorkspace?.("execution");
+            setMethodology(true);
+          }}
           aria-label="Methodology and demo guide"
         >
           <Code2 size={19} />
@@ -602,21 +625,27 @@ export function Console(props: ConsoleProps) {
         <header className="topbar">
           <div className="wordmark">
             canopy<span>/</span>
-            <span className="workspace-name">Execution studio</span>
+            <span className="workspace-name">
+              {isOptimization ? "Optimization" : "Execution studio"}
+            </span>
           </div>
           <div className="topbar-right">
             <span className="event-tag">eMerge AI · Miami 2026</span>
-            <span className={`source-badge source-${sourceMode}`}>
+            <span
+              className={`source-badge source-${isOptimization ? "advisor" : sourceMode}`}
+            >
               <i />
-              {sourceMode === "mock"
-                ? "MOCK DATA"
-                : sourceMode === "recorded"
-                  ? "RECORDED"
-                  : "LIVE API"}
+              {isOptimization
+                ? (props.advisorSourceLabel ?? "NO ADVISOR REPORT")
+                : sourceMode === "mock"
+                  ? "MOCK DATA"
+                  : sourceMode === "recorded"
+                    ? "RECORDED"
+                    : "LIVE API"}
             </span>
           </div>
         </header>
-        <main>
+        <main hidden={isOptimization} aria-label="Execution workspace content">
           <div className="hero">
             <div>
               <div className="eyebrow">
@@ -1053,8 +1082,15 @@ export function Console(props: ConsoleProps) {
             </button>
           </footer>
         </main>
+        <main
+          hidden={!isOptimization}
+          className="optimization-main"
+          aria-label="Optimization workspace content"
+        >
+          {props.optimization}
+        </main>
       </div>
-      {selected && inspectedStep && (
+      {!isOptimization && selected && inspectedStep && (
         <Inspector
           state={inspectedState}
           step={inspectedStep}
@@ -1066,7 +1102,7 @@ export function Console(props: ConsoleProps) {
           onLoadApproval={props.onLoadApproval}
         />
       )}
-      {methodology && (
+      {!isOptimization && methodology && (
         <div className="modal-backdrop" onClick={() => setMethodology(false)}>
           <section
             className="methodology-modal"

@@ -1,0 +1,8 @@
+{
+  "source_script": "core/examples/advisor_demo.py",
+  "source_commit": "c4e985c8c7f0d1ff533c97933cec2cc12d5b26ed",
+  "generated_at": "2026-10-17T19:26:52.816168Z",
+  "report_sha256": "71d980c5daccca772c04783fffb738781e9bb4122c2fb54049f06f48f6ee15ef",
+  "synthetic": true,
+  "description": "Actual offline analysis of seven groups of synthetic Python handler recordings. No hosted model or OpenJEV inference, quality evaluation, or savings estimate."
+}
