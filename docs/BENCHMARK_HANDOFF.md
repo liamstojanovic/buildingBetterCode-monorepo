@@ -120,28 +120,72 @@ explicitly synthetic encoders. Hosted smoke calls have verified connectivity
 and accounting for selected OpenAI, Anthropic and Gemini models; they do not
 establish comparative quality. Keep these claims distinct in the demo.
 
-## Proposed advisor evaluation: not implemented
+## Implemented offline advisor; evaluation owned by the benchmark
 
-Automatic candidate detection, recommendation records, a text-premise adapter,
-dynamic backend selection, calibrated abstention and LLM fallback are proposed
-extensions. The current comparison CLI does not implement them. Coordinate the
-interface with the core owner using [the advisor design](ADVISOR_DESIGN.md).
-Do not treat mock recommendations as measured results.
+Offline discovery and strict recommendation reports are implemented. The
+[advisor guide](../core/docs/advisor.md) documents Python functions, limits and
+optional descriptors. Analyze a comparison without making another model call:
 
-The cheap detection hypothesis is to inspect existing trace structure offline:
-declared finite outputs, tool allowlists, stable candidate schemas, repeated
-prompt versions and observed selection-only outputs. Analyze a capped,
-stratified sample per workflow/template fingerprint, then reuse the finding
-until relevant versions or behavior change. Small observed output cardinality
-is a useful lead, not evidence that the candidate set is complete.
+```powershell
+.venv\Scripts\python.exe -m canopy.advisor_cli --report .canopy\comparisons\YOUR_RUN\report.json --tenant-id YOUR_TENANT --output .canopy\advisor-benchmark.json
+```
+
+Or use `--db PATH` for a recording store. Tenant is required and the output path
+must be new. Imports are validated; only the store path verifies source recordings.
+A credential-free example executes synthetic handlers and analyzes their records:
+
+```powershell
+.venv\Scripts\python.exe core\examples\advisor_demo.py --output-dir .canopy\advisor-demo
+```
+
+Output follows [AdvisorReport.schema.json](../core/schemas/AdvisorReport.schema.json).
+States are `candidate`, `needs_mapping`, `unsupported`; each recommendation is
+`not_evaluated`. Quality/savings are null and synthetic observations are counted.
+No text adapter, replacement evaluation, calibrated abstention, backend switching
+or fallback was added.
+
+Discovery uses choices, enum schemas, catalogs, transitions and output clues.
+Optional [DecisionDescriptor](../core/schemas/DecisionDescriptor.schema.json)
+annotations identify template/version and explicitly named instance fields;
+unlisted data stays exact and protected schema/catalog fields remain in the group.
+Compare annotated and unannotated detection separately. Unannotated instances
+may conservatively split instead of guessing prompt boundaries. Low output
+cardinality is not proof of complete candidates. Saved reports allow comparison,
+but there is no automatic recommendation cache or background invalidation.
+Grouping fingerprints are analysis identities, never result-cache keys.
 
 Evaluate the detector separately from the proposed replacement. A detector can
 find a structurally plausible call whose OpenJev execution is inaccurate,
 slower or more expensive. Independently label candidate groups as suitable,
-partially suitable, unsuitable or requiring more information. Measure useful
-candidate precision/recall, unsupported recommendations, analysis cost per
-group, stale-recommendation rate and ranking benefit. Keep discovery samples
-separate from the final held-out substitution test set.
+partially suitable, unsuitable or requiring more information. Measure candidate
+precision/recall, false positives, grouping errors and ranking benefit. Keep
+discovery samples separate from the final held-out substitution test set.
+
+Detection challenge cases should include short open-ended answers, missing or
+incomplete choices, arbitrary arguments, required explanations, changed catalogs
+under one template, changed prompt/model/schema versions, varying instance shapes,
+malformed descriptors, different tenants, duplicate/replay records, mixed
+synthetic/real observations, oversized inputs and unknown usage. Check that
+mapping/argument/explanation gaps remain visible. Native-shape detection is not
+successful inference.
+
+Measure wall-clock time and memory around the entire command alongside
+`analysis.elapsed_ms`. CLI elapsed time includes source setup/import, opening,
+verification and analysis; it excludes serialization/publication. Python API
+timing excludes caller setup. The `max_seconds` limit applies inside analysis,
+cooperatively between reads/steps, not as hard I/O cancellation. Imports have a
+separate 32 MiB size cap. Retain `limits`,
+`limit_reasons`, skipped counts, samples, observation counts, source integrity
+and analyzer version. Limit-reached reports do not establish exhaustive coverage:
+`max_runs` is reported on reaching the cap without fetching an extra record to
+check exhaustion, including when the source happens to contain exactly the cap.
+Sweep input sizes and run/group/sample bounds; measure CPU/I/O separately from
+the zero analysis model/tool-call counters. Price resources only with a stated
+basis. Check that recording data/runtime behavior are unchanged. Replay is
+excluded and reuse does not duplicate historical inference usage.
+
+Future monitoring can evaluate stale recommendations, but there is no automatic
+validity or drift mechanism in this release. See [the design](ADVISOR_DESIGN.md).
 
 ## Workloads and independent quality
 
@@ -216,9 +260,10 @@ is insufficient evidence of production savings or acceptable accuracy.
 
 Keep measured values, estimates and unknowns separate. Include:
 
-- Advisor trace capture, grouping, feature extraction, sample analysis and any
-  occasional analysis-model calls; report setup totals and amortization over an
-  explicit observed or assumed number of executions.
+- Advisor trace capture, grouping, feature extraction and sample analysis;
+  current offline discovery makes no analysis-model calls. Include any future
+  semantic-analyzer calls separately. Report setup totals and amortization over
+  an explicit observed or assumed number of executions.
 - Candidate/hypothesis authoring and revision, evidence retrieval, input
   conversion, argument extraction and output normalization.
 - Worker startup/loading, resident model resources, local inference, queueing,
@@ -265,7 +310,8 @@ that violation. Fallback must fit the remaining budget and preserve the same
 tool authorization boundary. Keep prompt-injection/tool-misuse challenges in a
 clearly labeled suite alongside ordinary quality cases.
 
-For the first handoff, deliver one reproducible current-provider report, its
-independent scorer and labeled cases, followed by an explicitly proposed
+For the first handoff, deliver a reproducible current-provider report, its
+independent scorer and labeled cases, plus an advisor report with independently
+labeled detection expectations and measured analysis overhead. Follow with the
 cross-backend experiment specification. The core owner can then implement the
 smallest required mapping/routing contract without taking over the benchmark.

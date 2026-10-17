@@ -1,198 +1,151 @@
-# Workflow optimization advisor: discussion design
+# Offline workflow optimization advisor
 
-Status: **proposed, not implemented**. Updated October 17, 2026.
-The user wants recommendations for business decisions, tool selection, and
-agent next-step decisions, and asked to discuss the design before implementation.
-This document is a planning reference, not an implemented API or an instruction
-to build the feature without the next scope decision.
+Status: **implemented offline discovery**. Updated October 17, 2026.
+The advisor identifies recorded business decisions, tool selection and next-step
+choices that merit OpenJEV evaluation. See the [runnable guide](../core/docs/advisor.md).
 
-The advisor would identify recurring LLM operations that could use OpenJEV,
-explain the transformation, and attach evidence of quality and resource savings.
-Structural suitability, acceptable outcomes, and beneficial performance are
-separate findings. A candidate recommendation establishes only the first.
+Structural suitability, acceptable outcomes and beneficial performance are
+separate findings. This release establishes structural leads. Recommendations
+never authorize execution, validate quality or change a workflow.
 
-## Current foundation and missing capabilities
+## Implemented boundary
 
-Implemented: versioned handler registration, recorded Task/config/step outputs,
-usage and events, validity-aware reuse, budgets, policy/approval checks, hosted
-model adapters, and a native Pollard-Jev worker. See [live models](../core/docs/live_models.md).
+- Python analysis functions and a CLI read a recording store or a live-comparison
+  report. Discovery is offline, tenant-scoped and bounded. No network, model or
+  tool calls are made; provider credentials are unnecessary.
+- Versioned grouping uses declared template boundaries where available and
+  conservative exact-input identities otherwise. Group fingerprints are never
+  execution-cache keys.
+- Reports include reasons, blockers, required changes, observed resources,
+  bounded sample references, source integrity and analysis limits/timing.
+- Finding states are `candidate`, `needs_mapping` and `unsupported`.
+  Every recommendation has `evaluation_status: not_evaluated`; quality and
+  estimated savings remain null.
 
-The current runtime executes a declared DAG. It does not implement an adaptive
-agent loop, conditional tool dispatch, a recommendation service, recommendation
-endpoints, shadow evaluation, or automatic model switching. Hosted adapters do
-not currently expose a provider tool-calling protocol. Tool names in a registry
-are not automatically a semantic description of what those tools do.
+Not implemented: an advisor HTTP endpoint, background scheduler, semantic LLM
+analyzer, persisted recommendation cache, replacement evaluation, general text
+adapter, automatic backend switching, fallback route or adaptive agent loop.
+Saving a report retains a snapshot; reruns recompute bounded heuristics. Report
+retention does not implement automatic invalidation or drift monitoring.
 
-The native worker uses pollard-jev 0.13, pollard 1.6.0, and a pinned OpenJEV v2
-checkpoint. Its request accepts typed numeric observations and explicit candidate
-hypotheses. Generic ticket/document text needs an explicit text-evidence design;
-do not pretend it already works by numerically encoding arbitrary text or hiding
-it in unrelated fields. Real OpenJEV weight execution remains unverified in this
-workspace. Synthetic-encoder tests validate integration, not task accuracy.
+The native bridge uses pollard-jev 0.13, pollard 1.6.0 and a pinned OpenJEV v2
+checkpoint. It accepts numeric observations and explicit hypotheses. Text-based
+recommendations identify an adapter gap. Real local OpenJEV inference remains
+unverified here; synthetic-encoder tests cover integration, not task accuracy.
+See [live models](../core/docs/live_models.md).
 
-## Detect opportunities without analyzing every request with another LLM
+## Detection without a per-call analysis model
 
-Use two paths: ordinary execution continues with its current handler, while a
-bounded background analysis reads existing tenant-scoped recordings. The first
-release should run as an explicit offline analysis command; a periodic service
-could follow later. No analyzer network call belongs in the execution path.
+The analyzer inspects recorded model steps, not every hidden call inside arbitrary
+handlers. It combines optional `DecisionDescriptor` declarations with structural
+clues: finite choices, output enums, tool catalogs, allowed next steps and
+selection-shaped results. Declarations are application-supplied analysis evidence,
+not permission grants or proof that all valid candidates are included.
 
-1. **Collect existing evidence.** Start with run/step latency, known usage,
-   handler identity, prompt configuration, inputs, output shapes, and repeat
-   counts. Future framework adapters can attach tool descriptions, JSON output
-   schemas, allowed choices and prompt-template identifiers automatically.
-   Instrumented calls are observable; calls hidden inside arbitrary handlers or
-   made outside Canopy are not automatically discovered.
-2. **Group recurring call sites.** Group by tenant, workflow/call site, handler
-   and prompt-template revision, model configuration, output/evidence schema,
-   candidate or tool catalog revision, and applicable policy/mapping revision.
-   Do not group by the entire instance prompt, which changes per ticket. Do not
-   strip unknown prompt content to force a match: if template boundaries are
-   unavailable, use conservative exact groups or mark the structure unknown.
-   This is an analysis-group identity, never a result-cache key; different
-   customer inputs still require distinct execution/reuse identities.
-3. **Apply cheap structural checks.** Fixed enums, small explicit choice sets,
-   selection-only output schemas, named tool selections, and stable transitions
-   are positive signals. Open text generation, unconstrained arguments, unknown
-   candidate discovery, or required information absent from the input are
-   counter-signals. Short responses and low observed output diversity are only
-   hints: rare valid choices may not appear in a sample.
-4. **Prioritize valuable groups.** Rank by call volume and measured spend or
-   latency. Keep unknown cost unknown; use measured latency/frequency instead.
-   Start with groups that are both plausibly substitutable and material to the
-   workflow. Explicit arithmetic/rules can receive a deterministic-function
-   recommendation rather than a model recommendation.
-5. **Inspect a bounded sample.** Review a stratified sample including unusual
-   inputs, failures, long contexts, and different output categories. An optional
-   LLM can analyze the template and sample once per version to propose task type,
-   hypotheses, evidence mapping and blockers. Treat those proposals as untrusted
-   suggestions, not executable mappings or correctness evidence. The semantic
-   analyzer is optional; structural discovery should work without credentials.
-6. **Cache the finding and re-evaluate deliberately.** Persist the recommendation
-   against its versioned group. Revisit on relevant schema/template/catalog/model
-   changes, an explicit request, or monitored workload changes. Do not re-run
-   semantic discovery for every fresh instance or exact-repeat cache hit.
+Output brevity, repeated labels and a small observed action set are only clues.
+Open generation, missing mappings, required prose and generated arguments remain
+visible as blockers or retained work. A candidate recommendation does not claim
+that the replacement will be correct or efficient.
 
-For example, 10,000 calls to one stable template could produce one group analysis
-plus a capped sample review, instead of 10,000 analysis-model calls. This is a
-design illustration, not a measured overhead or savings claim.
+Grouping binds workflow/step, handler/model/prompt revisions, descriptor and
+relevant structural inputs. Template ID/version plus explicitly named
+`instance_fields` allow those top-level instance inputs to vary while retaining
+their shape. Catalogs, choices, instructions and output schemas remain protected;
+undeclared input values remain exact. Without template boundaries, exact-input
+grouping sacrifices recall instead of guessing which prompt content is incidental.
+Change template versions when meaning changes. The fingerprint identifies an
+operation for review, not reusable output for different customer requests.
 
-Analysis should have independent limits on groups, samples, tokens, elapsed time,
-and monetary spend where known. Full queues defer analysis without delaying
-business execution. Track analysis/setup cost and repeated evaluation cost
-separately. A design target is zero added synchronous model calls for discovery;
-actual recording/queue/lookup overhead must be measured before making a latency
-claim. Existing records can be used offline with no new hot-path instrumentation.
+Limits cover runs, groups, retained samples, steps per run, step representation
+size and elapsed time. Limit reasons and skipped counters identify potentially
+partial reports. Reaching `max_runs` reports that cap without reading one extra
+record to determine whether the source is exhausted. Time checks apply inside
+analysis, cooperatively between reads/steps, not hard cancellation of slow I/O.
+CLI elapsed time also includes source setup/import/verification and excludes
+output serialization. Ranking uses observed calls, elapsed time or known cost,
+not predicted savings. Unknown resources stay unknown; synthetic observations
+are counted. Replay runs are excluded and reused steps do not duplicate historical
+inference usage.
+
+No analyzer enters runtime execution. Offline CPU/I/O still cost resources; measure
+the full command before claiming negligible overhead. There is no repeated
+analysis-model charge. Large input imports still require parsing and validation.
 
 ## Eligibility by decision family
 
-| Family | Positive evidence | Required separation or blocker |
+| Family | Positive evidence | Remaining work or blocker |
 | --- | --- | --- |
-| Business decision | Explicit facts, bounded labels, downstream needs a choice | Text evidence needs a supported mapping; arithmetic may be better as code |
-| Tool selection | Known tool catalog, state-specific eligible tools, output is tool identity | Selection is separate from generating arguments and executing the tool |
-| Next step | Authored transitions and explicit state, e.g. fetch evidence, ask, respond, stop | Inventing a plan or new actions remains open-ended; stopping needs validation |
-| Mixed decision and prose | A choice field and an explanation field have distinct consumers | Replace only the bounded choice; count retained generation and conversion |
+| Business decision | Supplied facts and bounded labels | Text needs an adapter; arithmetic/rules may suit ordinary code |
+| Tool selection | Declared tools and selected tool identity | Argument generation, authorization, validation and execution remain separate |
+| Next step | Authored transitions and explicit state | Open-ended plans, absent actions, loops and stopping need evaluation |
+| Mixed choice and prose | Separable choice and explanation consumers | Retained generation and input conversion must be counted |
 
-For tool selection, obtain eligible tools from trusted application state and
-permissions, then evaluate authored descriptions/hypotheses. The execution gate
-must still validate the chosen tool, arguments, permissions and approvals just
-before dispatch. A score does not authorize a business write.
+Tool eligibility must eventually come from trusted state and permissions. An
+execution gate still needs to validate tool, arguments and approval before
+execution. Scores cannot authorize a write. Next-step evaluation needs complete
+state and transitions, including ask, refresh, review and stop where applicable.
+Candidate filtering must preserve an acceptable option. If constructing state or
+hypotheses requires another model call, include that work in the experiment.
 
-For next steps, bind the recommendation to a versioned transition vocabulary and
-state representation. Include applicable stop, ask-for-evidence, or escalation
-outcomes, and evaluate premature stopping and loops. Runtime state changes still
-require normal dispatch checks. Creating the state summary or candidates with an
-LLM every turn incurs cost and can remove the benefit; prefer existing structured
-state and reusable candidate templates where they preserve the decision inputs.
+## Implemented report contract
 
-Candidate filtering must preserve the correct option. Large catalogs can make
-pairwise scoring expensive; evaluate shortlist recall as well as selector quality.
-Abstain when evidence is insufficient or the valid action is outside the set.
-Do not assume a small observed action set exhausts all valid actions.
+Wire models: [AdvisorReport](../core/schemas/AdvisorReport.schema.json),
+[DecisionDescriptor](../core/schemas/DecisionDescriptor.schema.json), and
+[AdvisorLimits](../core/schemas/AdvisorLimits.schema.json). The
+[frontend handoff](FRONTEND_HANDOFF.md) covers import and rendering.
 
-## Proposed recommendation record, not a wire contract
+A finding explains category, strategy, choices, signals, reasons, blockers,
+required changes, partial substitution and native compatibility. Its surrounding
+recommendation carries versioned identity, observed metrics and bounded run/step
+references. Reports omit full prompts and evidence payloads; choice labels and
+identifiers remain application data belonging to the intended tenant.
 
-The frontend can prototype this information using explicitly labelled fixtures.
-No current JSON Schema, handler or HTTP route implements this record.
-
-| Information | Purpose |
-| --- | --- |
-| Recommendation ID; tenant/workflow/step; versioned group identity | Identify the exact recurring operation |
-| Category: business_decision, tool_selection, next_step | Explain which part is replaceable |
-| Status: candidate, needs_mapping, evaluating, validated, not_beneficial, unsupported | Separate discovery from evidence-backed recommendation |
-| Current backend and proposed strategy/checkpoint | Make the alternative specific |
-| Reasons and observed sample/run references | Explain why the advisor flagged it |
-| Required evidence/candidate/output mapping and blockers | Make the work needed reviewable |
-| Evaluation version, case counts, quality/errors, coverage, fallback | Establish where the alternative works |
-| Cold/warm latency, throughput, overhead and cost basis | Establish whether it saves resources |
-| Validity scope, last evaluation, invalidation reasons | Prevent stale recommendations being presented as current |
-
-Unknown measurements should be null/not evaluated. Mock fixtures must never show
-invented savings as observed results. Do not use an unexplained suitability
-probability; concrete reasons are more useful until such a probability is itself
-validated. Lifecycle transitions and activation UI remain design decisions.
+`candidate` means a structural lead for evaluation; `needs_mapping` means
+prerequisites are incomplete; `unsupported` preserves a negative finding.
+`evaluating`, `validated` and `not_beneficial` are future evaluation states, not
+current schema values. Do not invent an activation control in the frontend.
 
 ## Evaluation and later activation
 
-Discover candidates on a development sample, choose mappings/thresholds using a
-separate tuning set, and report on a held-out evaluation set. Repeated templates
-and near-duplicate cases should not leak across the splits. Expected business
-outcomes must be independent of either compared model.
+The benchmark teammate evaluates discovery separately from substitution. Label
+groups independently and measure precision/recall, false positives, ranking utility
+and overhead. Then establish mappings, independent labels, held-out quality,
+coverage, abstention and costs for a proposed replacement. See
+[benchmark handoff](BENCHMARK_HANDOFF.md).
 
-Compare the original LLM and JEV-assisted versions, with and without Canopy reuse;
-include a deterministic alternative where applicable. Preserve equivalent facts
-and downstream output semantics. The existing four-run CLI is a within-backend
-cache comparison, not this cross-backend quality benchmark. See
-[benchmark handoff](BENCHMARK_HANDOFF.md) for the proposed evaluation matrix.
+Compare original and JEV-assisted workflows with and without Canopy reuse;
+include a deterministic baseline where appropriate. The current live comparison
+CLI compares cache behavior within one backend, not cross-backend quality.
 
-The package proposes the highest-entailment option; its proposal/evidence label
-does not implement a business acceptance rule. A separate, workload-validated
-accept/abstain rule must handle weak support, ties, all-neutral results and several
-supported candidates. Scores are independent across hypotheses; a runner-up
-margin alone is not a general correctness guarantee.
+Pollard-Jev proposes the highest-entailment option even for weak/tied scores.
+A future route needs a workload-validated acceptance rule. Independent entailment
+scores are not correctness probabilities. Explicit activation and fallback would
+remain subject to permissions, evidence validity and remaining budgets.
 
-Later explicit activation could install a versioned JEV-first route with an
-original-handler fallback. On ambiguous decisions, fallback remains subject to
-policy and the remaining budget, and both attempts are charged. Missing/stale
-evidence requires refresh or refusal; authorization failure is not repaired by a
-different model. A worker failure and uncertain model result need distinct
-reasons. A recommendation must not silently mutate a live registry or workflow.
-
-Approximate per-request resource accounting:
+Approximate per-request cost is:
 
 `preparation + JEV inference + fallback rate * original LLM cost + retained work`
 
-Add amortized analyzer/mapping/evaluation/setup cost. Measure end-to-end p95 latency
-separately; an expected-cost formula does not predict tail latency or queueing.
-Keep local classifier token counts distinct from hosted billing tokens, and
-energy unknown until measured. Do not credit cache savings to model substitution.
+Add amortized discovery, mapping, evaluation and startup costs. Measure tail
+latency separately. Local NLI tokens and hosted billable tokens are different
+units; energy remains unknown unless measured. Cache savings are not substitution
+savings.
 
-## Suggested hackathon increment and ownership
+## Demo and ownership
 
-First implement discovery and explanations for all three families. Validate one
-bounded semantic workload deeply, then add tool identity and next-step examples
-with existing arguments and authored transitions. Treat a full autonomous planner
-or arbitrary tool-argument generator as separate scope.
+Generate the real offline report from seven synthetic recorded groups across all
+three families. Open the native-shaped `review_operations` candidate, then the
+text/tool/next-step mapping gaps, retained generation and deterministic-rule
+alternative. The native-shaped finding uses predetermined fixture output, not
+OpenJEV execution. The analyzer runs for real; the data is synthetic and the
+recommendations unevaluated.
 
-- Core owner: analyzer/record contracts, bounded trace grouping, capability
-  matching, mappings, evaluation hooks, and later accepted routing behavior.
-- Benchmark teammate: independent cases/labels, scoring and resource comparison,
-  candidate coverage, fallbacks, and measurement of analyzer overhead.
-- Frontend teammate: opportunity cards, reasons/blockers, evidence-backed
-  comparisons, and existing execution/approval/replay inspection. See
-  [frontend handoff](FRONTEND_HANDOFF.md).
+- Core: analysis, grouping, contracts, CLI and reproducible examples.
+- Benchmark teammate: independent detection labels, substitution quality,
+  candidate coverage, fallback behavior and measured overhead.
+- Frontend teammate: report import, opportunities, reasons/blockers, provenance,
+  metric handling and existing execution/approval/replay screens.
 
-Open choices before implementation: text-evidence adapter shape; initial labeled
-workloads; whether first delivery stops at offline recommendations; the optional
-semantic analyzer's budget; acceptance criteria for each decision family.
-
-## Source and implementation references
-
-- [Current Canopy native bridge](../core/src/canopy/pollard_jev.py)
-- [Current native worker](../core/src/canopy/_pollard_jev_worker.py)
-- [Pollard-Jev request contracts](https://github.com/jemsbhai/pollard-jev/blob/main/src/pollard_jev/contracts.py)
-- [Pollard-Jev OpenJEV provider](https://github.com/jemsbhai/pollard-jev/blob/main/src/pollard_jev/providers/openjev.py)
-- [OpenJEV model card](https://huggingface.co/AlexWortega/openjev)
-
-Upstream main can change. The current Canopy package/model pins are documented in
-the live-model guide; future model migrations need their own evaluation identity.
+Next design work includes text-evidence mapping, labeled substitution workloads,
+acceptance criteria and explicit activation. Future monitoring must bind evaluated
+recommendations to revisions and observed workload changes.

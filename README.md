@@ -11,7 +11,8 @@ in `web/`. The benchmark is independently owned by another teammate.
 - [Team setup and integration handoff](docs/TEAM_HANDOFF.md)
 - [Frontend integration and demo guide](docs/FRONTEND_HANDOFF.md)
 - [Benchmark teammate guide](docs/BENCHMARK_HANDOFF.md)
-- [Workflow optimization advisor proposal (not implemented)](docs/ADVISOR_DESIGN.md)
+- [Offline workflow optimization advisor](core/docs/advisor.md)
+- [Advisor design and future evaluation/routing](docs/ADVISOR_DESIGN.md)
 - [Core component ownership and execution semantics](docs/CORE_BUILD_PLAN.md)
 - [Shared Python contracts](core/src/canopy/contracts.py)
 
@@ -36,6 +37,22 @@ The first command exercises all adapters, including fixed policy probes, control
 containment, compact messages and duplicate delivery. The second prints the full
 run records for baseline, cold/warm reuse, source change, budget refusal and replay.
 Both use synthetic Python handlers and make zero live provider requests.
+
+Discover optimization opportunities in recorded business decisions, tool choices,
+and next-step selections without making another model call:
+
+```sh
+python core/examples/advisor_demo.py --output-dir .canopy/advisor-demo
+python -m canopy.advisor_cli --db YOUR_RECORDINGS.sqlite3 --tenant-id YOUR_TENANT --output .canopy/advisor-report.json
+```
+
+The demo produces actual synthetic recordings and an importable advisor report.
+The advisor reads records offline, groups recurring operations, and explains
+candidate substitutions, mapping gaps, deterministic alternatives and retained
+generation. Recommendations are unevaluated; quality, savings, text-evidence
+conversion and automatic routing remain separate work. See the
+[advisor guide](core/docs/advisor.md) for supported inputs, grouping hints, limits
+and the frontend report schema.
 
 For real inference, install `python -m pip install -e "core[models]"`, set the
 selected provider's key in the environment, then run:

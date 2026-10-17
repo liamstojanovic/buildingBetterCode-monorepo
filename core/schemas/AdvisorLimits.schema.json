@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "max_runs": {
+      "default": 1000,
+      "maximum": 100000,
+      "minimum": 1,
+      "title": "Max Runs",
+      "type": "integer"
+    },
+    "max_groups": {
+      "default": 200,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Max Groups",
+      "type": "integer"
+    },
+    "max_samples_per_group": {
+      "default": 8,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Max Samples Per Group",
+      "type": "integer"
+    },
+    "max_steps_per_run": {
+      "default": 200,
+      "maximum": 10000,
+      "minimum": 1,
+      "title": "Max Steps Per Run",
+      "type": "integer"
+    },
+    "max_step_chars": {
+      "default": 65536,
+      "maximum": 10000000,
+      "minimum": 256,
+      "title": "Max Step Chars",
+      "type": "integer"
+    },
+    "max_seconds": {
+      "default": 30,
+      "exclusiveMinimum": 0,
+      "maximum": 3600,
+      "title": "Max Seconds",
+      "type": "number"
+    },
+    "rank_by": {
+      "default": "model_calls",
+      "enum": [
+        "model_calls",
+        "elapsed_ms",
+        "cost_usd"
+      ],
+      "title": "Rank By",
+      "type": "string"
+    }
+  },
+  "title": "AdvisorLimits",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

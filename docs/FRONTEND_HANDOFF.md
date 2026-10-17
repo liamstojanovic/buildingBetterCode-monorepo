@@ -1,7 +1,7 @@
 # Frontend integration and demo handoff
 
-The frontend teammate owns `web/`. This guide separates working backend features
-from the proposed JEV/OpenJEV advisor so the demo can show both accurately.
+The frontend teammate owns `web/`. This guide separates live HTTP features,
+importable offline advisor reports, and future backend routing.
 Start with the [team handoff](TEAM_HANDOFF.md), [HTTP API](../core/docs/api.md),
 and [live model guide](../core/docs/live_models.md).
 
@@ -15,7 +15,7 @@ and [live model guide](../core/docs/live_models.md).
 | Budgets | Admission/refusal/settlement events and measured usage | Read-only authority and outcome display |
 | Hosted models and native Pollard-Jev | Python registry and comparison CLI | Import actual comparison report; custom service wiring needed for live HTTP execution |
 | Drift containment and compact messaging | Component APIs and smoke report | Imported component report, clearly labeled synthetic |
-| Optimization advisor | Discussion/design only | Visibly labeled prototype fixtures; no live advisor routes |
+| Optimization advisor | Implemented offline discovery and strict JSON report | Import generated report; findings are unevaluated; no live advisor routes |
 
 The runtime executes a predefined DAG sequentially in deterministic order. It
 does not dynamically select tools or generate next steps. The local HTTP example
@@ -32,8 +32,8 @@ Suggested screen priority:
    consumed status, and explicit execution of the approved request as a new run.
 4. **Component evidence:** drift probe result and message-byte comparison imported
    from the component smoke report.
-5. **Advisor prototype:** business decisions, tool selection, and next-step
-   candidates with explanations and evaluation requirements, labeled proposed.
+5. **Offline advisor:** business decisions, tool selection, and next-step findings
+   with reasons, required changes and evaluation gaps, imported from actual analysis.
 
 ## Local service and runnable inputs
 
@@ -223,38 +223,151 @@ This creates a **new run**, rather than resuming the blocked one. Changed
 bindings, expired approvals, and consumed approvals cannot authorize another
 dispatch. Show the two run IDs separately.
 
-## Advisor prototype: agreed direction, not implemented
+## Offline advisor: implemented report import
 
-See the [advisor design](ADVISOR_DESIGN.md) for detection and evaluation details
-and the [benchmark handoff](BENCHMARK_HANDOFF.md) for the measurement boundary.
+Generate the demo from the repository root:
 
-Use categories `business_decision`, `tool_selection`, and `next_step` with proposed
-lifecycle states `candidate`, `needs_mapping`, `evaluating`, `validated`,
-`not_beneficial`, `unsupported`. These are design labels, not current backend
-enums or routes. Cards should identify the workflow/step and revisions, candidate
-choices, observed evidence, recommendation reasons, missing mappings, and the
-evaluation needed. Do not attach an automatic-enable action to the current API.
+```powershell
+.venv\Scripts\python.exe core\examples\advisor_demo.py --output-dir .canopy\advisor-demo
+```
 
-The proposed detector reads recorded calls in the background, groups recurring
-operations, and checks inexpensive structural signals first. An optional bounded
-semantic assessment runs on selected examples per operation version, not every
-request. Display analyzed sample count, period, and analysis usage if eventually
-measured; do not claim negligible overhead without measuring it.
+Each invocation prints an `advisor_report_path` in a fresh `run-*` directory under
+the selected output folder, with tenant `advisor-demo`. Import that
+`advisor-report.json`; `demo.json` separately contains synthetic task/run records
+and is not itself an `AdvisorReport`. The SQLite store and its Pollard sidecar
+are retained for inspection/reanalysis. This is a real
+analysis over recorded synthetic handlers. It needs no credentials or model
+weights and covers business, tool-selection and next-step findings, plus retained
+generation and deterministic alternatives. See the [advisor guide](../core/docs/advisor.md)
+for analyzing an existing database or live-comparison report instead.
 
-Example fixture cards: classify a ticket into known queues; select a registered
-read-only tool from a known set; choose `retrieve`, `clarify`, or `finish` from a
-fixed agent state. Distinguish selecting a tool from generating its arguments,
-and choosing a next step from generating or running an arbitrary plan. Current
-native Pollard-Jev accepts numeric observations and explicit hypotheses; semantic
-text mapping and dynamic agent execution both need core work. Entailment scores
-are not calibrated correctness probabilities or permission to execute a tool.
+The demo contains seven recurring groups and four runs: 28 synthetic observations,
+21 fixture dispatches and seven reuses. Start with `review_operations`, whose
+typed numeric request yields `candidate` / `evaluate_openjev` /
+`native_request_shape`. Its answer is predetermined synthetic data; the candidate
+does not establish real OpenJEV inference or quality. Then inspect the text,
+tool-selection and next-step mapping gaps, generation, deterministic threshold,
+and unmapped-decision findings.
 
-Proposed evaluation views should show independent correctness, consequential
-errors, coverage/abstention, fallback rate, latency including fallbacks, and
-measured resource costs plus sample count. Candidate feasibility and validated
-benefit are separate claims. A recommendation may prefer a deterministic function
-or retained LLM when appropriate. Use null/pending for unavailable measurements;
-fixture numbers must be labeled synthetic and cannot become headline savings.
+Give advisor reports their own import adapter, distinct from run and component
+reports. Validate against [AdvisorReport.schema.json](../core/schemas/AdvisorReport.schema.json)
+and check `report_type: "canopy.offline_advisor"`, `schema_version: "1"` and
+`analyzer_version: "offline-advisor-v1"`. Render unfamiliar versions as unsupported
+instead of interpreting arbitrary JSON as this schema.
+
+### Integration points in the current frontend draft
+
+The frontend draft integrated at `8b7d56b` has run comparison import but no advisor
+import. These are the concrete places to extend in the frontend teammate's work:
+
+1. [scripts/generate-contracts.ts](../web/scripts/generate-contracts.ts) currently
+   lists only `Task`, `RunEvent`, `RunResult` and `RunConfig`. Add `AdvisorReport`
+   to that explicit list; exporting a new Python schema does not automatically
+   generate its TypeScript counterpart. Add `DecisionDescriptor` and `AdvisorLimits`
+   as separate generated entry points if the UI needs them independently. From
+   `web/`, use `bun run contracts` and then `bun run contracts:check`; generated
+   files live under `src/api/generated/` and should not be edited by hand.
+2. [src/api/validation.ts](../web/src/api/validation.ts) currently compiles only
+   Task and RunResult with Ajv2020 and formats. Compile the advisor schema there
+   (or in an equivalent advisor module) for actual runtime validation; generated
+   TypeScript alone does not validate imported JSON. Export the report type through
+   [src/api/types.ts](../web/src/api/types.ts) or a dedicated advisor type module.
+3. [src/api/recorded.ts](../web/src/api/recorded.ts) exposes `parseBundle`, which
+   accepts only `format: "canopy-comparison/v1"`, with `recordings` containing
+   `task`, `result` and `events` and mandatory `baseline`/`warm` entries. It rejects
+   advisor reports. Introduce a separate advisor parser/import path rather than
+   casting an advisor report to `ComparisonBundle` or fabricating run events.
+4. [App.tsx](../web/src/App.tsx) currently routes `importRecording` through
+   `loadBundle`/`parseBundle` and resets the run-comparison state. Keep advisor
+   report state separate from those baseline/Canopy lanes. Wire an advisor-specific
+   import action/view through [Console.tsx](../web/src/components/Console.tsx),
+   whose existing `onImport` means recording import and `onImportTask` means a live
+   task. Preserve the existing import size/error treatment and display the parsed
+   report's provenance and limits in the advisor view.
+
+These three JSON formats are distinct; none is interchangeable merely because
+it contains Canopy results:
+
+| Artifact | Discriminator / structure | Current consumer |
+| --- | --- | --- |
+| Frontend session/core fixture bundle | `format: "canopy-comparison/v1"`, `recordings` with task/result/events | Frontend `parseBundle` |
+| Core live comparison export | `schema_version: "1"`, task, effective configurations, four `runs` | Offline advisor CLI `--report`; frontend needs a separate adapter for this export |
+| Offline advisor report | `report_type: "canopy.offline_advisor"`, recommendations/analysis/limits | New frontend advisor import to implement |
+
+The frontend's `exportSession()` and `fixtures:core` bundle are **not** accepted by
+the advisor CLI's `--report` option. Analyze their underlying Canopy database with
+`--db` when available, or use a complete core live-comparison export. Likewise,
+the advisor demo's `demo.json` manifest is not a frontend comparison bundle.
+
+[HttpRunClient](../web/src/api/client.ts) is for run execution/observation and
+approvals. Offline advisor import needs no new HTTP call or `RunClient.execute()`.
+The client's optional async/SSE probes do not establish that those endpoints exist
+in the current core server; they also do not supply an advisor service.
+
+For frontend verification, use a generated seven-group report to check the three
+decision families, the native-shaped candidate, mapping gaps and retained-work
+findings. Include null resources, a limit-reached report and invalid/wrong-format
+JSON. Keep existing comparison import/export behavior covered separately. Available
+checks in `web/package.json` are `bun run contracts:check`, `bun run typecheck`,
+`bun run test` and `bun run build`.
+
+### Advisor fields to render
+
+| Report data | UI treatment |
+| --- | --- |
+| `tenant_id`, `source`, `source_integrity`, `generated_at` | Origin banner; import validation is not source-recording integrity verification |
+| `analysis` and `limits` | Show scanned runs/model steps, elapsed analysis time, skipped counts and limit reasons; zero analysis model/tool calls |
+| `recommendations[].finding.category` | Filter by `business_decision`, `tool_selection`, `next_step` or `unknown` |
+| `finding.status` | Exactly `candidate`, `needs_mapping` or `unsupported` |
+| `finding.strategy` | Evaluate OpenJEV, deterministic function, retain LLM or retain backend |
+| `finding.reasons`, `signals`, `blockers`, `required_changes` | Explain the finding and work required; render as text, never HTML |
+| `finding.choices`, `partial_substitution`, `native_compatibility` | Show finite options, retained work and adapter/mapping gaps |
+| Identity/revisions and `group_fingerprint` | Explain which operation was grouped; support comparison between saved reports |
+| `observed` and `samples` | Recorded work and bounded source references, not prospective savings |
+| `sample_limit_reached`, `analysis.limit_reasons`, `limitations` | Visible partial-analysis notices; samples need not cover every observation |
+| `evaluation_status`, `measured_quality`, `estimated_savings_usd` | Always not evaluated/null/null; show “Not evaluated” |
+
+Map enum strategies `evaluate_openjev`, `deterministic_function`, `retain_llm` and
+`retain_backend` to the labels above. Unknown metric totals stay unknown; do not
+turn null cost into zero. Show `synthetic_observations` and total `observations`
+together, since a report can contain mixed origins. `analysis.cost_usd` and
+`energy_j` remain null despite zero model calls: CPU/I/O resources were not priced.
+Observed calls can include failures and synthetic handlers; neither proves paid
+inference or successful work. Reused-step usage is current reuse cost, not the
+historical call's usage.
+
+Use `recommendation_id`/`group_fingerprint` as report identities, not execution
+cache keys. `samples` contain run/step references, mode, status, synthetic marker
+and possibly a selected choice; they do not contain full prompts/evidence.
+Only link a sample to `/runs/{id}` when the service store and tenant match the
+source. An imported report does not populate that service's database.
+
+Suggested interaction: import a report, filter by category/status, select a card,
+then inspect reasons, blockers, choices, revisions, observed work and references.
+The default sort is the report order, based on its recorded ranking metric.
+Do not label that order as predicted ROI or suitability probability.
+
+In CLI-generated reports, `analysis.elapsed_ms` includes source setup/import,
+opening/verification and analysis but excludes output serialization. The Python
+API (also used by the demo) measures its analysis function, excluding caller
+setup. `max_seconds` bounds only cooperative analysis work; it is not a hard
+deadline for imports or I/O. A `max_runs` limit reason means the cap was reached
+and further records may exist; the analyzer does not read beyond it to confirm
+exhaustion. Present “Limit reached; report may be partial,” not a definite claim
+that extra records were skipped.
+
+Tool choice is separate from generating arguments and execution. Next-step
+selection is separate from inventing or executing a plan. Text leads need a
+future adapter: native Pollard-Jev currently accepts numeric observations and
+explicit hypotheses. Even `native_request_shape` is structural compatibility,
+not proven inference quality or authorization.
+
+No enable-route, evaluation-run or server-refresh control is wired up. The current
+release has no advisor HTTP endpoint, scheduler, automatic report cache,
+replacement evaluation, dynamic backend selection or fallback. Retaining two
+reports permits comparison; it does not provide automatic validity monitoring.
+`evaluating`, `validated` and `not_beneficial` are future concepts, not current enums.
+See [advisor design](ADVISOR_DESIGN.md) and [benchmark handoff](BENCHMARK_HANDOFF.md).
 
 ## Demo sequence and completion checklist
 
@@ -265,10 +378,11 @@ component reports to show budget containment, probe-driven drift containment,
 and actual message-byte counts/deduplication. Message byte savings can be negative
 and say nothing by themselves about tokens, energy, or latency.
 
-Finish with one real provider comparison report if available, then explicitly
-switch to the proposed advisor view. Explain the next experiment to validate a
-business decision, a tool choice, and a next-step decision. Do not imply that
-the generic catalog synthetic fixture already implements those agent routes.
+Finish with one real provider comparison report if available, then import the
+offline advisor report. Open a business, tool and next-step finding, show each
+missing mapping/evaluation, and contrast retained generation with a deterministic
+alternative. Explain the next independent replacement experiment. The analyzer
+works now; the generic catalog fixture does not implement adaptive agent routes.
 
 Before demo day: check API/proxy connectivity, fresh evidence, matching tenant,
 unknown metric labels, reuse provenance, approval rejection/consumption, and

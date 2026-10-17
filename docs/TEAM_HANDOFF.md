@@ -13,8 +13,10 @@ Updated October 17, 2026. Start with the role-specific guides:
   screen priorities, states, and a demo sequence.
 - [Benchmark integration](BENCHMARK_HANDOFF.md): runnable comparisons, independent
   scoring, and the proposed backend-substitution evaluation.
-- [Advisor discussion design](ADVISOR_DESIGN.md): low-overhead discovery for
-  business decisions, tool selection and next-step choices. **Not implemented.**
+- [Offline advisor guide](../core/docs/advisor.md): runnable discovery for business
+  decisions, tool selection and next-step choices, with a strict JSON report.
+- [Advisor design](ADVISOR_DESIGN.md): implemented discovery and later evaluation
+  and activation boundaries.
 
 ## Capability checkpoint
 
@@ -24,11 +26,11 @@ Updated October 17, 2026. Start with the role-specific guides:
 | Drift probes/containment and compact messaging/deduplication | Python components and smoke example | `core/scripts/component_smoke.py`; no dedicated HTTP dashboard endpoints |
 | OpenAI, compatible endpoints, Anthropic, Gemini | Implemented live handlers | Explicit provider/model and credentials; `live_comparison.py` |
 | Pollard-Jev/OpenJEV | Implemented isolated native worker | Separate environment and cached pinned weights required; actual local inference unverified here |
-| Business/tool/next-step optimization advisor | Discussion design only | Label any frontend prototype as a proposed feature/fixture |
+| Business/tool/next-step optimization advisor | Offline Python/CLI discovery and JSON report | `core/examples/advisor_demo.py`; actual analysis of synthetic recordings; no advisor HTTP endpoint |
 | Automatic backend switching or dynamic agent loop | Not implemented | No production control or success claims in the demo |
 
-The core at commit `a44c655` passed 546 tests locally and CI on Python 3.11/3.12.
-Those checks establish integration behavior, not business quality or savings.
+Use the current commit's test/CI results as integration evidence, not business
+quality or savings evidence.
 Prior hosted smoke runs exercised real calls; the local API example still uses
 synthetic handlers. Preserve provenance for each displayed result.
 
@@ -78,6 +80,14 @@ and tool execution costs visible. The benchmark guide specifies the new study.
 
 ## Frontend boundary
 
+The implemented offline advisor has an importable
+[AdvisorReport schema](../core/schemas/AdvisorReport.schema.json). Generate the
+demo with `python core/examples/advisor_demo.py --output-dir .canopy/advisor-demo`.
+Display actual findings, observed usage, provenance, limits and missing evaluation.
+Current states are `candidate`, `needs_mapping`, `unsupported`; every finding is
+unevaluated. No live advisor endpoint, activation, automatic routing or text
+adapter was added. See the frontend guide for its report adapter.
+
 Render the current run status and ordered `RunEvent` records. The server supplies
 usage and status; the browser must not invent successful operations or metrics.
 Useful states include live execution, reused computation, stale evidence,
@@ -106,12 +116,12 @@ refusal after a relevant change, unaffected work remaining reusable, and replay
 with zero new model/tool calls. All demonstration records are synthetic until a
 real provider is explicitly selected.
 
-For the expanded demo, first show the implemented run comparison and controls,
-then an explicitly labelled advisor preview: business classification, choosing a
-known tool, and choosing an authored next step. Show a candidate's reasons,
-required mapping and missing evaluation rather than invented savings. A measured
-advisor recommendation becomes a live demo only after its analyzer/mapping and
-independent evaluation exist. The frontend guide separates those milestones.
+For the expanded demo, show run comparison and controls, then import the generated
+offline advisor report: business classification, choosing a known tool, and
+choosing an authored next step. Show reasons, required mappings and missing
+evaluation. The analyzer is implemented; its demo inputs are synthetic, and
+OpenJEV replacement quality/savings remain unevaluated. Tool/next-step detection
+does not implement a dynamic agent loop.
 
 ## Team ownership and coordination
 

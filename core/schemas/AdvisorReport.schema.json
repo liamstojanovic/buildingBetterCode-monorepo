@@ -1,0 +1,595 @@
+{
+  "$defs": {
+    "AdvisorAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "scanned_runs": {
+          "default": 0,
+          "title": "Scanned Runs",
+          "type": "integer"
+        },
+        "scanned_model_steps": {
+          "default": 0,
+          "title": "Scanned Model Steps",
+          "type": "integer"
+        },
+        "skipped_replay_runs": {
+          "default": 0,
+          "title": "Skipped Replay Runs",
+          "type": "integer"
+        },
+        "skipped_incomplete_runs": {
+          "default": 0,
+          "title": "Skipped Incomplete Runs",
+          "type": "integer"
+        },
+        "skipped_duplicate_runs": {
+          "default": 0,
+          "title": "Skipped Duplicate Runs",
+          "type": "integer"
+        },
+        "skipped_oversized_steps": {
+          "default": 0,
+          "title": "Skipped Oversized Steps",
+          "type": "integer"
+        },
+        "skipped_group_observations": {
+          "default": 0,
+          "title": "Skipped Group Observations",
+          "type": "integer"
+        },
+        "limit_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limit Reasons",
+          "type": "array"
+        },
+        "elapsed_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "model_calls": {
+          "const": 0,
+          "default": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "tool_calls": {
+          "const": 0,
+          "default": 0,
+          "title": "Tool Calls",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "const": 0,
+          "default": 0,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "const": 0,
+          "default": 0,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "cost_usd": {
+          "default": null,
+          "title": "Cost Usd",
+          "type": "null"
+        },
+        "energy_j": {
+          "default": null,
+          "title": "Energy J",
+          "type": "null"
+        }
+      },
+      "title": "AdvisorAnalysis",
+      "type": "object"
+    },
+    "AdvisorFinding": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "default": "unknown",
+          "enum": [
+            "business_decision",
+            "tool_selection",
+            "next_step",
+            "unknown"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "needs_mapping",
+            "unsupported"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "strategy": {
+          "enum": [
+            "evaluate_openjev",
+            "deterministic_function",
+            "retain_llm",
+            "retain_backend"
+          ],
+          "title": "Strategy",
+          "type": "string"
+        },
+        "signals": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Signals",
+          "type": "array"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "blockers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blockers",
+          "type": "array"
+        },
+        "required_changes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Required Changes",
+          "type": "array"
+        },
+        "choices": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Choices",
+          "type": "array"
+        },
+        "partial_substitution": {
+          "default": false,
+          "title": "Partial Substitution",
+          "type": "boolean"
+        },
+        "native_compatibility": {
+          "default": "requires_mapping",
+          "enum": [
+            "native_request_shape",
+            "requires_text_adapter",
+            "requires_mapping",
+            "not_applicable"
+          ],
+          "title": "Native Compatibility",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "strategy"
+      ],
+      "title": "AdvisorFinding",
+      "type": "object"
+    },
+    "AdvisorLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max_runs": {
+          "default": 1000,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Max Runs",
+          "type": "integer"
+        },
+        "max_groups": {
+          "default": 200,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Max Groups",
+          "type": "integer"
+        },
+        "max_samples_per_group": {
+          "default": 8,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Max Samples Per Group",
+          "type": "integer"
+        },
+        "max_steps_per_run": {
+          "default": 200,
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Max Steps Per Run",
+          "type": "integer"
+        },
+        "max_step_chars": {
+          "default": 65536,
+          "maximum": 10000000,
+          "minimum": 256,
+          "title": "Max Step Chars",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "default": 30,
+          "exclusiveMinimum": 0,
+          "maximum": 3600,
+          "title": "Max Seconds",
+          "type": "number"
+        },
+        "rank_by": {
+          "default": "model_calls",
+          "enum": [
+            "model_calls",
+            "elapsed_ms",
+            "cost_usd"
+          ],
+          "title": "Rank By",
+          "type": "string"
+        }
+      },
+      "title": "AdvisorLimits",
+      "type": "object"
+    },
+    "AdvisorMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "observations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Observations",
+          "type": "integer"
+        },
+        "completed": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Completed",
+          "type": "integer"
+        },
+        "failed": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Failed",
+          "type": "integer"
+        },
+        "blocked": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Blocked",
+          "type": "integer"
+        },
+        "reused": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Reused",
+          "type": "integer"
+        },
+        "awaiting_approval": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Awaiting Approval",
+          "type": "integer"
+        },
+        "model_calls": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Model Calls",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elapsed Ms"
+        },
+        "unknown_token_observations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unknown Token Observations",
+          "type": "integer"
+        },
+        "unknown_cost_observations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unknown Cost Observations",
+          "type": "integer"
+        },
+        "unknown_elapsed_observations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unknown Elapsed Observations",
+          "type": "integer"
+        },
+        "synthetic_observations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Synthetic Observations",
+          "type": "integer"
+        }
+      },
+      "title": "AdvisorMetrics",
+      "type": "object"
+    },
+    "AdvisorRecommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "recommendation_id": {
+          "title": "Recommendation Id",
+          "type": "string"
+        },
+        "group_fingerprint": {
+          "title": "Group Fingerprint",
+          "type": "string"
+        },
+        "workflow_id": {
+          "title": "Workflow Id",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "handler": {
+          "title": "Handler",
+          "type": "string"
+        },
+        "handler_version": {
+          "title": "Handler Version",
+          "type": "string"
+        },
+        "model_fingerprint": {
+          "title": "Model Fingerprint",
+          "type": "string"
+        },
+        "prompt_version": {
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "grouping_basis": {
+          "enum": [
+            "declared_template",
+            "exact_inputs"
+          ],
+          "title": "Grouping Basis",
+          "type": "string"
+        },
+        "finding": {
+          "$ref": "#/$defs/AdvisorFinding"
+        },
+        "observed": {
+          "$ref": "#/$defs/AdvisorMetrics"
+        },
+        "samples": {
+          "items": {
+            "$ref": "#/$defs/AdvisorSample"
+          },
+          "title": "Samples",
+          "type": "array"
+        },
+        "sample_limit_reached": {
+          "default": false,
+          "title": "Sample Limit Reached",
+          "type": "boolean"
+        },
+        "evaluation_status": {
+          "const": "not_evaluated",
+          "default": "not_evaluated",
+          "title": "Evaluation Status",
+          "type": "string"
+        },
+        "estimated_savings_usd": {
+          "default": null,
+          "title": "Estimated Savings Usd",
+          "type": "null"
+        },
+        "measured_quality": {
+          "default": null,
+          "title": "Measured Quality",
+          "type": "null"
+        }
+      },
+      "required": [
+        "recommendation_id",
+        "group_fingerprint",
+        "workflow_id",
+        "step_id",
+        "handler",
+        "handler_version",
+        "model_fingerprint",
+        "prompt_version",
+        "grouping_basis",
+        "finding",
+        "observed",
+        "samples"
+      ],
+      "title": "AdvisorRecommendation",
+      "type": "object"
+    },
+    "AdvisorSample": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "baseline",
+            "governed",
+            "replay"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "synthetic": {
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "selected_choice": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected Choice"
+        }
+      },
+      "required": [
+        "run_id",
+        "step_id",
+        "status",
+        "mode",
+        "synthetic"
+      ],
+      "title": "AdvisorSample",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "report_type": {
+      "const": "canopy.offline_advisor",
+      "default": "canopy.offline_advisor",
+      "title": "Report Type",
+      "type": "string"
+    },
+    "analyzer_version": {
+      "const": "offline-advisor-v1",
+      "default": "offline-advisor-v1",
+      "title": "Analyzer Version",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "tenant_id": {
+      "minLength": 1,
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "recording_store",
+        "comparison_report",
+        "python_records"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "source_integrity": {
+      "enum": [
+        "verified_recordings",
+        "validated_import",
+        "caller_supplied"
+      ],
+      "title": "Source Integrity",
+      "type": "string"
+    },
+    "limits": {
+      "$ref": "#/$defs/AdvisorLimits"
+    },
+    "analysis": {
+      "$ref": "#/$defs/AdvisorAnalysis"
+    },
+    "recommendations": {
+      "items": {
+        "$ref": "#/$defs/AdvisorRecommendation"
+      },
+      "title": "Recommendations",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "source",
+    "source_integrity",
+    "limits",
+    "analysis",
+    "recommendations"
+  ],
+  "title": "AdvisorReport",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -4,12 +4,13 @@ import json
 from pathlib import Path
 
 from canopy.contracts import RunConfig, RunEvent, RunResult, Task
+from canopy.advisor_contracts import AdvisorLimits, AdvisorReport, DecisionDescriptor
 
 
 def main() -> None:
     output = Path(__file__).resolve().parents[1] / "schemas"
     output.mkdir(exist_ok=True)
-    for model in (Task, RunConfig, RunEvent, RunResult):
+    for model in (Task, RunConfig, RunEvent, RunResult, AdvisorReport, AdvisorLimits, DecisionDescriptor):
         schema = model.model_json_schema()
         schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
         (output / f"{model.__name__}.schema.json").write_text(

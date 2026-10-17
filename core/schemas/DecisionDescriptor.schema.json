@@ -1,0 +1,150 @@
+{
+  "additionalProperties": false,
+  "description": "Optional hints at Task.metadata['advisor']['steps'][step_id].\n\nHints are application-supplied analysis evidence, not trusted permissions or\nproof of quality. They never change the runtime/cache contracts.",
+  "properties": {
+    "category": {
+      "default": "unknown",
+      "enum": [
+        "business_decision",
+        "tool_selection",
+        "next_step",
+        "unknown"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "template_id": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Template Id"
+    },
+    "template_version": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Template Version"
+    },
+    "instance_fields": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 64,
+      "title": "Instance Fields",
+      "type": "array"
+    },
+    "choices": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Choices",
+      "type": "array"
+    },
+    "output_field": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Field"
+    },
+    "evidence_kind": {
+      "default": "unknown",
+      "enum": [
+        "native",
+        "text",
+        "structured",
+        "unknown"
+      ],
+      "title": "Evidence Kind",
+      "type": "string"
+    },
+    "candidate_hypotheses": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "maxProperties": 128,
+      "title": "Candidate Hypotheses",
+      "type": "object"
+    },
+    "tool_catalog_version": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Tool Catalog Version"
+    },
+    "state_schema_version": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Schema Version"
+    },
+    "argument_source": {
+      "default": "unknown",
+      "enum": [
+        "existing",
+        "generated",
+        "unknown"
+      ],
+      "title": "Argument Source",
+      "type": "string"
+    },
+    "explanation_required": {
+      "default": false,
+      "title": "Explanation Required",
+      "type": "boolean"
+    },
+    "deterministic_rule": {
+      "default": false,
+      "title": "Deterministic Rule",
+      "type": "boolean"
+    },
+    "generation_required": {
+      "default": false,
+      "title": "Generation Required",
+      "type": "boolean"
+    }
+  },
+  "title": "DecisionDescriptor",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

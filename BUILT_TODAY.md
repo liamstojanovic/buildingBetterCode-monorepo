@@ -15,6 +15,10 @@ are dependencies, not code claimed as newly written at the hackathon.
   Anthropic Messages, Gemini generateContent and local Pollard-Jev inference; an
   isolated baseline/governed comparison runner with provider usage reporting.
 - Packaging, reproducible environment, CI and integration documentation.
+- An offline structural workflow advisor for business decisions, tool selection
+  and next-step choices: bounded analysis of tenant-scoped recordings or saved
+  comparison reports, explainable recommendations, stable grouping identities,
+  observed usage, a CLI, JSON Schemas, and a synthetic frontend demo.
 
 ## Existing dependencies
 
@@ -41,3 +45,9 @@ real customer savings or certification. The human benchmark teammate owns task
 quality scoring and baseline comparisons. The frontend teammate owns `web/`.
 Only observed metrics should be included in a pitch. Any controlled provider
 regression must be labelled synthetic, and unknown measurements stay unknown.
+
+Advisor detection makes no model calls or execution changes. Its output identifies
+structural opportunities and mapping requirements; it does not validate JEV task
+quality, predict savings, or enable a replacement route. Report samples reference
+recorded runs; synthetic demo dispatches are explicitly labelled. Independent
+replacement evaluation remains the benchmark teammate's responsibility.
