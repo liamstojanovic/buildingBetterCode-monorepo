@@ -4,6 +4,8 @@ The core is a Python package in `core/`. The frontend remains in `web/` and the
 benchmark teammate can choose their own directory. Core component chats do not
 edit those applications. The shared machine-readable models are in
 `core/src/canopy/contracts.py`; the API owner maintains `core/docs/api.md`.
+JSON Schema exports for non-Python clients live in `core/schemas/`. Regenerate
+them with `python core/scripts/export_contracts.py` after contract changes.
 
 ## Local development
 

@@ -8,7 +8,7 @@ from datetime import UTC, datetime
 from typing import Any, Literal
 from uuid import uuid4
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
 
 SCHEMA_VERSION = "1"
 
@@ -54,6 +54,20 @@ class Usage(Contract):
     cost_usd: float | None = Field(default=None, ge=0)
     energy_j: float | None = Field(default=None, ge=0)
     elapsed_ms: float = Field(default=0, ge=0)
+    tokens_known: bool = False
+    elapsed_known: bool = False
+
+    @model_validator(mode="before")
+    @classmethod
+    def retain_token_measurement_completeness(cls, value: Any) -> Any:
+        """Preserve omitted-vs-measured tokens across a JSON round trip."""
+        if isinstance(value, dict):
+            value = dict(value)
+            value.setdefault(
+                "tokens_known", "input_tokens" in value and "output_tokens" in value
+            )
+            value.setdefault("elapsed_known", "elapsed_ms" in value)
+        return value
 
 
 class Policy(Contract):

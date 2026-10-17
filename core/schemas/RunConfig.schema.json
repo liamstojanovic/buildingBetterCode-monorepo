@@ -1,0 +1,193 @@
+{
+  "$defs": {
+    "BudgetLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "max_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tokens"
+        },
+        "max_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Steps"
+        },
+        "max_cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Usd"
+        },
+        "max_elapsed_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Elapsed Ms"
+        },
+        "max_energy_j": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Energy J"
+        }
+      },
+      "title": "BudgetLimits",
+      "type": "object"
+    },
+    "Policy": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "default": "1",
+          "title": "Version",
+          "type": "string"
+        },
+        "allowed_tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Tools",
+          "type": "array"
+        },
+        "approval_required_tools": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Approval Required Tools",
+          "type": "array"
+        },
+        "max_amount_minor": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Amount Minor"
+        },
+        "freshness_threshold": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Freshness Threshold",
+          "type": "number"
+        },
+        "drift_action": {
+          "default": "review",
+          "enum": [
+            "allow",
+            "review",
+            "deny"
+          ],
+          "title": "Drift Action",
+          "type": "string"
+        }
+      },
+      "title": "Policy",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "mode": {
+      "default": "governed",
+      "enum": [
+        "baseline",
+        "governed",
+        "replay"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
+    "actor_id": {
+      "default": "demo-operator",
+      "title": "Actor Id",
+      "type": "string"
+    },
+    "permissions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Permissions",
+      "type": "array"
+    },
+    "policy": {
+      "$ref": "#/$defs/Policy"
+    },
+    "budget": {
+      "$ref": "#/$defs/BudgetLimits"
+    },
+    "model_fingerprint": {
+      "default": "fixture-v1",
+      "title": "Model Fingerprint",
+      "type": "string"
+    },
+    "prompt_version": {
+      "default": "1",
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "cache_enabled": {
+      "default": true,
+      "title": "Cache Enabled",
+      "type": "boolean"
+    },
+    "replay_run_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replay Run Id"
+    }
+  },
+  "title": "RunConfig",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

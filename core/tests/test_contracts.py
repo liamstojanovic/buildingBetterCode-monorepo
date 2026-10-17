@@ -28,6 +28,21 @@ def test_unknown_energy_and_cost_survive_wire_roundtrip():
     assert usage.cost_usd is None
     assert usage.energy_j is None
     assert usage.provider_cached_input_tokens == 0
+    assert usage.tokens_known is False
+    assert usage.elapsed_known is False
+
+
+def test_explicit_zero_token_measurements_survive_wire_roundtrip():
+    usage = Usage(input_tokens=0, output_tokens=0)
+    assert usage.tokens_known is True
+    assert Usage.model_validate_json(usage.model_dump_json()).tokens_known is True
+
+
+def test_elapsed_measurement_completeness_survives_wire_roundtrip():
+    unknown = Usage.model_validate_json(Usage().model_dump_json())
+    measured = Usage.model_validate_json(Usage(elapsed_ms=0).model_dump_json())
+    assert not unknown.elapsed_known
+    assert measured.elapsed_known
 
 
 def test_unsupported_schema_and_config_fields_are_rejected():
