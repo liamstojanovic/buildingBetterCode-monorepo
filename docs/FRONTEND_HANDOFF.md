@@ -4,6 +4,16 @@ The complete Windows/WSL2 presentation runbook is
 [demo_handoff.md](../demo_handoff.md): container startup, fresh fixtures, exact UI
 steps, hosted recording imports, advisor/JEV/comms pages and stage fallbacks.
 
+For the latest published measurements, use the [container evidence notes](../core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+and [results page](../core/examples/recordings/container-benchmarks-2026-10-17/index.html).
+In **Optimization → Import advisor report**, import an individual JSON report
+from that bundle's `cpu/advisor/` directory. **Import recording** remains the
+separate playback importer. Older retained README text predates the Optimization
+view; it does not describe the current frontend. Show JEV and communication
+results through the linked HTML pages, preserving their hardware, timing and
+acceptance caveats. This refresh added no hosted calls; historical recordings
+keep their original dates and outputs.
+
 The frontend teammate owns `web/`. This guide separates live HTTP features,
 offline discovery, recorded JEV evaluation, communication measurements and future
 backend routing. The Optimization workspace imports advisor reports now; the

@@ -6,6 +6,18 @@ startup, fresh offline advisor and communication runs, the 12 GB GPU capacity
 check, actual local JEV comparison, approval rehearsal and troubleshooting.
 Use this document for benchmark methodology and custom provider workloads.
 
+The [current container evidence](../core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+and [results page](../core/examples/recordings/container-benchmarks-2026-10-17/index.html)
+include the CPU rerun completed at **20:09:26 UTC on 17 October 2026** against
+`28a276b`, plus the latest retained GPU rehearsal. CPU analysis found 21 groups
+across nine reports without model calls; 618 events in 36 batches retained the
+53.79% payload reduction. The GPU rehearsal had 14 raw matches and 12 accepted
+matches, with a 301.87 ms warm median. It used a 16 GB 4090 and an old-Docker
+driver-library workaround; it does not establish fit on a 12 GB 4080. This
+refresh made **zero hosted calls ($0 provider spend)**. Earlier native timings
+below remain historical measurements; the hosted recordings retain their
+original timestamps, outputs and unknown costs.
+
 The benchmark owns representative workloads and independent correctness scoring.
 The core supplies recorded execution, provider adapters and governed reuse. Start
 with one shared workload and retain the complete outputs before expanding the
@@ -209,7 +221,7 @@ It deduplicates the retained inputs to seven cases, keeps all 63 hosted calls fo
 comparison, excludes 21 hosted warm reuses, and performs repeated actual local
 classifier calls. Repetition is not an increase in independent sample size.
 
-The retained execution completed 14 actual local calls, two per distinct case,
+The historical native Windows execution completed 14 actual local calls, two per distinct case,
 and made zero new hosted calls. The first seven raw choices all matched their
 fixture expectations; six passed the gate. The repeat had identical choices and
 dispositions. Tool selections were 3/3 correct and accepted, next steps 3/3 correct
@@ -223,7 +235,7 @@ calls; accepted choices agree with 53/63 after nine business calls are excluded
 by the deferral and the original wrong next-step choice remains a disagreement.
 These are repeated-call comparisons, not extra independent JEV observations.
 
-Measured warm local end-to-end latency had median 491.20 ms over 13 calls
+That native run's warm end-to-end latency had median 491.20 ms over 13 calls
 (251.10–847.93 ms). The first call took 37,362.06 ms, including 36,469.99 ms of
 model loading. Keep those cold costs visible. The retained hosted latency came
 from an earlier run under different conditions; this is not a controlled speed
@@ -287,12 +299,12 @@ the binary wire size. The dense-float challenge correctly selects JSON
 All 618 messages were delivered and acknowledged, 36 duplicate redeliveries
 were suppressed, and reverse delivery and independent refreshed contexts were
 verified. Atomic batch insertion prevalidates all messages and rolls back on
-identity conflict. One measured local delivery sample on separate fresh SQLite
+identity conflict. The historical native delivery sample on separate fresh SQLite
 stores used 618 transactions / 872.85 ms individually versus 36 transactions /
 204.52 ms in batches, with FULL synchronous WAL. It includes validation and
 commits; frame construction, store creation and acknowledgements are excluded.
 
-Over five repetitions of the full 618-message codec corpus, median JSON
+In that native run, over five repetitions of the full 618-message codec corpus, median JSON
 encode/decode was 24.29/40.74 ms; shared CBOR was 32.87/54.86 ms and adaptive
 selection 30.91/53.84 ms. JSON therefore had lower encode/decode CPU cost in this
 measurement. Codec timing excludes source I/O, mailbox writes, network and batch

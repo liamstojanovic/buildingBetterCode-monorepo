@@ -6,6 +6,14 @@ before demo day. You need no hosted-provider key for steps 1–10: they combine 
 synthetic workflow execution, retained actual LLM calls, fresh offline analysis,
 fresh communication measurements, and actual local OpenJEV inference.
 
+The [latest published evidence](core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+and [results page](core/examples/recordings/container-benchmarks-2026-10-17/index.html)
+provide a ready-to-open fallback: the CPU rerun against `28a276b` completed at
+**20:09:26 UTC on 17 October 2026**, alongside the latest retained GPU rehearsal.
+This refresh made **zero hosted calls ($0 provider spend)**. Follow the steps
+below to produce your own hardware's measurements; retained playback does not
+renew its original operational evidence.
+
 **Shell convention:** step 1 uses Windows PowerShell. Subsequent commands are
 **Bash inside your Ubuntu WSL terminal**, from the repository root, unless a block
 explicitly says PowerShell. Leave Docker
@@ -330,13 +338,13 @@ On the generated page, inspect all three categories:
 | Tool selection | Knowledge search, incident lookup, ticket lookup | Allowed candidates, chosen hypothesis, acceptance gate; no tool executes |
 | Next-step decision | Retrieve, clarify, stop | State, authored transitions, explicit choices and deterministic rule baseline |
 
-The **retained reference**, measured on a **4090 Laptop GPU with 16 GB**, got all
+The **historical native reference**, measured on a **4090 Laptop GPU with 16 GB**, got all
 7 raw choices right and accepted 6/7 per pass. Business priority chose `high` but
 deferred because its 0.115 margin missed the fixed 0.15 gate. All three tool choices
 and all three next-step choices were accepted. Keep a different result from your
 machine visible; do not lower the gate or remove a candidate to reproduce a badge.
 
-Reference warm median was 491.20 ms and the first call included approximately
+That native run's warm median was 491.20 ms and the first call included approximately
 36.47 s of loading. Those are **not promised 4080 timings** and are not a controlled
 comparison with hosted latency. Report your fresh timings, first-load overhead,
 and abstentions separately. JEV chooses among supplied hypotheses; it does not
@@ -476,6 +484,15 @@ and are Git-ignored. Copy the selected result folder and its trial journal for
 your benchmark evidence; do not commit credentials or private databases.
 
 ## Validation performed on 17 October 2026
+
+The [published container bundle](core/examples/recordings/container-benchmarks-2026-10-17/README.md)
+now retains the [GPU comparison](core/examples/recordings/container-benchmarks-2026-10-17/jev/index.html),
+[capacity report](core/examples/recordings/container-benchmarks-2026-10-17/gpu/gpu-preflight-validation-named-volume.json)
+and a [new CPU rerun](core/examples/recordings/container-benchmarks-2026-10-17/cpu/index.html).
+The CPU rerun produced nine advisor reports / 21 groups / zero model calls, and
+its [communication report](core/examples/recordings/container-benchmarks-2026-10-17/cpu/comms/index.html)
+reproduced 618 events / 36 batches, with 771,411 JSON bytes versus 356,491 shared
+CBOR bytes. The original hosted observations were retained, not rerun or redated.
 
 All three Docker images built successfully. The CPU stack, live frontend/API,
 warm reuse, freshness changes, approval flow, advisor imports and communication

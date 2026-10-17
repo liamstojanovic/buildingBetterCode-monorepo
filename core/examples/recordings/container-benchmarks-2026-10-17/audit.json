@@ -1,0 +1,37 @@
+{
+  "format": "canopy-benchmark-audit/v1",
+  "audited_at": "2026-10-17T20:18:11.140696+00:00",
+  "status": "passed",
+  "previous_bundle_manifest_file_counts": {
+    "advisor-live-2026-10-17": 31,
+    "jev-evaluation-2026-10-17": 5,
+    "comms-efficiency-2026-10-17": 3
+  },
+  "current_nested_manifest_file_counts": {
+    "jev": 2,
+    "cpu/comms": 3
+  },
+  "hosted_source_reverification": {
+    "comparison_count": 9,
+    "original_run_count": 36,
+    "original_report_database_sidecar_hashes_verified": 45,
+    "method": "Current export_advisor_live_demo._read_source read-only verification of all original local sources, plus committed export inventories. Original private stores are not published."
+  },
+  "jev_journal": {
+    "completed": 14,
+    "failed": 0,
+    "all_results_match_comparison": true,
+    "raw_expected_matches": 14,
+    "accepted_expected_matches": 12
+  },
+  "jev_source_manifest_and_comparison_hashes_valid": true,
+  "comms_source_recording_hashes_valid": true,
+  "fresh_advisor": {
+    "reports": 9,
+    "recommendations": 21,
+    "model_calls": 0
+  },
+  "comms_exact_roundtrip_messages": 618,
+  "preserved_failures_and_interruption": true,
+  "new_hosted_calls": 0
+}
